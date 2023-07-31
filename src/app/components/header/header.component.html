@@ -5,25 +5,35 @@
         </picture>
     </div>
     <div class="header__items">
-        <div #headerItem class="header__items--item">
+        <div *ngIf="!this.user" #headerItem class="header__items--item">
             <p><fa-icon [icon]="faUser"></fa-icon></p>
-            <h3>CREA TU PERFIL</h3>
+            <h3>
+                <a href="/auth/signin">CREA TU PERFIL</a>
+            </h3>
         </div>
         <div #headerItem class="header__items--item">
             <p><fa-icon [icon]="faPaw"></fa-icon></p>
-            <h3>PUBLICA TU MASCOTA</h3>
+            <h3>
+                <a href="#">PUBLICA TU MASCOTA</a>
+            </h3>
         </div>
         <div #headerItem class="header__items--item">
             <p><fa-icon [icon]="faQrcode"></fa-icon></p>
-            <h3>CREA TU CÓDIGO QR</h3>
+            <h3>
+                <a href="#">CREA TU CÓDIGO QR</a>
+            </h3>
         </div>
         <div #headerItem class="header__items--item">
             <p><fa-icon [icon]="faPrint"></fa-icon></p>
-            <h3>IMPRÍMELO</h3>
+            <h3>
+                <a href="#">IMPRÍMELO</a>
+            </h3>
         </div>
         <div #headerItem class="header__items--item">
             <p><fa-icon [icon]="faMagnifyingGlassLocation"></fa-icon></p>
-            <h3>EVITA LO PEOR</h3>
+            <h3>
+                <a href="#">EVITA LO PEOR</a>
+            </h3>
         </div>
     </div>
 </header>

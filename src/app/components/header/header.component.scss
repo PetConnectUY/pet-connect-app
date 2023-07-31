@@ -40,6 +40,24 @@
         h3 {
           font-family: 'Cinzel', serif;
           font-weight: 600;
+          a {
+            position: relative;
+            color: #000;
+            text-decoration: none;
+            &::after {
+                content: ''; 
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0; 
+                height: 3px; 
+                background-color: var(--primary-color); 
+                transition: width 0.3s ease; 
+            }
+            &:hover::after {
+                width: 100%; 
+            }
+          }
         }
   
         opacity: 0;
@@ -48,18 +66,18 @@
         animation: fadeInRight 0.5s forwards;
       
         &:not(:first-child) {
-          animation-delay: 0.5s; // Ajusta el retraso según tu preferencia
+          animation-delay: 0.5s;
         }
       }
     }
-  }
+}
   
 
-  @keyframes fadeInRight {
+@keyframes fadeInRight {
     to {
       opacity: 1;
       transform: translateX(0);
       visibility: visible;
     }
-  }
+}
   
