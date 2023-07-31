@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #F9B348;
+}
+$primary-color: #F9B348;
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+/* Importing fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
