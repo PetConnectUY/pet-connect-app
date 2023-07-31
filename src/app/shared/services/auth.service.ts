@@ -101,5 +101,6 @@ export class AuthService {
 
   logout() {
     this.removeToken();
+    this.clearStorage();
   }
 }

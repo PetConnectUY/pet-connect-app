@@ -6,22 +6,17 @@ import { ValidateTokenGuard } from './protected/shared/guards/ValidateToken.guar
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'welcome',
+    redirectTo: 'app',
     pathMatch: 'full'
   },
   {
-    path: 'welcome',
+    path: 'app',
     component: WelcomeComponent,
     data: { requiresAuth: false }
   },
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./protected/protected.module').then(m => m.ProtectedModule),
-    canActivate: [ValidateTokenGuard]
   }
 ];
 

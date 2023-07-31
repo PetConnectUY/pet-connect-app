@@ -1,5 +1,23 @@
-.navbar-brand {
-    img {
-        width: 100px;
+/* Estilos para el navbar */
+.navbar {
+    padding: 1rem;  
+    .navbar-nav {
+        .nav-link {
+            margin-right: 1rem;
+            padding: .6rem 1.4rem;
+            cursor: pointer;
+        }
+    
+        .nav-link.active {
+            background-color: var(--primary-color);
+            border-radius: .6rem;
+        }
+    }
+    a {
+        cursor: pointer;
+    }
+    fa-icon {
+        color: var(--primary-color);
     }
 }
+  

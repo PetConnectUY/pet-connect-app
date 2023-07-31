@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faQrcode, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -9,7 +9,9 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  
+  faPaw = faPaw;
+  faQrcode = faQrcode;
+  faRightFromBracket = faRightFromBracket;
 
   user: User|null;
 
@@ -17,5 +19,10 @@ export class NavbarComponent {
     private authService: AuthService,
   ) {
     this.user = this.authService.getUser();
+  }
+
+  signOut() {
+    this.authService.logout();
+    window.location.reload();
   }
 }
