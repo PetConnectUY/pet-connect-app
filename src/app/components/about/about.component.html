@@ -1,0 +1,17 @@
+<section class="about">
+    <header class="about__header">
+      <img src="/assets/images/about-header.jpg" alt="Header Image" class="about__header--image">
+    </header>
+    <div class="about__container">
+      <h1 class="about__container--title">¡Bienvenido a Pet Connect!</h1>
+      <p class="about__container--text">En el mundo actual, la gran mayoría de nosotros cuenta con un dispositivo móvil, y en Pet Connect estamos decididos a aprovechar esta tecnología para mejorar y facilitar la vida de nuestras queridas mascotas.</p>
+      <p class="about__container--text">Con nuestro innovador sitio web, tendrás la capacidad de crear códigos QR personalizados para tus mascotas. Estos códigos podrás imprimirlos tú mismo, permitiendo que tu compañero peludo esté protegido y seguro sin importar a dónde vaya.</p>
+      <p class="about__container--text">Una vez que hayas creado tu código QR único, simplemente escánalo con tu smartphone y accederás a valiosa información sobre tu mascota y también sobre ti. ¡Así es! Podrás incluir detalles importantes, como tu nombre y número de contacto, para que si alguna vez te separas de tu amado compañero, puedas ser reunido con él de forma rápida y sencilla.</p>
+      <p class="about__container--text">En Pet Connect, nuestra misión es brindarte tranquilidad y seguridad, permitiéndote tener el control sobre la protección de tu mascota en todo momento. Así que únete a nosotros y descubre cómo un pequeño código QR puede marcar la gran diferencia en la vida de tu mascota.</p>
+      <div class="about__container__box">
+        <button [routerLink]="this.user ? '/mis-mascotas' : '/auth/signin'" class="about__container__box--button">
+          ¡Protege y conecta con tus mascotas en Pet Connect hoy mismo!
+        </button>
+      </div>
+    </div>
+</section>

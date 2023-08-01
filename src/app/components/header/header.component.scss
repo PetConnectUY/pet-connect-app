@@ -38,11 +38,10 @@
           box-shadow: -4px 0 5px rgb(121, 121, 121);
         }
         h3 {
-          font-family: 'Cinzel', serif;
+          font-family: var(--primary-font);
           font-weight: 600;
           a {
             position: relative;
-            color: #000;
             text-decoration: none;
             &::after {
                 content: ''; 

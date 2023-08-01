@@ -12,6 +12,8 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { AboutComponent } from './components/about/about.component';
+import { DarkModeTogglerComponent } from './dark-mode-toggler/dark-mode-toggler.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { LoaderComponent } from './components/loader/loader.component';
     WelcomeComponent,
     NavbarComponent,
     HeaderComponent,
-    LoaderComponent
+    LoaderComponent,
+    AboutComponent,
+    DarkModeTogglerComponent
   ],
   imports: [
     BrowserModule,

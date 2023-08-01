@@ -4,13 +4,10 @@
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse mt-3" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/about" routerLinkActive="active">Acerca de</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contacto</a>
@@ -43,6 +40,9 @@
         </li>
         <li class="nav-item" *ngIf="!this.user">
           <a class="nav-link" routerLink="/auth/signin" routerLinkActive="active">Iniciar sesión</a>
+        </li>
+        <li class="nav-item">
+          <app-dark-mode-toggler></app-dark-mode-toggler>
         </li>
       </ul>
     </div>
