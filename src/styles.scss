@@ -2,52 +2,73 @@
 :root {
     --primary-color: #F9B348;
     --primary-font: 'Cinzel', serif;
+    --secondary-font: 'Montserrat', sans-serif;
+
+    --background-color: #fff;
+    --text-color: #2b2b2b;
+    --invert-box-background-color: #fff;
+    --invert-box-text-color: #2b2b2b;
 }
+:root .dark-mode {
+    /* Estilos para el modo claro */
+    --background-color: #2b2b2b;
+    --text-color: #fff;
+    --invert-box-background-color: #fff;
+    --invert-box-text-color: #2b2b2b;
+}
+
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
 /* Importing fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Montserrat:wght@600&display=swap');
 
 .dark-mode {
-    background-color: #2b2b2b;
-    color: #f2f2f2;
+    
+    background-color: var(--background-color);
+    color: var(--text-color);
     .navbar {
+        .navbar-toggler {
+            color: var(--text-color);
+            .navbar-toggler-icon {
+                filter: invert(100%);
+            }
+        }
         .navbar-nav .nav-link {
-            color: #fff;
+            color: var(--text-color);
         }
 
         /* Cambia el fondo y el texto del dropdown en modo oscuro */
         .dropdown-menu {
-            background-color: #333;
-            color: #fff;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
 
         /* Cambia el color de fondo para el item seleccionado en el dropdown en modo oscuro */
         .dropdown-menu .dropdown-item.active,
         .dropdown-menu .dropdown-item:hover {
             background-color: var(--primary-color);
-            color: #f2f2f2;
+            color: var(--text-color);
         }
 
         /* Cambia el color de los enlaces del dropdown en modo oscuro */
         .dropdown-menu .dropdown-item {
-            color: #fff;
+            color: var(--text-color);
         }
 
         .dark-mode-toggle-btn {
-            color: #f2f2f2;
+            color: var(--text-color);
         }
         fa-icon {
             color: #fff !important;
         }
     }
     a {
-        color: #f2f2f2;
+        color: var(--text-color);
     }
 }
 
 a {
-    color: #2b2b2b;
+    color: var(--text-color);
 }

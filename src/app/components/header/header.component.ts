@@ -30,16 +30,10 @@ export class HeaderComponent implements AfterViewInit {
 
   animateItems() {
     const items = this.headerItems.toArray();
-    const animationDuration = 500; // Ajusta la duración de la animación (en milisegundos)
+    const animationDuration = 500;
 
     items.forEach((item, index) => {
       item.nativeElement.style.animationDelay = `${animationDuration * index}ms`;
     });
-
-    setTimeout(() => {
-      items.forEach((item, index) => {
-        item.nativeElement.classList.add('fadeInRight');
-      });
-    }, 0);
   }
 }
