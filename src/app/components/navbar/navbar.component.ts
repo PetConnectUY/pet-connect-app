@@ -14,11 +14,13 @@ export class NavbarComponent {
   faRightFromBracket = faRightFromBracket;
 
   user: User|null;
+  token: string|null;
 
   constructor(
     private authService: AuthService,
   ) {
     this.user = this.authService.getUser();
+    this.token = this.authService.getToken();
   }
 
   signOut() {

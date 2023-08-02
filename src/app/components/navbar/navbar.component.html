@@ -14,7 +14,7 @@
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item dropdown" *ngIf="this.user">
+        <li class="nav-item dropdown" *ngIf="this.user && this.token">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             {{this.user.firstname | titlecase}}
@@ -38,7 +38,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item" *ngIf="!this.user">
+        <li class="nav-item" *ngIf="!this.user || !this.token">
           <a class="nav-link" routerLink="/auth/signin" routerLinkActive="active">Iniciar sesión</a>
         </li>
         <li class="nav-item">

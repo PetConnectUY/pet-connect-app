@@ -1,7 +1,12 @@
-<section id="signig">
+<app-loader *ngIf="showLoader"></app-loader>
+<app-navbar *ngIf="!showLoader"></app-navbar>
+<section class="signin" *ngIf="!showLoader">
+    <picture>
+        <img src="/assets/images/pet-connect-icon-black.png" alt="pet-connect-icon">
+    </picture>
     <form [formGroup]="signinForm" (ngSubmit)="login()">
         <div class="signin__container">
-            <h1 *ngIf="!this.user" class="signin__container__title">Iniciar sesión</h1>
+            <h1 *ngIf="!this.user" class="signin__container--title">Iniciar sesión</h1>
             <div *ngIf="!this.user" class="signin__container__item">
                 <input 
                     type="text"
@@ -15,37 +20,47 @@
                 <label for="username" class="signin__container__item--label">Nombre de usuario</label>
             </div>
             <div *ngIf="this.user" class="signin__container__item">
-                <h2 class="signin__container__item--sub-title">¡Hola {{this.user.firstname | titlecase}}</h2>
+                <h2 class="signin__container__item--sub-title">¡Hola {{this.user.firstname | titlecase}}!</h2>
                 <p class="signin__container__item--sub-title-description">Escribe tu contraseña para ingresar</p>
             </div>
             <div class="signin__container__item">
-                <input 
-                    type="text"
-                    autocomplete="off"
-                    id="password"
-                    placeholder=""
-                    formControlName="password"
-                    class="signin__container__item--input"
-                    required=""
-                    [type]="show ? 'text' : 'password'" 
-                >
-                <label for="password" class="signin__container__item--label">Contraseña</label>
-                <a class="signin__container__item--eye" (click)="toggleShow()">
-                    <fa-icon [icon]="faEye" [hidden]="!show"></fa-icon>
-                    <fa-icon [icon]="faEyeSlash" [hidden]="show"></fa-icon>
-                </a>
+                <div class="signin__container__item__group">
+                    <input 
+                        type="text"
+                        autocomplete="off"
+                        id="password"
+                        placeholder=""
+                        formControlName="password"
+                        class="signin__container__item--input"
+                        required=""
+                        [type]="show ? 'text' : 'password'" 
+                    >
+                    <label for="password" class="signin__container__item--label">Contraseña</label>
+                    <a class="signin__container__item--eye" (click)="toggleShow()">
+                        <fa-icon [icon]="faEye" [hidden]="!show"></fa-icon>
+                        <fa-icon [icon]="faEyeSlash" [hidden]="show"></fa-icon>
+                    </a>
+                </div>
             </div>
             <div *ngIf="invalidCredentials" class="signin__container__item--bad-credentials">
                 <fa-icon [icon]="faExclamationCircle"></fa-icon>
                 <p>Usuario y/o contraseña incorrectos.</p>
+            </div>
+            <div *ngIf="unknowError" class="signin__container__item--bad-credentials">
+                <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                <p>Ocurrió un error inesperado. Por favor, intenta nuevamente más tarde.</p>
             </div>
             <div class="signin__container__item">
                 <button class="signin__container__item--button" [disabled]="submitting">
                     <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
                     {{btnValue}}
                 </button>
-                <p *ngIf="this.user">No eres {{this.user.firstname | titlecase}}</p>
-                <a href="#" (click)="removeAccount()">Ingresa con otra cuenta</a>
+                <p *ngIf="this.user">¿No eres {{this.user.firstname | titlecase}}?</p>
+                <a *ngIf="this.user" (click)="removeAccount()">Ingresa con otra cuenta</a>
+            </div>
+            <div class="signin__container__item--footer">
+                <a *ngIf="!this.user" routerLink="/users/signup">registrarse</a>
+                <a *ngIf="!this.user" routerLink="">google</a>
             </div>
         </div>
     </form>

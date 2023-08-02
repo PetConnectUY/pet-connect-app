@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faExclamationCircle, faSpinner, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -10,12 +11,13 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent {
+export class SigninComponent implements OnInit, AfterViewInit {
   faExclamationCircle = faExclamationCircle;
   faSpinner = faSpinner;
   faEye = faEye;
   faEyeSlash = faEyeSlash;
 
+  showLoader = true;
   user: User|null;
 
   signinForm!: FormGroup;
@@ -29,6 +31,7 @@ export class SigninComponent {
     private router: Router,
     private authService: AuthService,
     private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
   ) {
     this.user = this.authService.getUser();
     this.signinForm = this.fb.group({
@@ -37,8 +40,11 @@ export class SigninComponent {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
+  ngAfterViewInit(): void {
+    this.showLoader = false;
+    this.cdr.detectChanges();
   }
 
   login() {
@@ -47,7 +53,8 @@ export class SigninComponent {
     const oldBtnValue = this.btnValue;
     this.startSubmittingForm();
     const { username, password } = this.signinForm.value;
-    this.authService.login(username, password)
+    try {
+      this.authService.login(username, password)
       .subscribe(
         result => {
           if(result.error) {
@@ -55,9 +62,16 @@ export class SigninComponent {
             this.endSubmittingForm(oldBtnValue);
           } else {
             this.router.navigateByUrl('/app');
-          }
+          }          
+        }, error => {
+          this.unknowError = true;
+          this.endSubmittingForm(oldBtnValue);
         }
       )
+    } catch(error) {
+      this.unknowError = true;
+      this.endSubmittingForm(oldBtnValue);
+    }
   }
 
   startSubmittingForm() {
