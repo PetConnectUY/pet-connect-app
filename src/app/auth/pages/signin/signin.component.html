@@ -11,13 +11,13 @@
                 <input 
                     type="text"
                     autocomplete="off"
-                    id="username"
+                    id="email"
                     placeholder=""
-                    formControlName="username"
+                    formControlName="email"
                     class="signin__container__item--input"
                     required
                 >
-                <label for="username" class="signin__container__item--label">Nombre de usuario</label>
+                <label for="email" class="signin__container__item--label">Correo electrónico</label>
             </div>
             <div *ngIf="this.user" class="signin__container__item">
                 <h2 class="signin__container__item--sub-title">¡Hola {{this.user.firstname | titlecase}}!</h2>

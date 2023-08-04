@@ -35,7 +35,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
   ) {
     this.user = this.authService.getUser();
     this.signinForm = this.fb.group({
-      username: [this.user?this.user.username: ''],
+      email: [this.user?this.user.email: ''],
       password: [''],
     });
   }
@@ -52,9 +52,9 @@ export class SigninComponent implements OnInit, AfterViewInit {
     this.unknowError = false;
     const oldBtnValue = this.btnValue;
     this.startSubmittingForm();
-    const { username, password } = this.signinForm.value;
+    const { email, password } = this.signinForm.value;
     try {
-      this.authService.login(username, password)
+      this.authService.login(email, password)
       .subscribe(
         result => {
           if(result.error) {

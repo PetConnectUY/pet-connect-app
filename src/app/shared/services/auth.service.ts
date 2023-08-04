@@ -17,9 +17,9 @@ export class AuthService {
     private http: HttpClient,
   ) { }
 
-  login(username: string, password: string) {
+  login(email: string, password: string) {
     const url = `${this.baseUrl}auth/login`;
-    const body = { username, password };
+    const body = { email, password };
     return this.http.post<AuthResponse>(url, body)
       .pipe(
         tap(

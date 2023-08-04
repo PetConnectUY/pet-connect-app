@@ -17,11 +17,13 @@ export class HeaderComponent implements AfterViewInit {
   faMagnifyingGlassLocation = faMagnifyingGlassLocation;
 
   user: User|null;
+  token: string|null;
 
   constructor(
     private authService: AuthService,
   ) {
     this.user = this.authService.getUser();
+    this.token = this.authService.getToken();
   }
 
   ngAfterViewInit() {

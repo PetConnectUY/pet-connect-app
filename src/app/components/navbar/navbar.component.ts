@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { faPaw, faQrcode, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -18,6 +19,7 @@ export class NavbarComponent {
 
   constructor(
     private authService: AuthService,
+    private router: Router
   ) {
     this.user = this.authService.getUser();
     this.token = this.authService.getToken();
@@ -26,5 +28,9 @@ export class NavbarComponent {
   signOut() {
     this.authService.logout();
     window.location.reload();
+  }
+
+  isSignupRoute(): boolean {    
+    return this.router.url === '/users/signup';
   }
 }
