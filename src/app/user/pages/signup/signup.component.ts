@@ -9,6 +9,8 @@ import { NominatimService } from 'src/app/shared/services/nominatim.service';
 import { Subject } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthResponse } from 'src/app/shared/interfaces/auth-response.interface';
 
 @Component({
   selector: 'app-signup',
@@ -31,6 +33,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   show: boolean = false;
   submitting: boolean = false;
   unknowError: boolean = false;
+  errorMessage!: string;
   btnValue: string = 'Crear usuario';
   private destroy$ = new Subject<void>();
 
@@ -39,6 +42,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private userService: UserService,
+    private authService: AuthService,
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
     private nominatimService: NominatimService
@@ -165,15 +169,24 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if(this.signupForm.valid) {
       this.userService.register(formData).subscribe({
         next: (res: User) => {
-          this.unknowError = false;
-          this.submitting = false;
-          this.btnValue = 'Siguiente';
+          this.authService.login(email, password).subscribe({
+            next: (loginResult: AuthResponse) => {
+              this.unknowError = false;
+              this.submitting = false;
+              this.router.navigate(['/users/pet-profile']);
+            },
+            error: (error: HttpErrorResponse) => {
+              this.unknowError = true;
+              this.submitting = false;
+              this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
+            }
+          })
         },
         error: (error: HttpErrorResponse) => {
           this.submitting = false;
           this.unknowError = true;
           this.btnValue = oldBtnValue;
-          
+          this.errorMessage = 'Ocurrió un error al registrar el usuario.';
         }
       });
     }

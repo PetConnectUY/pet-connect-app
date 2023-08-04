@@ -6,11 +6,13 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PetProfileComponent } from './pages/pet-profile/pet-profile.component';
 
 
 @NgModule({
   declarations: [
-    SignupComponent
+    SignupComponent,
+    PetProfileComponent
   ],
   imports: [
     CommonModule,

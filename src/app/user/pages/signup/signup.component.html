@@ -158,7 +158,10 @@
                     <p *ngIf="signupForm.get('birth_date')?.errors?.['minDateError']">Debe tener al menos 16 años para registrarte.</p>
                 </div>                  
             </div>
-                  
+            <div *ngIf="unknowError" class="signup__container__item--error">
+                <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                <p>{{errorMessage}}</p>
+            </div>
             <div class="signin__container__item">
                 <button class="signup__container__item--button" [disabled]="submitting || signupForm.invalid">
                     <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>

@@ -32,7 +32,6 @@
         align-items: center;
         justify-content: center;
         @media (max-width: 1120px) {
-            width: 100vw;
             border-radius: unset;
             padding: 5rem;
         }
@@ -113,6 +112,17 @@
                 }
                 & fa-icon {
                     color: red;
+                }
+            }
+            &--error{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                color: red;
+                text-align: center;
+                padding: 5px;
+                & p {
+                    margin-left: 5px;
                 }
             }
             &--footer {
