@@ -1,0 +1,7 @@
+<div class="bar">
+  <div class="bar__container">
+    <div class="bar__container__item" *ngFor="let step of steps; let i = index" [ngClass]="getStepClasses(i)">
+      <fa-icon [icon]="step.icon"></fa-icon>
+    </div>
+  </div>
+</div>

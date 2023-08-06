@@ -35,6 +35,9 @@
             border-radius: unset;
             padding: 5rem;
         }
+        @media (max-width: 800px) {
+            width: 100%;
+        }
         &--title {
             font-family: var(--primary-font);
             text-align: center;

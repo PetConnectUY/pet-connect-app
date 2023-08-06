@@ -7,12 +7,14 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PetProfileComponent } from './pages/pet-profile/pet-profile.component';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
 
 @NgModule({
   declarations: [
     SignupComponent,
-    PetProfileComponent
+    PetProfileComponent,
+    ProgressBarComponent
   ],
   imports: [
     CommonModule,
