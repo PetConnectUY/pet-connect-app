@@ -1,6 +1,127 @@
 <app-progress-bar [currentStep]="1"></app-progress-bar>
 <div class="profile">
+    <h2 class="profile--title" *ngIf="this.user">¡Todo listo para empezar, <span>{{user.firstname |titlecase}}</span>!</h2>
     <div class="profile__container">
-        
+        <label for="profilePicture" class="profile__container__picture--label">
+            <img
+              src="assets/images/pet-avatar.webp"
+              alt="pet-avatar"
+              class="profile__container__picture--image"
+              *ngIf="!selectedImage"
+            />
+            <input
+              type="file"
+              id="profilePicture"
+              accept="image/*"
+              (change)="onImageSelected($event)"
+              style="display: none;"
+            />
+            <img
+              [src]="selectedImage"
+              alt="pet-avatar"
+              class="profile__container__picture--image"
+              *ngIf="selectedImage"
+            />
+            <div class="profile__container__picture--overlay" *ngIf="!selectedImage">
+              <p>Haz clic para subir una imagen</p>
+            </div>
+          </label>
+        <div class="profile__container__items">
+            <form [formGroup]="petForm" (ngSubmit)="createPet()">
+                <div class="profile__container__items__item">
+                    <input 
+                        type="text"
+                        id="name"
+                        name="name"
+                        formControlName="name"
+                        class="profile__container__items__item--input"
+                        [ngClass]="{ 'is-valid': isFieldValid('name'), 'is-invalid': isFieldInvalid('name') }"
+                        (input)="onInputChanged($event)"
+                        required
+                        >
+                        <label for="name" class="profile__container__items__item--label">Nombre de tu mascota</label>
+                        <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('name')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('name')}}</p>
+                        </div>
+                </div>
+                <div class="profile__container__items__item">
+                    <input
+                    type="date"
+                    id="birthdate"
+                    name="birthdate"
+                    formControlName="birth_date"
+                    class="profile__container__items__item--input"
+                    [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
+                    >
+                    <label for="birthdate" class="profile__container__items__item--label">Fecha de nacimiento <span>(Opcional)</span></label>
+                    <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('birth_date')">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p *ngIf="petForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
+                    </div>   
+                </div>
+                <div class="profile__container__items__item">
+                    <input 
+                        type="text"
+                        id="race"
+                        name="race"
+                        formControlName="race"
+                        class="profile__container__items__item--input"
+                        [ngClass]="{ 'is-valid': isFieldValid('race'), 'is-invalid': isFieldInvalid('race')}"
+                        (input)="onInputChanged($event)"
+                        >
+                        <label for="race" class="profile__container__items__item--label">Raza <span>(Opcional)</span></label>
+                        <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('race')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('race')}}</p>
+                        </div>
+                </div>
+                <div class="profile__container__items__item">
+                    <select 
+                        name="gender" 
+                        id="gender" 
+                        class="profile__container__items__item--input" 
+                        formControlName="gender" 
+                        [ngClass]="{ 'is-valid': isFieldValid('gender'), 'is-invalid': isFieldInvalid('gender')}"
+                        (input)="onInputChanged($event)"
+                    >
+                        <option value=""></option>
+                        <option value="male">Macho</option>
+                        <option value="female">Hembra</option>
+                    </select>
+                    <label for="gender" class="profile__container__items__item--label">Sexo</label>
+                    <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('gender')">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p>{{getErrorMessage('gender')}}</p>
+                    </div>
+                </div>
+                <div class="profile__container__items__item">
+                    <textarea 
+                        type="text"
+                        id="pet_information"
+                        name="pet_information"
+                        formControlName="pet_information"
+                        class="profile__container__items__item--input"
+                        [ngClass]="{ 'is-valid': isFieldValid('pet_information'), 'is-invalid': isFieldInvalid('pet_information')}"
+                        (input)="onInputChanged($event)"
+                        ></textarea>
+                        <label for="pet_information" class="profile__container__items__item--label">Características <span>(Aquí podrás describir ciertas características de tu mascota)</span></label>
+                        <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('pet_information')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('pet_information')}}</p>
+                        </div>
+                </div>
+                <div *ngIf="unknowError" class="profile__container__items__item--error">
+                    <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                    <p>{{errorMessage}}</p>
+                </div>
+                <div class="profile__container__items__item">
+                    <button class="profile__container__items__item--button" [disabled]="submitting || petForm.invalid">
+                        <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                        {{btnValue}}
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

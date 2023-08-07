@@ -11,7 +11,8 @@ export class FormValidationService {
     maxlength: 'El campo debe tener menos de {maxlength} caracteres',
     pattern: 'El campo tiene caracteres inválidos',
     passwordPattern: 'La contraseña debe contener al menos una letra mayúscula',
-    email: 'El campo debe contener un correo válido.'
+    email: 'El campo debe contener un correo válido.',
+    invalidGender: 'El genero es erróneo, debe seleccionar uno de la lista'
   };
 
   getErrorMessage(validatorName: string, validatorValue?: any): string {
