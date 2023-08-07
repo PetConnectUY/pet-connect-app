@@ -20,6 +20,7 @@
       z-index: 1;
 
       &:not(:last-child)::after {
+        transition: all 3s ease;
         content: "";
         position: absolute;
         top: 50%;
@@ -41,6 +42,7 @@
 
       &--completed {
         fa-icon {
+          transition: all 3s ease;
           background-color: var(--background-color);
           color: var(--text-color);
         }
@@ -54,6 +56,7 @@
 
       &--current {
         fa-icon {
+          transition: all 3s ease;
           background-color: var(--background-color);
           color: var(--text-color);
           zoom: 1.2;
@@ -65,4 +68,17 @@
       }
     }
   }
+}
+
+.bar__container__item--completed, .bar__container__item--current {
+  transition: all 3s ease;
+}
+.bar__container__item--completed fa-icon {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+.bar__container__item--current fa-icon {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transform: scale(1.2);
 }

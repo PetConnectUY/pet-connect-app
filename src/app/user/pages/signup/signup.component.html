@@ -1,10 +1,8 @@
-<app-loader *ngIf="showLoader"></app-loader>
 <section class="signup">
     <picture>
         <img src="/assets/images/register-image.webp" alt="register-image">
     </picture>
     <form [formGroup]="signupForm" (ngSubmit)="register()">
-        <app-progress-bar [currentStep]="0"></app-progress-bar>
         <div class="signup__container">
             <h1 class="signup__container--title">Registrarse</h1>
             <div class="signup__container__item">

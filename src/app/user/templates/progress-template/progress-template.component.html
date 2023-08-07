@@ -1,0 +1,15 @@
+<app-progress-bar [currentStep]="currentStep"></app-progress-bar>
+<ng-container [ngSwitch]="currentStep">
+    <div *ngSwitchCase="0">
+      <app-signup (next)="nextStep()"></app-signup>
+    </div>
+    <div *ngSwitchCase="1">
+      <app-pet-profile (next)="nextStep()"></app-pet-profile>
+    </div>
+    <div *ngSwitchCase="2">
+      <!-- Agrega el componente del tercer paso aquí -->
+    </div>
+    <div *ngSwitchCase="3">
+      <!-- Agrega el componente del cuarto paso aquí -->
+    </div>
+</ng-container>

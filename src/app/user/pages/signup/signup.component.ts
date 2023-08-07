@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
@@ -22,6 +22,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   faSpinner = faSpinner;
+
+  @Output() next: EventEmitter<void> = new EventEmitter<void>();
 
   signupForm!: FormGroup;
   loaderForEmailExists: boolean = false;
@@ -173,7 +175,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             next: (loginResult: AuthResponse) => {
               this.unknowError = false;
               this.submitting = false;
-              this.router.navigate(['/users/pet-profile']);
+              this.next.emit();
             },
             error: (error: HttpErrorResponse) => {
               this.unknowError = true;

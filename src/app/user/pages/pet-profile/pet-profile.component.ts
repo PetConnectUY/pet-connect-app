@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { PetImage } from 'src/app/pet/interfaces/pet.image.interface';
@@ -18,6 +18,9 @@ export class PetProfileComponent {
   faExclamationCircle = faExclamationCircle;
   faSpinner = faSpinner;
 
+  @Output() next: EventEmitter<void> = new EventEmitter<void>();
+  @Output() prev: EventEmitter<void> = new EventEmitter<void>();
+
   user: User|null;
 
   petForm!: FormGroup;
@@ -34,7 +37,7 @@ export class PetProfileComponent {
     private fb: FormBuilder,
   ){
     this.user = this.authService.getUser();
-    this.petForm = fb.group({
+    this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
       birth_date: [''],
       race: ['', [Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
@@ -121,7 +124,7 @@ export class PetProfileComponent {
           next: (res: PetImage) => {
             this.submitting = false;
             this.unknowError = false;
-            console.log('pet and image created');
+            this.next.emit();
           },
           error: (error: HttpErrorResponse) => {
             this.submitting = false;
