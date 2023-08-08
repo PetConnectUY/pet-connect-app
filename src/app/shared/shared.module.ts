@@ -12,7 +12,7 @@ import { LoaderComponent } from '../components/loader/loader.component';
   declarations: [
     NavbarComponent,
     DarkModeTogglerComponent,
-    LoaderComponent
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
