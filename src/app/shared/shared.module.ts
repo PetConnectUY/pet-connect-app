@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DarkModeTogglerComponent } from '../components/dark-mode-toggler/dark-mode-toggler.component';
 import { RouterModule } from '@angular/router';
 import { LoaderComponent } from '../components/loader/loader.component';
+import { HtmlToSafeHtmlPipe } from './pipes/html-to-safe-html.pipe';
 
 
 
@@ -13,6 +14,7 @@ import { LoaderComponent } from '../components/loader/loader.component';
     NavbarComponent,
     DarkModeTogglerComponent,
     LoaderComponent,
+    HtmlToSafeHtmlPipe,
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,7 @@ import { LoaderComponent } from '../components/loader/loader.component';
     NavbarComponent,
     DarkModeTogglerComponent,
     LoaderComponent,
+    HtmlToSafeHtmlPipe,
   ]
 })
 export class SharedModule { }

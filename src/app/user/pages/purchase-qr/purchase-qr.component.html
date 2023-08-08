@@ -1,5 +1,6 @@
-<app-progress-bar [currentStep]="2"></app-progress-bar>
-<section class="store">
+<app-loader *ngIf="showLoader"></app-loader>
+<app-progress-bar *ngIf="!showLoader" [currentStep]="2"></app-progress-bar>
+<section class="store" *ngIf="!showLoader">
     <div class="store__container">
         <h2 class="store__container--title" *ngIf="this.user">
             <fa-icon [icon]="faCircleCheck" animation="bounce" style="--fa-animation-iteration-count: 1;"></fa-icon>
@@ -10,40 +11,22 @@
             Aquí podrás seleccionar el plan que desees, recuerda que todo el tiempo estarás protegido con tu compra.
         </p>
         <div class="store__container__items">
-            <div class="store__container__items__item">
+            <div class="store__container__items__item" *ngFor="let product of products">
                 <picture>
-                    <img src="assets/images/pay-one-and-another-free.webp" alt="pay-one-and-another-free">
+                    <img src="{{product.image}}" alt="{{product.name}}">
                 </picture>
                 <div class="store__container__items__item__box">
-                    <h3 class="store__container__items__item__box--price">$120</h3>
-                    <p class="store__container__items__item__box--title">Premium</p>
-                    <p class="store__container__items__item__box--description">
-                        El <span>pack</span> premium viene con 1 código QR que pagas y el segundo será gratuito ¡para que puedas tener a dos mascotas <span>protegidas</span> en todo lugar!
+                    <h3 class="store__container__items__item__box--price">{{product.price}}</h3>
+                    <p class="store__container__items__item__box--title">{{product.name | titlecase}}</p>
+                    <p class="store__container__items__item__box--description" [innerHTML]="product.description | htmlToSafeHtml">
                     </p>
                     <button class="store__container__items__item__box--button">{{btnValue}}</button>
                 </div>
             </div>
-            <div class="store__container__items__item">
-                <picture>
-                    <img src="assets/images/pay-two-and-two-free.webp" alt="pay-two-and-two-free">
-                </picture>
-                <div class="store__container__items__item__box">
-                    <h3 class="store__container__items__item__box--price">$190</h3>
-                    <p class="store__container__items__item__box--title">Premium +</p>
-                    <p class="store__container__items__item__box--description">El <span>pack</span> premium + incluye 2 códigos QR pagos y 2 códigos QR gratuitos brindando <span>un total de 4 códigos</span> para que puedas mantener a la familia <span>protegida</span></p>
-                    <button class="store__container__items__item__box--button">{{btnValue}}</button>
-                </div>
-            </div>
-            <div class="store__container__items__item">
-                <picture>
-                    <img src="assets/images/pay-five-and-three-free.webp" alt="pay-five-and-three-free">
-                </picture>
-                <div class="store__container__items__item__box">
-                    <h3 class="store__container__items__item__box--price">$390</h3>
-                    <p class="store__container__items__item__box--title">Afiliado</p>
-                    <p class="store__container__items__item__box--description">El <span>pack</span> afiliado incluye 5 códigos QR pagos y 3 gratuitos brindando <span>un total de 8 códigos</span> para que puedas mantener a tus mascotas y las mascotas de los demás protegidas.</p>
-                    <button class="store__container__items__item__box--button">{{btnValue}}</button>
-                </div>
+            <div class="store__container--error" *ngIf="unknowError">
+                <h1>
+                    <fa-icon [icon]="faExclamationTriangle"></fa-icon> {{errorMessage}}
+                </h1>
             </div>
         </div>
     </div>

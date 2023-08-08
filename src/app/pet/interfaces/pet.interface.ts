@@ -1,4 +1,5 @@
 import { User } from "src/app/shared/interfaces/user.interface";
+import { PetImage } from "./pet.image.interface";
 
 export interface Pet {
     id: number;
@@ -7,5 +8,6 @@ export interface Pet {
     race: string | null;
     gender: string;
     pet_information: string;
+    images: PetImage;
     user: User;
 }

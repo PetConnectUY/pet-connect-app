@@ -113,4 +113,6 @@
         }
     }
 }
-  
+::ng-deep .store__container__items__item__box--description span {
+    color: #000000; // Aplica estilos directamente a los elementos span en esta clase
+  }
