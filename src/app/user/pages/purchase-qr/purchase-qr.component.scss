@@ -6,6 +6,22 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        &--error {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            h1 {
+                font-family: var(--primary-font);
+                fa-icon {
+                    color: red;
+                }
+            }
+            
+        }
         &--title {
             font-family: var(--primary-font);
             font-size: 3rem;

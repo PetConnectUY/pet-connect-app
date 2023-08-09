@@ -1,4 +1,3 @@
-<app-progress-bar [currentStep]="currentStep"></app-progress-bar>
 <ng-container [ngSwitch]="currentStep">
     <div *ngSwitchCase="0">
       <app-signup (next)="nextStep()"></app-signup>

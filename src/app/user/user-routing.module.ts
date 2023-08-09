@@ -19,8 +19,14 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'pet-profile-template',
+    component: PetProfileComponent,
+    canActivate: [ValidateTokenGuard]
+  },
+  {
     path: 'purchase-qr-template',
-    component: PurchaseQrComponent
+    component: PurchaseQrComponent,
+    canActivate: [ValidateTokenGuard]
   }
 ];
 

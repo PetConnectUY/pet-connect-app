@@ -1,5 +1,4 @@
 <div class="profile">
-    <h2 class="profile--title" *ngIf="this.user">¡Todo listo para empezar, <span>{{user.firstname |titlecase}}</span>!</h2>
     <div class="profile__container">
         <label for="profilePicture" class="profile__container__picture--label">
             <img
@@ -26,7 +25,9 @@
             </div>
           </label>
         <div class="profile__container__items">
+            <app-progress-bar [currentStep]="1"></app-progress-bar>
             <form [formGroup]="petForm" (ngSubmit)="createPet()">
+                <h1 class="profile__container__items--title">Perfil de tu mascota</h1>
                 <div class="profile__container__items__item">
                     <input 
                         type="text"
@@ -44,36 +45,38 @@
                             <p>{{getErrorMessage('name')}}</p>
                         </div>
                 </div>
-                <div class="profile__container__items__item">
-                    <input
-                    type="date"
-                    id="birthdate"
-                    name="birthdate"
-                    formControlName="birth_date"
-                    class="profile__container__items__item--input"
-                    [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
-                    >
-                    <label for="birthdate" class="profile__container__items__item--label">Fecha de nacimiento <span>(Opcional)</span></label>
-                    <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('birth_date')">
-                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                        <p *ngIf="petForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
-                    </div>   
-                </div>
-                <div class="profile__container__items__item">
-                    <input 
-                        type="text"
-                        id="race"
-                        name="race"
-                        formControlName="race"
+                <div class="row justify-content-around ">
+                    <div class="col-sm-12 col-md-6 col-lg-6 profile__container__items__item">
+                        <input
+                        type="date"
+                        id="birthdate"
+                        name="birthdate"
+                        formControlName="birth_date"
                         class="profile__container__items__item--input"
-                        [ngClass]="{ 'is-valid': isFieldValid('race'), 'is-invalid': isFieldInvalid('race')}"
-                        (input)="onInputChanged($event)"
+                        [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
                         >
-                        <label for="race" class="profile__container__items__item--label">Raza <span>(Opcional)</span></label>
-                        <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('race')">
+                        <label for="birthdate" class="profile__container__items__item--label">Fecha de nacimiento <span>(Opcional)</span></label>
+                        <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('birth_date')">
                             <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                            <p>{{getErrorMessage('race')}}</p>
-                        </div>
+                            <p *ngIf="petForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
+                        </div>   
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 profile__container__items__item">
+                        <input 
+                            type="text"
+                            id="race"
+                            name="race"
+                            formControlName="race"
+                            class="profile__container__items__item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('race'), 'is-invalid': isFieldInvalid('race')}"
+                            (input)="onInputChanged($event)"
+                            >
+                            <label for="race" class="profile__container__items__item--label">Raza <span>(Opcional)</span></label>
+                            <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('race')">
+                                <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                                <p>{{getErrorMessage('race')}}</p>
+                            </div>
+                    </div>
                 </div>
                 <div class="profile__container__items__item">
                     <select 
@@ -104,7 +107,7 @@
                         [ngClass]="{ 'is-valid': isFieldValid('pet_information'), 'is-invalid': isFieldInvalid('pet_information')}"
                         (input)="onInputChanged($event)"
                         ></textarea>
-                        <label for="pet_information" class="profile__container__items__item--label">Características <span>(Aquí podrás describir ciertas características de tu mascota)</span></label>
+                        <label for="pet_information" class="profile__container__items__item--label">Características</label>
                         <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('pet_information')">
                             <fa-icon [icon]="faExclamationCircle"></fa-icon> 
                             <p>{{getErrorMessage('pet_information')}}</p>
@@ -114,10 +117,11 @@
                     <fa-icon [icon]="faExclamationCircle"></fa-icon>
                     <p>{{errorMessage}}</p>
                 </div>
-                <div class="profile__container__items__item">
-                    <button class="profile__container__items__item--button" [disabled]="submitting || petForm.invalid">
-                        <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                <div class="profile__container__items__item--button">
+                    <button [disabled]="submitting || petForm.invalid">
                         {{btnValue}}
+                        <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                        <fa-icon *ngIf="!submitting" [icon]="faChevronRight"></fa-icon>
                     </button>
                 </div>
             </form>

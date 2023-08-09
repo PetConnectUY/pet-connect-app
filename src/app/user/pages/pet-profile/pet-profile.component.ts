@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { PetImage } from 'src/app/pet/interfaces/pet.image.interface';
 import { Pet } from 'src/app/pet/interfaces/pet.interface';
 import { PetService } from 'src/app/pet/services/pet.service';
@@ -17,6 +17,7 @@ import { FormValidationService } from 'src/app/shared/services/form-validation.s
 export class PetProfileComponent {
   faExclamationCircle = faExclamationCircle;
   faSpinner = faSpinner;
+  faChevronRight = faChevronRight;
 
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
   @Output() prev: EventEmitter<void> = new EventEmitter<void>();
@@ -28,7 +29,7 @@ export class PetProfileComponent {
   unknowError: boolean = false;
   errorMessage!: string;
   submitting: boolean = false;
-  btnValue: string = 'Crear perfíl';
+  btnValue: string = 'Siguiente';
 
   constructor(
     private authService: AuthService,
@@ -124,7 +125,8 @@ export class PetProfileComponent {
           next: (res: PetImage) => {
             this.submitting = false;
             this.unknowError = false;
-            this.next.emit();
+            console.log(res);
+            
           },
           error: (error: HttpErrorResponse) => {
             this.submitting = false;
@@ -140,6 +142,8 @@ export class PetProfileComponent {
         this.unknowError = true;
         this.errorMessage = 'Ocurrió un error al crear el perfíl de la mascota.';
         this.btnValue = oldBtnValue;
+        console.log(error.error);
+        
       }
     })
   }

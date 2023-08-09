@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { faExclamationCircle, faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faEye, faEyeSlash, faSpinner, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import { NominatimService } from 'src/app/shared/services/nominatim.service';
@@ -22,6 +22,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   faSpinner = faSpinner;
+  faChevronRight = faChevronRight;
 
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
 
@@ -36,7 +37,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   submitting: boolean = false;
   unknowError: boolean = false;
   errorMessage!: string;
-  btnValue: string = 'Crear usuario';
+  btnValue: string = 'Siguiente';
   private destroy$ = new Subject<void>();
 
 

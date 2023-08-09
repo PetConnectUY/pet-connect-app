@@ -3,143 +3,148 @@
         <img src="/assets/images/register-image.webp" alt="register-image">
     </picture>
     <form [formGroup]="signupForm" (ngSubmit)="register()">
-        <div class="signup__container">
+        <app-progress-bar [currentStep]="0"></app-progress-bar>
+        <div class="signup__container container-fluid">
             <h1 class="signup__container--title">Registrarse</h1>
-            <div class="signup__container__item">
-                <input
-                    type="text"
-                    autocomplete="off"
-                    id="firstname"
-                    placeholder=""
-                    name="firstname"
-                    formControlName="firstname"
-                    class="signup__container__item--input"
-                    [ngClass]="{ 'is-valid': isFieldValid('firstname'), 'is-invalid': isFieldInvalid('firstname') }"
-                    required
-                >
-                <label for="firstname" class="signup__container__item--label">Nombre</label>
-                <div class="signup__container__item--validation" *ngIf="isFieldInvalid('firstname')">
-                    <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                    <p>{{getErrorMessage('firstname')}}</p>
-                </div>
-            </div>
-            
-            <div class="signup__container__item">
-                <input
-                    type="text"
-                    autocomplete="off"
-                    id="lastname"
-                    placeholder=""
-                    name="lastname"
-                    formControlName="lastname"
-                    class="signup__container__item--input"
-                    [ngClass]="{ 'is-valid': isFieldValid('lastname'), 'is-invalid': isFieldInvalid('lastname') }"
-                    required
-                >
-                <label for="lastname" class="signup__container__item--label">Apellido</label>
-                <div class="signup__container__item--validation" *ngIf="isFieldInvalid('lastname')">
-                    <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                    <p>{{getErrorMessage('lastname')}}</p>
-                </div>
-            </div>
-
-            <div class="signup__container__item">
-                <div class="signup__container__item__group">
+            <div class="row w-100">
+                <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
                     <input
                         type="text"
                         autocomplete="off"
-                        id="email"
+                        id="firstname"
                         placeholder=""
-                        name="email"
-                        formControlName="email"
+                        name="firstname"
+                        formControlName="firstname"
                         class="signup__container__item--input"
-                        [ngClass]="{ 'is-valid': isFieldValid('email'), 'is-invalid': isFieldInvalid('email') || emailExists }"
+                        [ngClass]="{ 'is-valid': isFieldValid('firstname'), 'is-invalid': isFieldInvalid('firstname') }"
                         required
                     >
-                    <label for="username" class="signup__container__item--label">Correo electrónico</label>
-                    <div class="spinner-border" *ngIf="loaderForEmailExists" role="status">
-                        <span class="visually-hidden">Cargando...</span>
+                    <label for="firstname" class="signup__container__item--label">Nombre</label>
+                    <div class="signup__container__item--validation" *ngIf="isFieldInvalid('firstname')">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p>{{getErrorMessage('firstname')}}</p>
                     </div>
                 </div>
-                <div class="signup__container__item--validation" *ngIf="isFieldInvalid('email') || emailExists">
-                    <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                    <p>{{getErrorMessage('email')}}</p>
-                    <p *ngIf="emailExists">El correo electrónico ya está registrado.</p>
-                </div>
-            </div>
-
-            <div class="signup__container__item">
-                <div class="signup__container__item__group">
+                <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
                     <input
-                        type="password"
+                        type="text"
                         autocomplete="off"
-                        id="password"
+                        id="lastname"
                         placeholder=""
-                        name="password"
-                        formControlName="password"
+                        name="lastname"
+                        formControlName="lastname"
                         class="signup__container__item--input"
-                        [ngClass]="{ 'is-valid': isFieldValid('password'), 'is-invalid': isFieldInvalid('password') }"
-                        [type]="show ? 'text' : 'password'" 
+                        [ngClass]="{ 'is-valid': isFieldValid('lastname'), 'is-invalid': isFieldInvalid('lastname') }"
                         required
                     >
-                    <label for="password" class="signup__container__item--label">Contraseña</label>
-                    <a class="signin__container__item--eye" (click)="toggleShow()">
-                        <fa-icon [icon]="faEye" [hidden]="!show"></fa-icon>
-                        <fa-icon [icon]="faEyeSlash" [hidden]="show"></fa-icon>
-                    </a>
+                    <label for="lastname" class="signup__container__item--label">Apellido</label>
+                    <div class="signup__container__item--validation" *ngIf="isFieldInvalid('lastname')">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p>{{getErrorMessage('lastname')}}</p>
+                    </div>
                 </div>
-                <div class="signup__container__item--validation" *ngIf="isFieldInvalid('password')">
-                    <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                    <p>{{getErrorMessage('password')}}</p>
+            </div>
+            <div class="row w-100">
+                <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
+                    <div class="signup__container__item__group">
+                        <input
+                            type="text"
+                            autocomplete="off"
+                            id="email"
+                            placeholder=""
+                            name="email"
+                            formControlName="email"
+                            class="signup__container__item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('email'), 'is-invalid': isFieldInvalid('email') || emailExists }"
+                            required
+                        >
+                        <label for="username" class="signup__container__item--label">Correo electrónico</label>
+                        <div class="spinner-border" *ngIf="loaderForEmailExists" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                    <div class="signup__container__item--validation" *ngIf="isFieldInvalid('email') || emailExists">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p>{{getErrorMessage('email')}}</p>
+                        <p *ngIf="emailExists">El correo electrónico ya está registrado.</p>
+                    </div>
+                </div>
+    
+                <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
+                    <div class="signup__container__item__group">
+                        <input
+                            type="password"
+                            autocomplete="off"
+                            id="password"
+                            placeholder=""
+                            name="password"
+                            formControlName="password"
+                            class="signup__container__item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('password'), 'is-invalid': isFieldInvalid('password') }"
+                            [type]="show ? 'text' : 'password'" 
+                            required
+                        >
+                        <label for="password" class="signup__container__item--label">Contraseña</label>
+                        <a class="signin__container__item--eye" (click)="toggleShow()">
+                            <fa-icon [icon]="faEye" [hidden]="!show"></fa-icon>
+                            <fa-icon [icon]="faEyeSlash" [hidden]="show"></fa-icon>
+                        </a>
+                    </div>
+                    <div class="signup__container__item--validation" *ngIf="isFieldInvalid('password')">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p>{{getErrorMessage('password')}}</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="signup__container__item">
-                <input
-                    type="text"
-                    autocomplete="off"
-                    id="phone"
-                    placeholder=""
-                    name="phone"
-                    formControlName="phone"
-                    class="signup__container__item--input"
-                    [ngClass]="{ 'is-valid': isFieldValid('phone'), 'is-invalid': isFieldInvalid('phone') }"
-                    required
-                >
-                <label for="phone" class="signup__container__item--label">Celular de contacto</label>
-                <div class="signup__container__item--validation" *ngIf="isFieldInvalid('phone')">
-                    <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                    <p>{{getErrorMessage('phone')}}</p>
-                </div>
-            </div>
-
-            <div class="signup__container__item">
-                <div class="input-container">
+            <div class="row w-100">
+                <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
                     <input
-                    type="text"
-                    autocomplete="off"
-                    id="address"
-                    placeholder=""
-                    name="address"
-                    formControlName="address"
-                    class="signup__container__item--input"
-                    [ngClass]="{ 'is-valid': isFieldValid('address'), 'is-invalid': isFieldInvalid('address') }"
-                    required
+                        type="text"
+                        autocomplete="off"
+                        id="phone"
+                        placeholder=""
+                        name="phone"
+                        formControlName="phone"
+                        class="signup__container__item--input"
+                        [ngClass]="{ 'is-valid': isFieldValid('phone'), 'is-invalid': isFieldInvalid('phone') }"
+                        required
                     >
-                    <label for="address" class="signup__container__item--label">Dirección</label>
-                    <ul *ngIf="addressSuggestions.length > 0" class="address-suggestions">
-                    <li *ngFor="let suggestion of addressSuggestions" (click)="selectAddressSuggestion(suggestion)">
-                        {{ suggestion }}
-                    </li>
-                    </ul>
+                    <label for="phone" class="signup__container__item--label">Celular de contacto</label>
+                    <div class="signup__container__item--validation" *ngIf="isFieldInvalid('phone')">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p>{{getErrorMessage('phone')}}</p>
+                    </div>
                 </div>
-                <div class="signup__container__item--validation" *ngIf="isFieldInvalid('address')">
-                    <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                    <p>{{getErrorMessage('address')}}</p>
+    
+                <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
+                    <div class="input-container">
+                        <input
+                        type="text"
+                        autocomplete="off"
+                        id="address"
+                        placeholder=""
+                        name="address"
+                        formControlName="address"
+                        class="signup__container__item--input"
+                        [ngClass]="{ 'is-valid': isFieldValid('address'), 'is-invalid': isFieldInvalid('address') }"
+                        required
+                        >
+                        <label for="address" class="signup__container__item--label">Dirección</label>
+                        <ul *ngIf="addressSuggestions.length > 0" class="address-suggestions">
+                        <li *ngFor="let suggestion of addressSuggestions" (click)="selectAddressSuggestion(suggestion)">
+                            {{ suggestion }}
+                        </li>
+                        </ul>
+                    </div>
+                    <div class="signup__container__item--validation" *ngIf="isFieldInvalid('address')">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                        <p>{{getErrorMessage('address')}}</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="signup__container__item">
+            <div class="signup__container__item w-100">
                 <input
                     type="date"
                     id="birthdate"
@@ -160,10 +165,11 @@
                 <fa-icon [icon]="faExclamationCircle"></fa-icon>
                 <p>{{errorMessage}}</p>
             </div>
-            <div class="signin__container__item">
-                <button class="signup__container__item--button" [disabled]="submitting || signupForm.invalid">
-                    <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+            <div class="signup__container__item--button">
+                <button [disabled]="submitting || signupForm.invalid">
                     {{btnValue}}
+                    <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                    <fa-icon [icon]="faChevronRight" *ngIf="!submitting"></fa-icon>
                 </button>
             </div>
         </div>
