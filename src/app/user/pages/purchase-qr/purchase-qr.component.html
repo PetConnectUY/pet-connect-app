@@ -1,37 +1,9 @@
 <app-loader *ngIf="showLoader"></app-loader>
-<app-progress-bar *ngIf="!showLoader" [currentStep]="2"></app-progress-bar>
-<section class="store" *ngIf="!showLoader && !unknowError">
+<section class="store" *ngIf="!showLoader">
+    <picture>
+        <img src="" alt="">
+    </picture>
     <div class="store__container">
-        <h2 class="store__container--title" *ngIf="this.user">
-            <fa-icon [icon]="faCircleCheck" animation="bounce" style="--fa-animation-iteration-count: 1;"></fa-icon>
-            Bien <span>{{user.firstname | titlecase}}</span>, ya has creado el perfíl de tu mascota
-        </h2>
-        <p class="store__container--info">
-            <fa-icon [icon]="faExclamationTriangle"></fa-icon>
-            Aquí podrás seleccionar el plan que desees, recuerda que todo el tiempo estarás protegido con tu compra.
-        </p>
-        <div class="store__container__items">
-            <div class="store__container__items__item" *ngFor="let product of products">
-                <picture>
-                    <img src="{{product.image}}" alt="{{product.name}}">
-                </picture>
-                <div class="store__container__items__item__box">
-                    <h3 class="store__container__items__item__box--price">{{product.price}}</h3>
-                    <p class="store__container__items__item__box--title">{{product.name | titlecase}}</p>
-                    <p class="store__container__items__item__box--description" [innerHTML]="product.description | htmlToSafeHtml">
-                    </p>
-                    <button class="store__container__items__item__box--button" (click)="purchaseProduct(product)" [disabled]="loading">
-                        <fa-icon *ngIf="loading" [icon]="faSpinner" [spin]="true"></fa-icon>
-                        {{btnValue}}
-                    </button>
-                </div>
-            </div>
-        </div>
+
     </div>
 </section>
-
-<div class="store__container--error" *ngIf="unknowError">
-    <h1>
-        <fa-icon [icon]="faExclamationTriangle"></fa-icon> {{errorMessage}}
-    </h1>
-</div>

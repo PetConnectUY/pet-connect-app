@@ -1,5 +1,3 @@
-import { Pet } from "./pet.interface";
-
 export interface PetImage {
     id: number;
     name: string;

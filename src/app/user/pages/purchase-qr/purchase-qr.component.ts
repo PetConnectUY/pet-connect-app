@@ -17,7 +17,7 @@ export class PurchaseQrComponent implements OnInit {
   faQrcode = faQrcode;
   faSpinner = faSpinner;
 
-  showLoader = true;
+  showLoader!:boolean;
   unknowError: boolean = false;
   errorMessage!: string;
   loading: boolean = false;
@@ -29,40 +29,11 @@ export class PurchaseQrComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private productService: ProductService,
   ) {
     this.user = this.authService.getUser();
   }
 
-  ngOnInit(): void {
-    this.showLoader = true;
-    this.productService.get().subscribe({
-      next: (res: Product[]) => {
-        this.products = res;
-        this.showLoader = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.showLoader = false;
-        this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al obtener la lista de productos.';
-      }
-    });
-  }
+  ngOnInit(): void {}
 
-  purchaseProduct(product: Product): void {
-    this.loading = true;
-    this.productService.createPaymentPreference(product).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        window.location.href = res.init_point;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.unknowError = true;
-        this.loading = false;
-        this.errorMessage = 'Ocurrió un error al obtener el enlace de pago.';
-        this.loading = false;
-        
-      }
-    })
-  }
+  
 }
