@@ -1,0 +1,136 @@
+$background-color: var(--background-color);
+.page-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
+    .content {
+        flex: 1;
+        padding: 20px;
+        margin-left: 200px;
+        .dashboard {
+            margin-bottom: 3.5rem;
+            &__header {
+                &--title {
+                    width: max-content;
+                    font-family: var(--primary-font);
+                    color: var(--text-color);
+                    font-size: 3rem;
+                    border-bottom: 3px solid var(--primary-color);
+                    fa-icon {
+                        color: var(--primary-color);
+                    }
+                    @media (max-width: 768px) {
+                        font-size: 2rem;
+                        @media (max-width: 360px) {
+                            font-size: 1.5rem;
+                        }
+                    }
+                }
+            }
+            &__body {
+                margin: 2rem;
+                &__header {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    flex-wrap: wrap;
+                    gap: 2rem;
+                    &__container {
+                        width: 500px;
+                        background-color: var(--primary-color);
+                        color: var(--background-color);
+                        border-radius: 2rem;
+                        padding: 2rem;
+                        cursor: pointer;
+                        transition: background-color .3s ease;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        &:hover {
+                            background-color: darken($color: #F9B348, $amount: 10);
+                        }
+                        &--box {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: space-around;
+                            h3 {
+                                font-size: 2rem;
+                                font-weight: 100;
+                            }
+                            span {
+                                font-size: 2rem;
+                                font-family: var(--primary-font);
+                            }
+                        }
+                    }
+                }
+                &__container {
+                    margin: 2rem 0;
+                    &__box {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                        gap: 2rem;
+                        &--item {
+                            picture {
+                                width: 100%;
+                                img {
+                                    max-width: 640px;
+                                    width: 100%;
+                                    border-radius: 2rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        @media (max-width: 768px) {
+            order: 1;
+            margin: 0;
+            .dashboard {
+                &__body {
+                    &__header {
+                        &__container {
+                            width: 100%;
+                            padding: 1rem;
+                            border-radius: 1rem;
+                            &--box {
+                                h3 {
+                                    font-size: 1.3rem;
+                                }
+                                span {
+                                    font-size: 1.3rem;
+                                }
+                            }
+                        }
+                    }
+                    &__container {
+                        margin: 2rem 0;
+                        &__box {
+                            flex-wrap: wrap;
+                            &--item {
+                                picture {
+                                    img {
+                                        width: 100%;
+                                        border-radius: 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

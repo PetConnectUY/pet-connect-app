@@ -1,1 +1,35 @@
-<p>sidebar works!</p>
+<div class="sidebar">
+    <div class="sidebar__logo">
+        <a routerLink="/dashboard">
+            <img src="/assets/images/pet-connect-logo.png" alt="pet-connect-logo">
+        </a>
+    </div>
+    <div class="sidebar__icons">
+        <ul>
+            <li>
+                <a routerLink="/dashboard" class="sidebar__icon" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <fa-icon [icon]="faHome"></fa-icon> <span class="d-md-inline d-sm-none">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a routerLink="pet-profile" class="sidebar__icon">
+                    <fa-icon [icon]="faPaw"></fa-icon> <span class="d-md-inline d-sm-none">Mis peludos</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar__icon">
+                    <fa-icon [icon]="faUser"></fa-icon> <span class="d-md-inline d-sm-none">Mi perfil</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar__footer">
+        <ul>
+            <li>
+                <a href="#" class="sidebar__icon">
+                    <fa-icon [icon]="faSignOut"></fa-icon> <span class="d-md-inline d-sm-none">Cerrar sesión</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

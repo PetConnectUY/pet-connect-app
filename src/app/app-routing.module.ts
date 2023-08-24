@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { ValidateTokenGuard } from './protected/shared/guards/ValidateToken.guard';
 
 const routes: Routes = [
   {
@@ -10,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'app',
-    component: WelcomeComponent,
+    component: WelcomeComponent
   },
   {
     path: 'auth',
@@ -22,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./protected/dashboard/dashboard.module').then(m => m.DashboardModule)
+    loadChildren: () => import('./protected/dashboard/dashboard.module').then(m => m.DashboardModule),
   }
 ];
 

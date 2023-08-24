@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { environment } from 'src/environments/environment.development';
+import { Statistics } from '../interfaces/statistic.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class UserService {
   register(formData: FormData):Observable<User> {
     const url = `${this.baseUrl}users`;
     return this.http.post<User>(url, formData);
+  }
+
+  getStatistics(): Observable<Statistics> {
+    return this.http.get<Statistics>(`${this.baseUrl}users/statistics`);
   }
 }

@@ -65,10 +65,17 @@ export class AuthService {
 
   tokenExpired() {
     const token = this.getToken();
-    const payLoad = atob(token!.split('.')[1]);
-    const parsedPayLoad = JSON.parse(payLoad);
 
-    return parsedPayLoad.exp > Date.now() / 1000;
+    if (!token) {
+      return true;
+    }
+
+    const payLoad = token.split('.')[1];
+    const parsedPayLoad = JSON.parse(atob(payLoad));
+
+    const expirationTime = parsedPayLoad.exp * 1000;
+
+    return Date.now() >= expirationTime;
   }
 
   refreshToken(): Observable<boolean> {
