@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'my-pets',
-    loadChildren: () => import('./pet-profile/pet-profile.module').then(m => m.PetProfileModule),
+    loadChildren: () => import('./my-pets/pet-profile.module').then(m => m.PetProfileModule),
   }
 ];
 
