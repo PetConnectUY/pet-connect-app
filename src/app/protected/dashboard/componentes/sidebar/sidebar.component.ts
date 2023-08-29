@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faHome, faPaw, faSignOut, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faGears, faHome, faPaw, faSignOut, faUser } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,4 +11,5 @@ export class SidebarComponent {
   faPaw = faPaw;
   faUser = faUser;
   faSignOut = faSignOut;
+  faGears = faGears;
 }

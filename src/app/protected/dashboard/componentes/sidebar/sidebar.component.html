@@ -12,13 +12,18 @@
                 </a>
             </li>
             <li>
-                <a routerLink="pet-profile" class="sidebar__icon">
+                <a routerLink="/dashboard/my-pets" class="sidebar__icon" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                     <fa-icon [icon]="faPaw"></fa-icon> <span class="d-md-inline d-sm-none">Mis peludos</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="sidebar__icon">
                     <fa-icon [icon]="faUser"></fa-icon> <span class="d-md-inline d-sm-none">Mi perfil</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar__icon">
+                    <fa-icon [icon]="faGears"></fa-icon> <span class="d-md-inline d-sm-none">Ajustes</span>
                 </a>
             </li>
         </ul>

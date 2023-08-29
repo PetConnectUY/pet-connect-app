@@ -10,7 +10,7 @@ const routes: Routes = [
     canActivate: [ValidateTokenGuard]
   },
   {
-    path: 'pet-profile',
+    path: 'my-pets',
     loadChildren: () => import('./pet-profile/pet-profile.module').then(m => m.PetProfileModule),
   }
 ];

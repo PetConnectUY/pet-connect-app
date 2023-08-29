@@ -18,6 +18,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     DashboardRoutingModule,
     FontAwesomeModule,
     SharedModule,
-  ]
+  ],
+  exports: [
+    SidebarComponent,
+  ],
 })
 export class DashboardModule { }

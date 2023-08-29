@@ -1,5 +1,6 @@
 import { User } from "src/app/shared/interfaces/user.interface";
 import { PetImage } from "./pet.image.interface";
+import { PetToken } from "./pet.token.interface";
 
 export interface Pet {
     id: number;
@@ -8,6 +9,7 @@ export interface Pet {
     race: string | null;
     gender: string;
     pet_information: string;
-    images: PetImage;
+    images: PetImage[];
+    pet_token: PetToken;
     user: User;
 }

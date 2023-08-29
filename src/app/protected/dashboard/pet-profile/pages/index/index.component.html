@@ -1,1 +1,37 @@
-<p>index works!</p>
+<section class="page-container">
+    <app-sidebar></app-sidebar>
+    <div class="content">
+      <div class="pets">
+        <app-loader *ngIf="!pets"></app-loader>
+        <div class="pets__container" *ngIf="pets">
+          <div class="pets__item" *ngFor="let pet of pets.data">
+            <div class="pet__dots">
+                <p class="pet__name">{{ pet.name }}</p>
+                <div class="dropdown">
+                    <button type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#"><fa-icon [icon]="faPen" class="icon"></fa-icon> Editar</a></li>
+                      <li><a class="dropdown-item" href="#"><fa-icon [icon]="faTrash" class="icon"></fa-icon> Eliminar</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pet__images">
+              <img *ngFor="let image of pet.images" src="{{ image.url }}" alt="pet-image">
+            </div>
+            <div class="pet__actions">
+              <button class="action-button" *ngIf="!pet.pet_token">
+                <fa-icon [icon]="faQrcode"></fa-icon>
+                Obtén tu código
+              </button>
+              <div class="qr-code" *ngIf="pet.pet_token">
+                <p>Mi código QR</p>
+                <img src="assets/images/qrcode.webp" alt="qr-code">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>  
