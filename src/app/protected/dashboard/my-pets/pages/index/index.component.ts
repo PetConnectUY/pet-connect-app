@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faEllipsisVertical, faEyeSlash, faGears, faPen, faQrcode, faTrash, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faEllipsisVertical, faEyeSlash, faGears, faPen, faQrcode, faTrash, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PetService } from '../../services/pet.service';
@@ -10,6 +10,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Pet } from '../../interfaces/pet.interface';
 import { PetImage } from '../../interfaces/pet.image.interface';
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
+import { concatMap, finalize } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-index',
@@ -24,6 +26,7 @@ export class IndexComponent implements OnInit {
   faTrash = faTrash;
   faEllipsisVertical = faEllipsisVertical;
   faTriangleExclamation = faTriangleExclamation;
+  faCirclePlus = faCirclePlus;
 
   user: User|null;
   pets!: PetPagination;
@@ -48,6 +51,25 @@ export class IndexComponent implements OnInit {
         this.errorMessage = 'Ocurrió un error al obtener tus mascotas.'
       }
     })
+  }
+
+  createPet() {
+    const modalRef = this.modalService.open(ModalFormComponent, {
+      size: 'lg',
+      centered: true,
+    });
+  
+    modalRef.componentInstance.emitAtCreate.subscribe(({ pet, image }: { pet: Pet, image: PetImage }) => {
+      if (!this.pets.data) {
+        this.pets.data = [];
+      }
+  
+      if (image) {
+        pet.images = [image];
+      }
+  
+      this.pets.data.push(pet);
+    });
   }
 
   editPet(pet: Pet) {
@@ -79,7 +101,7 @@ export class IndexComponent implements OnInit {
       centered: true,
       size: 'sm',
     });
-    modalRef.componentInstance.title = 'Confirmar Eliminación';
+    modalRef.componentInstance.title = 'Confirmar eliminación';
     modalRef.componentInstance.message = `¿Estás seguro de que deseas eliminar a ${pet.name}?`;
   
     modalRef.componentInstance.deleteEvent.subscribe((result: boolean) => {
@@ -100,20 +122,38 @@ export class IndexComponent implements OnInit {
   performDelete(pet: Pet, modalRef: NgbModalRef) {
     modalRef.componentInstance.loading = true;
   
-    this.petService.deletePet(pet.id).subscribe(
-      () => {
-        const deletedPetIndex = this.pets.data.findIndex((item) => item.id === pet.id);
-        if (deletedPetIndex !== -1) {
-          this.pets.data.splice(deletedPetIndex, 1);
+    const observables = [];
+  
+    if (pet.pet_token) {
+      observables.push(this.petService.deleteQrToken(pet.pet_token.id));
+    }
+  
+    if (pet.images.length > 0) {
+      observables.push(this.petService.deletePetImage(pet.images[0].id));
+    }
+  
+    observables.push(this.petService.deletePet(pet.id));
+  
+    forkJoin(observables)
+      .pipe(
+        finalize(() => {
+          const deletedPetIndex = this.pets.data.findIndex((item) => item.id === pet.id);
+          if (deletedPetIndex !== -1) {
+            this.pets.data.splice(deletedPetIndex, 1);
+          }
+          modalRef.close();
+        })
+      )
+      .subscribe(
+        () => {
+          // Éxito en la eliminación de los elementos.
+        },
+        (error: HttpErrorResponse) => {
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al eliminar la mascota.';
+          modalRef.componentInstance.loading = false;
         }
-        modalRef.close();
-      },
-      (error: HttpErrorResponse) => {
-        this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al eliminar la mascota.';
-        modalRef.componentInstance.loading = false; // Restaurar el estado del botón
-      }
-    );
-  } 
+      );
+  }
   
 }

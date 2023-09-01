@@ -160,3 +160,24 @@
     opacity: 1;
     color: var(--text-color);
 }
+
+.form__container__content--item--label[for="birthdate"] {
+    font-family: var(--secondary-font);
+    width: max-content;
+    position: absolute;
+    pointer-events: none;
+    top: -15px;
+    font-size: 11px;
+    left: 14px;
+    transition: all 0.3s ease;
+}
+
+.birthdate-input:focus ~ .form__container__content--item--label[for="birthdate"],
+.birthdate-input:not(:focus):valid ~ .form__container__content--item--label[for="birthdate"] {
+    top: -15px;
+    bottom: 0px;
+    left: 0px;
+    font-size: 11px;
+    opacity: 1;
+    color: var(--text-color);
+}

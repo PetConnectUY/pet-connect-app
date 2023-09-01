@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.development';
 import { Pet } from '../interfaces/pet.interface';
 import { PetImage } from '../interfaces/pet.image.interface';
 import { PetPagination } from '../interfaces/pet.pagination.interface';
+import { PetToken } from '../interfaces/pet.token.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,15 @@ export class PetService {
   deletePet(id: number): Observable<Pet> {
     const url = `${this.baseUrl}pets/${id}`;
     return this.http.delete<Pet>(url);
+  }
+
+  deletePetImage(id: number): Observable<PetImage> {
+    const url = `${this.baseUrl}pets-images/${id}`;
+    return this.http.delete<PetImage>(url);
+  }
+
+  deleteQrToken(id: number): Observable<PetToken> {
+    const url = `${this.baseUrl}users-pets-tokens/${id}`;
+    return this.http.delete<PetToken>(url);
   }
 }

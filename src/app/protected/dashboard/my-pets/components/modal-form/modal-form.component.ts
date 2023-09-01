@@ -20,6 +20,7 @@ export class ModalFormComponent implements OnInit {
   @Input() petToEdit!: Pet;
   @Output() emitPet: EventEmitter<Pet> = new EventEmitter();
   @Output() emitPetImage: EventEmitter<PetImage> = new EventEmitter();
+  @Output() emitAtCreate: EventEmitter<{pet: Pet, image: PetImage}> = new EventEmitter();
 
   petForm!: FormGroup;
 
@@ -61,6 +62,17 @@ export class ModalFormComponent implements OnInit {
       if (this.petToEdit.images.length > 0) {
         this.selectedImage = this.petToEdit.images[0].url;
       }
+    } else {
+      this.modalTitle = 'Crear nueva mascota';
+      this.btnValue = 'Crear';
+      this.petForm = this.fb.group({
+        name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
+        birth_date: ['', []],
+        race: ['', [Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
+        gender: ['', [Validators.required, this.genderValidation]],
+        pet_information: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ\s\d.,!?-]*$/)]],
+        image: [null]
+      });
     }
   }
 
@@ -184,6 +196,37 @@ export class ModalFormComponent implements OnInit {
             this.errorMessage = 'Ocurrió un error al actualizar tu mascota.';
           }
         })
+      } else {
+        this.petService.createPet(formData).subscribe({
+          next: (res: Pet) => {
+            this.emitPet.emit(res);
+            const imageFormData = new FormData();
+            imageFormData.append('image', this.petForm.get('image')?.value);
+            if(this.selectedImage) {
+              imageFormData.append('pet_id', res.id.toString());
+              imageFormData.append('cover_image', '1');
+              this.petService.createImage(imageFormData).subscribe({
+                next: (image: PetImage) => {
+                  this.emitAtCreate.emit({ pet: res, image: image });
+                  this.unknowError = false;
+                  this.submitting = false;
+                  this.closeModal();
+                },
+                error: (error: HttpErrorResponse) => {
+                  this.btnValue = oldBtnValue;
+                  this.unknowError = true;
+                  this.submitting = false;
+                  this.errorMessage = 'Ocurrió un error al subir la nueva imagen.';
+                }
+              });
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            this.btnValue = oldBtnValue;
+            this.unknowError = true;
+            this.errorMessage = 'Ocurrió un error al crear tu mascota.';
+          }
+        });
       }
     }
   }

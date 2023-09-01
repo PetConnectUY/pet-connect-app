@@ -18,20 +18,24 @@ export class IndexComponent implements OnInit{
 
   totalPets!: number;
   totalTokens!: number;
+  counterLoader: boolean = true;
 
   constructor(
     private userService: UserService,
   ){}
 
   ngOnInit(): void {
+    this.counterLoader = true;
     this.userService.getStatistics().subscribe({
       next: (res) => {
         this.totalPets = res.total_pets;
         this.totalTokens = res.total_tokens;
+        this.counterLoader = false;
       },
       error: (error: HttpErrorResponse) => {
         this.totalPets = NaN;
         this.totalTokens = NaN;
+        this.counterLoader = true;
       }
     })
   }

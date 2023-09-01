@@ -6,18 +6,18 @@
                 <h2 class="dashboard__header--title"><fa-icon [icon]="faPaw"></fa-icon> Zona de peludos</h2>
                 <div class="dashboard__body">
                     <div class="dashboard__body__header">
-                        <div class="dashboard__body__header__container" routerLink="#">
+                        <div class="dashboard__body__header__container" routerLink="my-pets">
                             <div class="dashboard__body__header__container--box">
                                 <h3><fa-icon [icon]="faDog" style="color: var(--text-color)"></fa-icon> Mis peludos</h3>
-                                <span *ngIf="this.totalPets">{{this.totalPets}}</span>
+                                <span *ngIf="!this.counterLoader">{{this.totalPets}}</span>
                                 <fa-icon [icon]="faCircleNotch" animation="spin" size="2x" *ngIf="!this.totalPets"></fa-icon>
                             </div>
                         </div>
                         <div class="dashboard__body__header__container">
                             <div class="dashboard__body__header__container--box">
                                 <h3><fa-icon [icon]="faQrcode" style="color: var(--text-color)"></fa-icon> Mis códigos</h3>
-                                <span *ngIf="this.totalTokens">{{this.totalTokens}}</span>
-                                <fa-icon [icon]="faCircleNotch" animation="spin" size="2x" *ngIf="!this.totalTokens"></fa-icon>
+                                <span *ngIf="!this.counterLoader">{{this.totalTokens}}</span>
+                                <fa-icon [icon]="faCircleNotch" animation="spin" size="2x" *ngIf="this.counterLoader"></fa-icon>
                             </div>
                         </div>
                     </div>
