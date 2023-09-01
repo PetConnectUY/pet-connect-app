@@ -12,7 +12,6 @@ import { ModalFormComponent } from './components/modal-form/modal-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 
-
 @NgModule({
   declarations: [
     IndexComponent,

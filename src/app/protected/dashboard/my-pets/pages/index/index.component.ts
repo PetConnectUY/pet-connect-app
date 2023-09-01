@@ -41,7 +41,7 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
     this.petService.getPets().subscribe({
       next: (res: PetPagination) => {
-        this.pets = res;        
+        this.pets = res;
       },
       error: (error: HttpErrorResponse) => {
         this.unknowError = true;

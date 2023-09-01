@@ -38,6 +38,7 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     NavbarComponent,
+    
   ],
   bootstrap: [AppComponent]
 })
