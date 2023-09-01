@@ -1,0 +1,131 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{ this.modalTitle }}</h5>
+    <button type="button" class="btn-close" (click)="closeModal()"></button>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="petForm" (submit)="save()">
+        <div class="form">
+            <div class="form__container">
+                <div class="form__container--image">
+                    <label for="profilePicture" class="form__container--image--label">
+                        <img
+                          src="assets/images/pet-avatar.webp"
+                          alt="pet-avatar"
+                          class="form__container--image--image"
+                          *ngIf="!selectedImage"
+                        />
+                        <input
+                          type="file"
+                          id="profilePicture"
+                          accept="image/*"
+                          (change)="onImageSelected($event)"
+                          style="display: none;"
+                        />
+                        <img
+                          [src]="selectedImage"
+                          alt="pet-avatar"
+                          class="form__container--image--image"
+                          *ngIf="selectedImage"
+                        />
+                        <div class="form__container--image--overlay" *ngIf="!selectedImage">
+                          <p>Haz clic para subir una imagen</p>
+                        </div>
+                    </label>
+                </div>
+                <div class="form__container__content">
+                    <div class="form__container__content--item">
+                        <input 
+                            type="text"
+                            id="name"
+                            name="name"
+                            formControlName="name"
+                            class="form__container__content--item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('name'), 'is-invalid': isFieldInvalid('name'), 'has-content': hasContent('name') }"
+                            required
+                        >
+                        <label for="name" class="form__container__content--item--label">Nombre de tu mascota</label>
+                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('name')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('name')}}</p>
+                        </div>
+                    </div>
+                    <div class="form__container__content--item">
+                        <input 
+                            type="date"
+                            id="birthdate"
+                            name="birthdate"
+                            formControlName="birth_date"
+                            class="form__container__content--item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date'), 'has-content': hasContent('birth_date') }"
+                            required
+                        >
+                        <label for="birthdate" class="form__container__content--item--label">Cumpleaños de tu mascota</label>
+                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('birth_date')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('birth_date')}}</p>
+                        </div>
+                    </div>
+                    <div class="form__container__content--item">
+                        <input 
+                            type="text"
+                            id="race"
+                            name="race"
+                            formControlName="race"
+                            class="form__container__content--item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('race'), 'is-invalid': isFieldInvalid('race'), 'has-content': hasContent('race') }"
+                        >
+                        <label for="race" class="form__container__content--item--label">Raza <span>(opcional)</span></label>
+                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('race')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('race')}}</p>
+                        </div>
+                    </div>
+                    <div class="form__container__content--item">
+                        <select 
+                            name="gender" 
+                            id="gender"
+                            class="form__container__content--item--input"
+                            formControlName="gender"
+                            [ngClass]="{ 'is-valid': isFieldValid('gender'), 'is-invalid': isFieldInvalid('gender'), 'has-content': hasContent('gender') }"
+                            required
+                        >
+                            <option value=""></option>
+                            <option value="male">Macho</option>
+                            <option value="female">Hembra</option>
+                        </select>
+                        <label for="gender" class="form__container__content--item--label">Sexo</label>
+                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('gender')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('gender')}}</p>
+                        </div>
+                    </div>
+                    <div class="form__container__content--item">
+                        <textarea 
+                            name="pet_information" 
+                            id="pet_information" 
+                            formControlName="pet_information"
+                            class="form__container__content--item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('pet_information'), 'is-invalid': isFieldInvalid('pet_information'), 'has-content': hasContent('pet_information') }"
+                        ></textarea>
+                        <label for="pet_information" class="form__container__content--item--label">Características</label>
+                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('pet_information')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p>{{getErrorMessage('pet_information')}}</p>
+                        </div>
+                    </div>
+                    <div *ngIf="unknowError" class="form__container__content--item--error">
+                        <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                        <p>{{errorMessage}}</p>
+                    </div>
+                    <div class="form__container__content--item--button">
+                        <button [disabled]="submitting || petForm.invalid">
+                            {{btnValue}}
+                            <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

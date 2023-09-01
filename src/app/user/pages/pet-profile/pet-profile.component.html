@@ -23,7 +23,7 @@
             <div class="profile__container__picture--overlay" *ngIf="!selectedImage">
               <p>Haz clic para subir una imagen</p>
             </div>
-          </label>
+        </label>
         <div class="profile__container__items">
             <app-progress-bar [currentStep]="1"></app-progress-bar>
             <form [formGroup]="petForm" (ngSubmit)="createPet()">
@@ -48,12 +48,12 @@
                 <div class="row justify-content-around ">
                     <div class="col-sm-12 col-md-6 col-lg-6 profile__container__items__item">
                         <input
-                        type="date"
-                        id="birthdate"
-                        name="birthdate"
-                        formControlName="birth_date"
-                        class="profile__container__items__item--input"
-                        [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
+                            type="date"
+                            id="birthdate"
+                            name="birthdate"
+                            formControlName="birth_date"
+                            class="profile__container__items__item--input"
+                            [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
                         >
                         <label for="birthdate" class="profile__container__items__item--label">Fecha de nacimiento <span>(Opcional)</span></label>
                         <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('birth_date')">

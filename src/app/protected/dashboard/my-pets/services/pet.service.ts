@@ -43,4 +43,19 @@ export class PetService {
     const url = `${this.baseUrl}pets-images`;
     return this.http.post<PetImage>(url, formData);
   }
+
+  updatePet(formData: FormData, id: number): Observable<Pet> {
+    const url = `${this.baseUrl}pets/${id}`;
+    return this.http.post<Pet>(url, formData);
+  }
+
+  updateImage(formData: FormData, id: number): Observable<PetImage> {
+    const url = `${this.baseUrl}pets-images/${id}`;
+    return this.http.post<PetImage>(url, formData);
+  }
+
+  deletePet(id: number): Observable<Pet> {
+    const url = `${this.baseUrl}pets/${id}`;
+    return this.http.delete<Pet>(url);
+  }
 }

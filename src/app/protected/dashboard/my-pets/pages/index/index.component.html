@@ -3,6 +3,11 @@
     <div class="content">
       <div class="pets">
         <app-loader *ngIf="!pets"></app-loader>
+        <div *ngIf="!pets && this.unknowError">
+          <h2>
+            <fa-icon [icon]="faTriangleExclamation"></fa-icon> {{this.errorMessage}}
+          </h2>
+        </div>
         <div class="pets__container" *ngIf="pets">
           <div class="pets__item" *ngFor="let pet of pets.data">
             <div class="pet__dots">
@@ -12,13 +17,26 @@
                         <fa-icon [icon]="faEllipsisVertical"></fa-icon>
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#"><fa-icon [icon]="faPen" class="icon"></fa-icon> Editar</a></li>
-                      <li><a class="dropdown-item" href="#"><fa-icon [icon]="faTrash" class="icon"></fa-icon> Eliminar</a></li>
+                      <li>
+                        <a class="dropdown-item" type="button" (click)="editPet(pet)">
+                          <fa-icon [icon]="faPen" class="icon"></fa-icon> Editar
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" type="button" (click)="deletePet(pet)">
+                          <fa-icon [icon]="faTrash" class="icon"></fa-icon> Eliminar
+                        </a>
+                      </li>
                     </ul>
                 </div>
             </div>
             <div class="pet__images">
-              <img *ngFor="let image of pet.images" src="{{ image.url }}" alt="pet-image">
+              <picture *ngIf="pet.images.length > 0">
+                <img *ngFor="let image of pet.images" src="{{ image.url }}" alt="pet-image">
+              </picture>
+              <picture *ngIf="pet.images.length <= 0">
+                <img src="assets/images/pet-avatar.webp" alt="pet-avatar">
+              </picture>
             </div>
             <div class="pet__actions">
               <button class="action-button" *ngIf="!pet.pet_token">
@@ -34,4 +52,4 @@
         </div>
       </div>
     </div>
-</section>  
+</section>
