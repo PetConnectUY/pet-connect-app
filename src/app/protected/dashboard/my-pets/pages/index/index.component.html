@@ -45,10 +45,10 @@
                 </picture>
               </div>
               <div class="pet__actions">
-                <button class="action-button" *ngIf="pet && !pet.pet_token">
+                <a class="action-button" *ngIf="pet && !pet.pet_token" [routerLink]="['pet', pet.id, 'get-token']">
                   <fa-icon [icon]="faQrcode"></fa-icon>
                   Obtén tu chapita
-                </button>
+                </a>
                 <div class="qr-code" *ngIf="pet && pet.pet_token">
                   <p>Mi código QR</p>
                   <img src="{{ pet.pet_token.qr_code }}" alt="qr-code">

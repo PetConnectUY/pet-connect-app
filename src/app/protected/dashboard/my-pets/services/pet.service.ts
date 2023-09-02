@@ -35,6 +35,11 @@ export class PetService {
     }
   }
 
+  getPet(id: number): Observable<Pet> {
+    const url = `${this.baseUrl}pets/${id}`;
+    return this.http.get<Pet>(url);
+  }
+
   createPet(formData: FormData): Observable<Pet> {
     const url = `${this.baseUrl}pets`;
     return this.http.post<Pet>(url, formData);
