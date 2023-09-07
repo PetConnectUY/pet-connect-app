@@ -3,6 +3,9 @@ import { PetService } from '../../services/pet.service';
 import { Pet } from '../../interfaces/pet.interface';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/app/shared/interfaces/user.interface';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { faBell, faCircleArrowLeft, faCircleCheck, faCircleDollarToSlot, faCircleQuestion, faQrcode, faShieldDog, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-get-token',
@@ -10,8 +13,17 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./get-token.component.scss']
 })
 export class GetTokenComponent implements OnInit {
+  faCircleCheck = faCircleCheck;
+  faQrcode = faQrcode;
+  faBell = faBell;
+  faShieldDog = faShieldDog;
+  faShieldHalved = faShieldHalved;
+  faCircleDollarToSlot = faCircleDollarToSlot;
+  faCircleQuestion = faCircleQuestion;
+  faCircleArrowLeft = faCircleArrowLeft;
 
   pet!: Pet;
+  user: User | null;
 
   unknowError: boolean = false;
   errorMessage!: string;
@@ -19,7 +31,10 @@ export class GetTokenComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private petService: PetService,
-  ) {}
+    private authService: AuthService,
+  ) {
+    this.user = this.authService.getUser();
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -36,4 +51,6 @@ export class GetTokenComponent implements OnInit {
       });
     })
   }
+
+  
 }

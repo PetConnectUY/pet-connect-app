@@ -5,7 +5,11 @@
     <form [formGroup]="signupForm" (ngSubmit)="register()">
         <app-progress-bar [currentStep]="0"></app-progress-bar>
         <div class="signup__container container-fluid">
-            <h1 class="signup__container--title">Registrarse</h1>
+            <div class="signup__container__header">
+                <h1 class="signup__container__header--title">Registrarse</h1>
+                <a *ngIf="!this.token" [routerLink]="['/auth/signin']">Ya tienes una cuenta?</a>
+                <a *ngIf="this.token" [routerLink]="['/auth/signin']" [queryParams]="{token: this.token}">Ya tienes una cuenta?</a>
+            </div>
             <div class="row w-100">
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
                     <input

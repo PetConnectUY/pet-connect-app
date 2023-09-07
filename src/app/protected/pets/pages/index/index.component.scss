@@ -1,0 +1,14 @@
+.pets {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    picture {
+        width: 100%;
+        img {
+            max-width: 300px;
+            width: 100%;
+        }
+    }
+}

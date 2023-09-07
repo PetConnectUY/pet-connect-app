@@ -2,12 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { ValidateTokenGuard } from './protected/shared/guards/ValidateToken.guard';
+import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
+import { PurchaseComponent } from './pages/purchase/purchase.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'app',
     pathMatch: 'full'
+  },
+  {
+    path: 'frequent-questions',
+    component: FrequentQuestionsComponent
+  },
+  {
+    path: 'purchase',
+    component: PurchaseComponent,
   },
   {
     path: 'app',
@@ -24,7 +34,11 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () => import('./protected/dashboard/dashboard.module').then(m => m.DashboardModule),
-  }
+  },
+  {
+    path: 'pets',
+    loadChildren: () => import('./protected/pets/pets.module').then(m => m.PetsModule),
+  },
 ];
 
 @NgModule({

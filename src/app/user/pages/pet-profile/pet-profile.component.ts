@@ -1,13 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { PetImage } from 'src/app/protected/dashboard/my-pets/interfaces/pet.image.interface';
+import { catchError, map, of, switchMap, throwError } from 'rxjs';
 import { Pet } from 'src/app/protected/dashboard/my-pets/interfaces/pet.interface';
 import { PetService } from 'src/app/protected/dashboard/my-pets/services/pet.service';
+import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
+import { TokenService } from 'src/app/shared/services/token.service';
 
 @Component({
   selector: 'app-pet-profile',
@@ -31,13 +34,20 @@ export class PetProfileComponent {
   submitting: boolean = false;
   btnValue: string = 'Siguiente';
 
+  token: string | null;
+  petId!: number;
+
   constructor(
     private authService: AuthService,
     private formValidationService: FormValidationService,
     private petService: PetService,
     private fb: FormBuilder,
+    private tokenService: TokenService,
+    private qrActivateService: QRActivationService,
+    private router: Router,
   ){
     this.user = this.authService.getUser();
+    this.token = this.tokenService.getToken();
     this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
       birth_date: [''],
@@ -114,37 +124,59 @@ export class PetProfileComponent {
     formData.append('gender', gender);
     formData.append('pet_information', pet_information);
 
-    this.petService.createPet(formData).subscribe({
-      next: (res: Pet) => {
-        const petId = res.id.toString();
+    const petImage = this.petForm.get('image')?.value as File | null;
+    if (!petImage) {
+      this.submitting = false;
+      this.unknowError = true;
+      this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
+      return;
+    }
+
+    this.petService.createPet(formData).pipe(
+      switchMap((res: Pet) => {
+        this.petId = res.id;
         const imageFormData = new FormData();
-        imageFormData.append('pet_id', petId);
+        imageFormData.append('pet_id', this.petId.toString());
         imageFormData.append('image', this.petForm.get('image')?.value);
         imageFormData.append('cover_image', '1');
-        this.petService.createImage(imageFormData).subscribe({
-          next: (res: PetImage) => {
-            this.submitting = false;
-            this.unknowError = false;
-            console.log(res);
-            
-          },
-          error: (error: HttpErrorResponse) => {
-            this.submitting = false;
-            this.unknowError = true;
-            this.errorMessage = 'Ocurrió un error al subir la imagen de la mascota.';
-            this.btnValue = oldBtnValue;
-            
-          }
-        });
+        
+        // Realiza la solicitud para crear la imagen de la mascota
+        return this.petService.createImage(imageFormData).pipe(
+          catchError((error: HttpErrorResponse) => {
+            // Manejo de errores relacionados con la imagen
+            return throwError('Ocurrió un error al subir la imagen de la mascota.');
+          })
+        );
+      }),
+      switchMap(() => {
+        // Realiza la asignación de la mascota al código QR
+        if (this.token) {
+          return this.qrActivateService.setPetToToken(this.petId).pipe(
+            map(() => 'Mascota asignada al código QR con éxito')
+          );
+        } else {
+          return of('Mascota creada con éxito, pero no se asignó al código QR');
+        }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        // Manejo de errores relacionados con la asignación al código QR
+        return throwError('Ocurrió un error al asignar el código QR a la mascota.');
+      })
+    ).subscribe({
+      next: (message: string) => {
+        this.submitting = false;
+        this.unknowError = false;
+        if(this.token) {
+          this.router.navigate(['/pets/', this.token]);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       },
-      error: (error: HttpErrorResponse) => {
+      error: (error: string) => {
         this.submitting = false;
         this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al crear el perfíl de la mascota.';
-        this.btnValue = oldBtnValue;
-        console.log(error.error);
-        
+        this.errorMessage = error;
       }
-    })
+    });
   }
 }

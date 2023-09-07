@@ -11,14 +11,12 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
-import { GetTokenComponent } from './pages/get-token/get-token.component';
 
 @NgModule({
   declarations: [
     IndexComponent,
     ModalFormComponent,
     ConfirmModalComponent,
-    GetTokenComponent,
   ],
   imports: [
     CommonModule,

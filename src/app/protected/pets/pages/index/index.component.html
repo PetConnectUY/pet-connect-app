@@ -1,0 +1,15 @@
+<app-loader *ngIf="this.loader"></app-loader>
+<section class="pets" *ngIf="!this.loader">
+    <div *ngIf="this.tokenIsActived">
+        <div>
+            <a routerLink="#">
+                <picture>
+                    <img src="assets/images/pet-connect-logo.png" alt="pet-connect-logo">
+                </picture>
+            </a>
+        </div>
+    </div>
+    <div *ngIf="!this.tokenIsActived">
+        asdads
+    </div>
+</section>

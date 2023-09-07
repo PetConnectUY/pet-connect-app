@@ -4,13 +4,16 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { faExclamationCircle, faEye, faEyeSlash, faSpinner, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
-import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
 import { NominatimService } from 'src/app/shared/services/nominatim.service';
-import { Subject } from 'rxjs';
+import { Subject, of, throwError } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AuthResponse } from 'src/app/shared/interfaces/auth-response.interface';
+import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
+import { TokenService } from 'src/app/shared/services/token.service';
+import { Message } from '../../interfaces/message.interface';
 
 @Component({
   selector: 'app-signup',
@@ -40,6 +43,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   btnValue: string = 'Siguiente';
   private destroy$ = new Subject<void>();
 
+  token: string | null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -48,7 +52,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
-    private nominatimService: NominatimService
+    private nominatimService: NominatimService,
+    private tokenService: TokenService,
+    private qrActivationService: QRActivationService,
   ) {
     this.signupForm = this.fb.group({
       firstname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16), Validators.pattern("^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$")]],
@@ -59,6 +65,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       address: ['', [Validators.required]],
       birth_date: ['', [Validators.required]],
     });
+    this.token = this.tokenService.getToken();
   }
 
   ngOnInit(): void {
@@ -170,28 +177,59 @@ export class SignupComponent implements OnInit, AfterViewInit {
     formData.append('birth_date', birth_date);
 
     if(this.signupForm.valid) {
-      this.userService.register(formData).subscribe({
-        next: (res: User) => {
-          this.authService.login(email, password).subscribe({
-            next: (loginResult: AuthResponse) => {
-              this.unknowError = false;
-              this.submitting = false;
-              this.next.emit();
-            },
-            error: (error: HttpErrorResponse) => {
+      this.userService.register(formData).pipe(
+        switchMap((res: User) => {
+          // Registra al usuario y obtiene una respuesta (res)
+          return this.authService.login(email, password).pipe(
+            switchMap((loginResult: AuthResponse) => {
+              // Inicia sesión y obtiene un resultado de autenticación
+              if (this.token) {
+                return this.qrActivationService.setUserToToken().pipe(
+                  map((message: Message) => {
+                    // Asigna el token al código QR y maneja los mensajes
+                    if (message.message === 'Código QR ya existe y está activado por el usuario') {
+                      this.router.navigate(['/users/pet-profile/', this.token]);
+                    } else if (message.message === 'El código QR ya está en uso por otro usuario.') {
+                      this.tokenService.clearToken();
+                      this.token = null;
+                      this.next.emit();
+                    } else if (message.message === 'Se asignó el código QR con éxito') {
+                      this.next.emit();
+                    }
+                    this.unknowError = false;
+                    this.submitting = false;
+                  }),
+                  catchError((error: HttpErrorResponse) => {
+                    // Manejo de errores al asignar el código QR
+                    this.unknowError = true;
+                    this.submitting = false;
+                    this.errorMessage = 'Ocurrió un error al asignar el código QR a tu usuario.';
+                    return throwError(error);
+                  })
+                );
+              } else {
+                // Si no hay token, emite el evento next
+                this.next.emit();
+                return of(null);
+              }
+            }),
+            catchError((error: HttpErrorResponse) => {
+              // Manejo de errores al iniciar sesión
               this.unknowError = true;
               this.submitting = false;
               this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
-            }
-          })
-        },
-        error: (error: HttpErrorResponse) => {
+              return throwError(error);
+            })
+          );
+        }),
+        catchError((error: HttpErrorResponse) => {
+          // Manejo de errores al registrar al usuario
           this.submitting = false;
           this.unknowError = true;
-          this.btnValue = oldBtnValue;
           this.errorMessage = 'Ocurrió un error al registrar el usuario.';
-        }
-      });
+          return throwError(error);
+        })
+      ).subscribe();
     }
   }
 }

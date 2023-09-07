@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faUser, faPaw, faStore, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPaw, faGears } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-progress-bar',
@@ -13,8 +13,7 @@ export class ProgressBarComponent {
   steps: { icon: IconProp }[] = [
     { icon: faUser },
     { icon: faPaw },
-    { icon: faStore },
-    { icon: faQrcode }
+    { icon: faGears }
   ];
 
   getStepClasses(index: number): string {

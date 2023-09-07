@@ -1,10 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { faExclamationCircle, faSpinner, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
+import { faExclamationCircle, faSpinner, faEye, faEyeSlash, faQrcode, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { AlertModalComponent } from '../../components/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-signin',
@@ -16,6 +18,8 @@ export class SigninComponent implements OnInit, AfterViewInit {
   faSpinner = faSpinner;
   faEye = faEye;
   faEyeSlash = faEyeSlash;
+  faQrCode = faQrcode;
+  faTriangleExclamation = faTriangleExclamation;
 
   showLoader = true;
   user: User|null;
@@ -26,12 +30,15 @@ export class SigninComponent implements OnInit, AfterViewInit {
   btnValue: string = 'Ingresar';
   unknowError: boolean = false;
   invalidCredentials: boolean = false;
+  tokenIsActivated: string | undefined;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
+    private modalService: NgbModal,
   ) {
     this.user = this.authService.getUser();
     this.signinForm = this.fb.group({
@@ -40,7 +47,17 @@ export class SigninComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.tokenIsActivated = params['tokenIsActivated'];
+      if(this.tokenIsActivated === 'false') {
+        this.modalService.open(AlertModalComponent, {
+          size: 'sm',
+          centered: true,
+        });
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     this.showLoader = false;
@@ -60,8 +77,12 @@ export class SigninComponent implements OnInit, AfterViewInit {
           if(result.error) {
             this.invalidCredentials = true;
             this.endSubmittingForm(oldBtnValue);
-          } else {
-            this.router.navigateByUrl('/app');
+          } else {            
+            if(this.tokenIsActivated === 'false') {
+              this.router.navigate(['/users/pet-profile', {tokenIsActivated: false}]);
+            } else {
+              this.router.navigateByUrl('/app');
+            }
           }          
         }, error => {
           this.unknowError = true;

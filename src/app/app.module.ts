@@ -14,6 +14,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { AboutComponent } from './components/about/about.component';
 import { SharedModule } from './shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
+import { PurchaseComponent } from './pages/purchase/purchase.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { RouterModule } from '@angular/router';
     WelcomeComponent,
     HeaderComponent,
     AboutComponent,
+    FrequentQuestionsComponent,
+    PurchaseComponent,
   ],
   imports: [
     BrowserModule,
