@@ -167,7 +167,7 @@ export class PetProfileComponent {
         this.submitting = false;
         this.unknowError = false;
         if(this.token) {
-          this.router.navigate(['/pets/', this.token]);
+          this.next.emit();
         } else {
           this.router.navigate(['/dashboard']);
         }

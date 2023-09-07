@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class ProgressTemplateComponent {
   currentStep: number = 0;
   nextStep() {
-    if (this.currentStep < 4) {
+    if (this.currentStep < 3) {
       this.currentStep++;
     }
   }

@@ -6,7 +6,6 @@ import { PetProfileComponent } from './pages/pet-profile/pet-profile.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ProgressTemplateComponent } from './templates/progress-template/progress-template.component';
 import { LoggedUserCannotRegisterGuard } from './guards/logged-user-cannot-register.guard';
-import { PurchaseQrComponent } from './pages/purchase-qr/purchase-qr.component';
 
 const routes: Routes = [
   {
@@ -15,17 +14,12 @@ const routes: Routes = [
     children: [
       {path: 'signup', component: SignupComponent, canActivate: [LoggedUserCannotRegisterGuard]},
       {path: 'pet-profile', component: PetProfileComponent, canActivate: [AuthGuard, ValidateTokenGuard]},
-      {path: 'purchase-qr', component: PurchaseQrComponent, canActivate: [ValidateTokenGuard]},
+      // Create settings view
     ]
   },
   {
     path: 'pet-profile-template',
     component: PetProfileComponent,
-    canActivate: [ValidateTokenGuard]
-  },
-  {
-    path: 'purchase-qr-template',
-    component: PurchaseQrComponent,
     canActivate: [ValidateTokenGuard]
   }
 ];
