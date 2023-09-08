@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PetProfileComponent } from './pages/pet-profile/pet-profile.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { ProgressTemplateComponent } from './templates/progress-template/progress-template.component';
+import { ProfileSettingsComponent } from './pages/profile-settings/profile-settings.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ProgressTemplateComponent } from './templates/progress-template/progres
     PetProfileComponent,
     ProgressBarComponent,
     ProgressTemplateComponent,
+    ProfileSettingsComponent,
   ],
   imports: [
     CommonModule,

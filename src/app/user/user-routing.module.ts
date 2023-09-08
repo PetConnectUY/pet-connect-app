@@ -5,6 +5,7 @@ import { ValidateTokenGuard } from '../protected/shared/guards/ValidateToken.gua
 import { PetProfileComponent } from './pages/pet-profile/pet-profile.component';
 import { ProgressTemplateComponent } from './templates/progress-template/progress-template.component';
 import { LoggedUserCannotRegisterGuard } from './guards/logged-user-cannot-register.guard';
+import { ProfileSettingsComponent } from './pages/profile-settings/profile-settings.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
     children: [
       {path: 'signup', component: SignupComponent, canActivate: [LoggedUserCannotRegisterGuard]},
       {path: 'pet-profile', component: PetProfileComponent, canActivate: [ValidateTokenGuard]},
-      // Create settings view
+      {path: 'profile-settings', component: ProfileSettingsComponent, canActivate: [ValidateTokenGuard]},
     ]
   }
 ];
