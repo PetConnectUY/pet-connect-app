@@ -19,7 +19,7 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
     AuthRoutingModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [
     SigninComponent,

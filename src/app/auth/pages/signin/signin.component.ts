@@ -7,6 +7,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AlertModalComponent } from '../../components/alert-modal/alert-modal.component';
+import { TokenService } from 'src/app/shared/services/token.service';
+import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
+import { Message } from 'src/app/user/interfaces/message.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signin',
@@ -30,7 +34,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
   btnValue: string = 'Ingresar';
   unknowError: boolean = false;
   invalidCredentials: boolean = false;
-  tokenIsActivated: string | undefined;
+  token: string | null;
 
   constructor(
     private router: Router,
@@ -39,8 +43,11 @@ export class SigninComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
+    private tokenService: TokenService,
+    private qrActivationService: QRActivationService,
   ) {
     this.user = this.authService.getUser();
+    this.token = this.tokenService.getToken();
     this.signinForm = this.fb.group({
       email: [this.user?this.user.email: ''],
       password: [''],
@@ -49,10 +56,10 @@ export class SigninComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.tokenIsActivated = params['tokenIsActivated'];
-      if(this.tokenIsActivated === 'false') {
+      const tokenParam = params['token'];
+      if(tokenParam) {
         this.modalService.open(AlertModalComponent, {
-          size: 'sm',
+          size: 'md',
           centered: true,
         });
       }
@@ -70,29 +77,51 @@ export class SigninComponent implements OnInit, AfterViewInit {
     const oldBtnValue = this.btnValue;
     this.startSubmittingForm();
     const { email, password } = this.signinForm.value;
+  
     try {
-      this.authService.login(email, password)
-      .subscribe(
+      this.authService.login(email, password).subscribe(
         result => {
-          if(result.error) {
+          if (result.error) {
             this.invalidCredentials = true;
             this.endSubmittingForm(oldBtnValue);
-          } else {            
-            if(this.tokenIsActivated === 'false') {
-              this.router.navigate(['/users/pet-profile', {tokenIsActivated: false}]);
+          } else {
+            if (this.token) {
+              this.assignQR();
             } else {
               this.router.navigateByUrl('/app');
             }
-          }          
-        }, error => {
+          }
+        },
+        error => {
           this.unknowError = true;
           this.endSubmittingForm(oldBtnValue);
         }
-      )
-    } catch(error) {
+      );
+    } catch (error) {
       this.unknowError = true;
       this.endSubmittingForm(oldBtnValue);
     }
+  }
+
+  assignQR() {
+    const oldBtnValue = this.btnValue;
+    this.qrActivationService.setUserToToken().subscribe({
+      next: (message: Message) => {
+        if (message.message === 'Código QR ya existe y está activado por el usuario') {
+          this.router.navigate(['/auth/signin/pet-profile/', this.token]);
+        } else if (message.message === 'El código QR ya está en uso por otro usuario.') {
+          this.tokenService.clearToken();
+          this.token = null;
+          this.router.navigate(['/auth/signin/pet-profile']);
+        } else if (message.message === 'Se asignó el código QR con éxito') {
+          this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
+        }
+      },
+      error: (res: HttpErrorResponse) => {
+        this.unknowError = true;
+        this.endSubmittingForm(oldBtnValue);
+      }
+    });
   }
 
   startSubmittingForm() {
@@ -107,7 +136,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
 
   removeAccount() {
     this.authService.clearStorage();
-    window.location.reload();
+    this.user = null;
   } 
 
   toggleShow() {

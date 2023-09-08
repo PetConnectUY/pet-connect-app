@@ -16,7 +16,7 @@ export class QRActivationService {
     private tokenService: TokenService,
   ) { }
 
-  checkIfIsActived(token: string): Observable<boolean> {
+  checkIfIsActived(token: string | null): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}qr-codes/verify-activation/${token}`);
   }
 
