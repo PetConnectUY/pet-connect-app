@@ -123,7 +123,7 @@ export class PetProfileComponent {
     formData.append('race', race);
     formData.append('gender', gender);
     formData.append('pet_information', pet_information);
-
+  
     const petImage = this.petForm.get('image')?.value as File | null;
     if (!petImage) {
       this.submitting = false;
@@ -131,7 +131,7 @@ export class PetProfileComponent {
       this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
       return;
     }
-
+  
     this.petService.createPet(formData).pipe(
       switchMap((res: Pet) => {
         this.petId = res.id;
@@ -166,8 +166,12 @@ export class PetProfileComponent {
       next: (message: string) => {
         this.submitting = false;
         this.unknowError = false;
+        
         if(this.token) {
-          this.next.emit();
+          // Emitir el evento 'next' solo si la asignación se realizó con éxito
+          if (message === 'Mascota asignada al código QR con éxito') {            
+            this.next.emit();
+          }
         } else {
           this.router.navigate(['/dashboard']);
         }

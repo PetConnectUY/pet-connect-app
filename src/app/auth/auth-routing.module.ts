@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ValidateGuestGuard } from './guards/validate-guest.guard';
 import { SigninComponent } from './pages/signin/signin.component';
 import { PetProfileComponent } from '../user/pages/pet-profile/pet-profile.component';
+import { ProfileSettingsComponent } from '../user/pages/profile-settings/profile-settings.component';
+import { ValidateTokenGuard } from '../protected/shared/guards/ValidateToken.guard';
+import { ProgressTemplateComponent } from '../user/templates/progress-template/progress-template.component';
 
 const routes: Routes = [
   {
@@ -24,7 +27,12 @@ const routes: Routes = [
       },
       {
         path: 'signin/pet-profile',
-        component: PetProfileComponent,
+        component: ProgressTemplateComponent,
+        canActivate: [ValidateTokenGuard],
+        children: [
+          {path: '', component: PetProfileComponent, canActivate: [ValidateTokenGuard]},
+          {path: 'profile-settings', component: ProfileSettingsComponent, canActivate: [ValidateTokenGuard]}
+        ]
       }
     ]
   }

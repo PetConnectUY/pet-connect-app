@@ -16,6 +16,10 @@ const routes: Routes = [
       {path: 'pet-profile', component: PetProfileComponent, canActivate: [ValidateTokenGuard]},
       {path: 'profile-settings', component: ProfileSettingsComponent, canActivate: [ValidateTokenGuard]},
     ]
+  },
+  {
+    path: 'profile-settings-template',
+    component: ProfileSettingsComponent,
   }
 ];
 

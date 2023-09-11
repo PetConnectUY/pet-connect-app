@@ -1,11 +1,31 @@
 <ng-container [ngSwitch]="currentStep">
-    <div *ngSwitchCase="0">
+  <!-- Step 0 -->
+  <div *ngSwitchCase="0">
+    <!-- Si el usuario no está autenticado, muestra el componente de signup -->
+    <div *ngIf="!isAuthenticated">
       <app-signup (next)="nextStep()"></app-signup>
     </div>
-    <div *ngSwitchCase="1">
+    <!-- Si el usuario está autenticado, muestra el componente de pet-profile -->
+    <div *ngIf="isAuthenticated">
       <app-pet-profile (next)="nextStep()"></app-pet-profile>
     </div>
-    <div *ngSwitchCase="2">
-      <!-- settings -->
+  </div>
+  <!-- Step 1 -->
+  <div *ngSwitchCase="1">
+    <!-- Si el usuario no está autenticado, muestra el componente de pet-profile -->
+    <div *ngIf="!isAuthenticated">
+      <app-pet-profile (next)="nextStep()"></app-pet-profile>
     </div>
+    <!-- Si el usuario está autenticado, muestra el componente de profile-settings -->
+    <div *ngIf="isAuthenticated">
+      <app-profile-settings></app-profile-settings>
+    </div>
+  </div>
+  <!-- Step 2 -->
+  <div *ngSwitchCase="2">
+    <!-- Si el usuario no está autenticado, muestra el componente de profile-settings -->
+    <div *ngIf="!isAuthenticated">
+      <app-profile-settings></app-profile-settings>
+    </div>
+  </div>
 </ng-container>

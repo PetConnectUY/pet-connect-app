@@ -1,1 +1,41 @@
-<p>profile-settings works!</p>
+<section class="settings">
+    <div class="settings__container">
+        <div class="settings__container__header">
+            <h1>Información visible</h1>
+            <p><b>*</b> Aquí podrás ajustar lo que quieres que los demás vean cuando entran al perfil de tu mascota</p>
+        </div>
+        <div class="settings__container__body">
+            <h3>
+                <fa-icon [icon]="faUser"></fa-icon> Datos del usuario
+            </h3>
+            <div class="settings__container__body--item">
+                <label for="location">*Nombre y apellido</label>
+                <label class="switch">
+                <input type="checkbox" id="location" [(ngModel)]="nameVisible">
+                <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="settings__container__body--item">
+                <label for="location">*Localización aproximada</label>
+                <label class="switch">
+                <input type="checkbox" id="location" [(ngModel)]="locationVisible">
+                <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="settings__container__body--item">
+                <label for="location">*Teléfono de contacto</label>
+                <label class="switch">
+                <input type="checkbox" id="location" [(ngModel)]="contactPhone">
+                <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="settings__container__body--item">
+                <label for="location">*Email de contacto</label>
+                <label class="switch">
+                <input type="checkbox" id="location" [(ngModel)]="contactMail">
+                <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</section>
