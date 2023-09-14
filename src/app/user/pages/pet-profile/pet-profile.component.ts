@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { catchError, map, of, switchMap, throwError } from 'rxjs';
 import { Pet } from 'src/app/protected/dashboard/my-pets/interfaces/pet.interface';
-import { PetService } from 'src/app/protected/dashboard/my-pets/services/pet.service';
+import { PetService } from 'src/app/protected/pets/services/pet.service';
 import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -24,6 +24,7 @@ export class PetProfileComponent {
 
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
   @Output() prev: EventEmitter<void> = new EventEmitter<void>();
+  @Output() eventPetId: EventEmitter<number> = new EventEmitter<number>();
 
   user: User|null;
 
@@ -158,7 +159,7 @@ export class PetProfileComponent {
           return of('Mascota creada con éxito, pero no se asignó al código QR');
         }
       }),
-      catchError((error: HttpErrorResponse) => {
+      catchError((error: HttpErrorResponse) => {        
         // Manejo de errores relacionados con la asignación al código QR
         return throwError('Ocurrió un error al asignar el código QR a la mascota.');
       })
@@ -169,7 +170,8 @@ export class PetProfileComponent {
         
         if(this.token) {
           // Emitir el evento 'next' solo si la asignación se realizó con éxito
-          if (message === 'Mascota asignada al código QR con éxito') {            
+          if (message === 'Mascota asignada al código QR con éxito') {      
+            this.eventPetId.emit(this.petId);      
             this.next.emit();
           }
         } else {

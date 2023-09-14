@@ -7,18 +7,18 @@
     </div>
     <!-- Si el usuario está autenticado, muestra el componente de pet-profile -->
     <div *ngIf="isAuthenticated">
-      <app-pet-profile (next)="nextStep()"></app-pet-profile>
+      <app-pet-profile (eventPetId)="eventPetId($event)" (next)="nextStep()"></app-pet-profile>
     </div>
   </div>
   <!-- Step 1 -->
   <div *ngSwitchCase="1">
     <!-- Si el usuario no está autenticado, muestra el componente de pet-profile -->
     <div *ngIf="!isAuthenticated">
-      <app-pet-profile (next)="nextStep()"></app-pet-profile>
+      <app-pet-profile (eventPetId)="eventPetId($event)" (next)="nextStep()"></app-pet-profile>
     </div>
     <!-- Si el usuario está autenticado, muestra el componente de profile-settings -->
     <div *ngIf="isAuthenticated">
-      <app-profile-settings></app-profile-settings>
+      <app-profile-settings [petId]="this.petId"></app-profile-settings>
     </div>
   </div>
   <!-- Step 2 -->

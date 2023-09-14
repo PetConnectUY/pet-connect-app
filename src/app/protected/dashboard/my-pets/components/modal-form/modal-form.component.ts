@@ -4,7 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pet } from '../../interfaces/pet.interface';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { PetService } from '../../services/pet.service';
+import { PetService } from '../../../../pets/services/pet.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PetImage } from '../../interfaces/pet.image.interface';
 

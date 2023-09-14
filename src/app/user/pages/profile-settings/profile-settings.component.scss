@@ -1,19 +1,44 @@
 .settings {
     min-height: 100vh;
+    height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
+    flex-wrap: wrap;
     background-color: var(--primary-color);
+    gap: 2rem;
+    padding: 1rem 2rem;
+    @media (max-width: 768px) {
+      padding: 0;
+    }
+    picture {
+      img {
+          width: 100%;
+          max-width: 500px;
+          filter: invert(100%);
+      }
+      @media (max-width: 768px) {
+          display: none;
+      }
+    }
     &__container {
-        width: 100%;
         background-color: var(--background-color);
-        padding: 1rem;
+        padding: 3rem 2rem;
+        max-width: 800px;
+        width: 100%;
+        border-radius: 2rem;
+        box-shadow: 5px 4px 3px rgba($color: #000000, $alpha: .3);
         display: flex;
+        flex-wrap: wrap;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        @media (max-width: 800px) {
+            width: 100%;
+            border-radius: 0;
+            padding: 1rem;
+        }
         &__header {
             display: flex;
             flex-direction: column;
@@ -42,12 +67,15 @@
                 font-family: var(--bs-body-font-family);
                 font-weight: 400;
             }
-            &--item {
+            form {
+              width: 100%;
+              .settings__container__body--item {
                 width: 100%;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
+                margin: 1rem 0;
                 label {
                     font-family: var(--secondary-font);
                     font-size: 1em;
@@ -92,11 +120,11 @@
                   }
         
                   input:checked + .slider {
-                    background-color: #2196f3;
+                    background-color: var(--primary-color);
                   }
         
                   input:focus + .slider {
-                    box-shadow: 0 0 1px #2196f3;
+                    box-shadow: 0 0 1px var(--primary-color);;
                   }
         
                   input:checked + .slider:before {
@@ -114,7 +142,46 @@
                     border-radius: 50%;
                   }
                 }
+
+                &--error{
+                  display: flex;
+                  flex-direction: row;
+                  flex-wrap: wrap;
+                  color: red;
+                  text-align: center;
+                  padding: 5px;
+                  & p {
+                      margin-left: 5px;
+                  }
+                }
+
+                &--button {
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: flex-end;
+                  button {
+                    padding: 10px;
+                    border: none;
+                    background-color: var(--primary-color);
+                    color: #f2f2f2;
+                    font-family: var(--secondary-font);
+                    font-size: 15px;
+                    border-radius: 20px;
+                    transition: all .3s;
+                    margin-top: 3rem;
+                    &:hover {
+                        background-color: darken(#F9B348, $amount: 10);
+                    }
+                    &:disabled {
+                        background-color: grayscale($color: #F9B348);
+                        cursor: not-allowed;
+                        pointer-events: none;
+                    }
+                  }
+                }
               }
+            }
         }
     }
 }

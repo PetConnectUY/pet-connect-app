@@ -10,12 +10,16 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class ProgressTemplateComponent {
   user: User | null;
   isAuthenticated: boolean = false;
-
+  petId: number | undefined;
+  
   constructor(private authService: AuthService) {
     this.user = this.authService.getUser();
     this.isAuthenticated = this.authService.isAuthenticated();
   }
   currentStep: number = 0;
+  eventPetId($event: number | undefined) {
+    this.petId = $event;
+  }
   nextStep() {
     if (this.currentStep < 2) {
       this.currentStep++;

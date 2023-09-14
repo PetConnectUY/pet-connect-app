@@ -1,4 +1,8 @@
+<app-progress-bar [currentStep]="2"></app-progress-bar>
 <section class="settings">
+    <picture>
+        <img src="assets/images/pet_settings.png" alt="">
+    </picture>
     <div class="settings__container">
         <div class="settings__container__header">
             <h1>Información visible</h1>
@@ -8,34 +12,59 @@
             <h3>
                 <fa-icon [icon]="faUser"></fa-icon> Datos del usuario
             </h3>
-            <div class="settings__container__body--item">
-                <label for="location">*Nombre y apellido</label>
-                <label class="switch">
-                <input type="checkbox" id="location" [(ngModel)]="nameVisible">
-                <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="settings__container__body--item">
-                <label for="location">*Localización aproximada</label>
-                <label class="switch">
-                <input type="checkbox" id="location" [(ngModel)]="locationVisible">
-                <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="settings__container__body--item">
-                <label for="location">*Teléfono de contacto</label>
-                <label class="switch">
-                <input type="checkbox" id="location" [(ngModel)]="contactPhone">
-                <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="settings__container__body--item">
-                <label for="location">*Email de contacto</label>
-                <label class="switch">
-                <input type="checkbox" id="location" [(ngModel)]="contactMail">
-                <span class="slider round"></span>
-                </label>
-            </div>
+            <form [formGroup]="profileSettingsForm" (ngSubmit)="changeSettings()">
+                <div class="settings__container__body--item">
+                    <label for="location">*Nombre y apellido</label>
+                    <label class="switch">
+                    <input 
+                        type="checkbox" 
+                        id="location" 
+                        formControlName="user_fullname_visible">
+                    <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings__container__body--item">
+                    <label for="location">*Localización aproximada</label>
+                    <label class="switch">
+                    <input 
+                        type="checkbox" 
+                        id="location" 
+                        formControlName="user_location_visible">
+                    <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings__container__body--item">
+                    <label for="location">*Teléfono de contacto</label>
+                    <label class="switch">
+                    <input 
+                        type="checkbox" 
+                        id="location" 
+                        formControlName="user_phone_visible">
+                    <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings__container__body--item">
+                    <label for="location">*Email de contacto</label>
+                    <label class="switch">
+                    <input 
+                        type="checkbox" 
+                        id="location" 
+                        formControlName="user_email_visible">
+                    <span class="slider round"></span>
+                    </label>
+                </div>
+                <div *ngIf="unknowError" class="settings__container__body--item--error">
+                    <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                    <p>{{errorMessage}}</p>
+                </div>
+                <div class="settings__container__body--item--button">
+                    <button [disabled]="submitting || profileSettingsForm.invalid">
+                        {{btnValue}}
+                        <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                        <fa-icon *ngIf="!submitting" [icon]="faChevronRight"></fa-icon>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </section>

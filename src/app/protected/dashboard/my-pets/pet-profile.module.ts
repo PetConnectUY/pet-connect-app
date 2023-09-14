@@ -6,7 +6,7 @@ import { IndexComponent } from './pages/index/index.component';
 import { DashboardModule } from '../dashboard.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PaginationModule } from '../../shared/modules/pagination/pagination.module';
-import { PetService } from './services/pet.service';
+import { PetService } from '../../pets/services/pet.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

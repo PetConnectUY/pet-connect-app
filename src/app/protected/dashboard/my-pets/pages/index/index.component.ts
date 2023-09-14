@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faCirclePlus, faEllipsisVertical, faEyeSlash, faGears, faPen, faQrcode, faTrash, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { PetService } from '../../services/pet.service';
+import { PetService } from '../../../../pets/services/pet.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PetPagination } from '../../interfaces/pet.pagination.interface';
 import { ModalFormComponent } from '../../components/modal-form/modal-form.component';
