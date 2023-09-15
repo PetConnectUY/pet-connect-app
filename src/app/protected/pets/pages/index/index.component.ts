@@ -50,7 +50,24 @@ export class IndexComponent implements OnInit {
               case 'Código qr no activado':
                 if (this.tokenExpired) {
                   // El token no está activado y el usuario no está autenticado
-                  this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                  this.qrActivationService.setUserToToken().subscribe((res: Message) => {
+                    const setUserStatus = res.message;
+                    switch(setUserStatus) {
+                      case 'Código QR ya existe y está activado por el usuario':
+                        this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                        break;
+                      case 'El código QR ya está en uso por otro usuario':
+                        this.loader = false;
+                        this.loadPet = false;
+                        this.loadPetProfile();
+                        break;
+                      case 'Se asignó el código QR con éxito':
+                        this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                        break;
+                      default:
+                        break;
+                    }
+                  });
                 } else {
                   // El token no está activado y el usuario está autenticado
                   this.qrActivationService.setUserToToken().subscribe({
@@ -89,6 +106,11 @@ export class IndexComponent implements OnInit {
                   this.loadPet = true;
                   this.loadPetProfile();
                   break;
+              case 'El código QR ha sido activado y asignado a este usuario':
+                this.loader = false;
+                this.loadPet = true;
+                this.loadPetProfile();
+                break;
 
               default:
                 // Maneja otros casos si es necesario
@@ -98,8 +120,7 @@ export class IndexComponent implements OnInit {
             // Si no hay usuario en localStorage
             switch (this.tokenStatusMessage) {
               case 'Código qr no activado':
-                // El token no está activado y el usuario no está autenticado
-                this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                this.router.navigate(['/auth/signup'], { queryParams: { token: this.token } });
                 break;
 
               case 'Este código qr no pertenece a este usuario':
@@ -114,6 +135,11 @@ export class IndexComponent implements OnInit {
                 this.loadPetProfile();
                 break;
 
+              case 'El código QR ha sido activado y asignado a este usuario':
+                this.loader = false;
+                this.loadPet = true;
+                this.loadPetProfile();
+                break;
               default:
                 // Maneja otros casos si es necesario
                 break;

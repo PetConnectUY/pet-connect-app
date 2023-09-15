@@ -6,6 +6,7 @@ import { faChevronRight, faExclamationCircle, faPaw, faSpinner, faUser } from '@
 import { Pet } from 'src/app/protected/dashboard/my-pets/interfaces/pet.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
+import { TokenService } from 'src/app/shared/services/token.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -29,6 +30,8 @@ export class ProfileSettingsComponent {
   contactPhone: number = 1;
   contactMail: number = 1;
 
+  token: string | null;
+
   profileSettingsForm!: FormGroup;
 
   @Input() petId!: number | undefined;
@@ -38,8 +41,10 @@ export class ProfileSettingsComponent {
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
     private petService: PetService,
+    private tokenService: TokenService,
     private router: Router,
   ) {
+    this.token = this.tokenService.getToken();
     this.profileSettingsForm = this.fb.group({
       user_fullname_visible: [this.nameVisible, [Validators.required]],
       user_location_visible: [this.locationVisible, [Validators.required]],
@@ -82,7 +87,7 @@ export class ProfileSettingsComponent {
       
       this.petService.changeSettings(this.petId, formData).subscribe({
         next: (res: Pet) => {
-          this.router.navigate([`/pets/${this.petId}`]);
+          this.router.navigate([`/pets/${this.token}`]);
         },
         error: (error: HttpErrorResponse) => {
           this.submitting = false;

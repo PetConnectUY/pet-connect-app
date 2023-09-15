@@ -17,7 +17,7 @@ export class ProgressTemplateComponent {
     this.isAuthenticated = this.authService.isAuthenticated();
   }
   currentStep: number = 0;
-  eventPetId($event: number | undefined) {
+  eventPetId($event: number | undefined) {    
     this.petId = $event;
   }
   nextStep() {
