@@ -21,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: 'app',
-    component: WelcomeComponent
+    component: WelcomeComponent,
   },
   {
     path: 'auth',

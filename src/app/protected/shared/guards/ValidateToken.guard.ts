@@ -12,10 +12,7 @@ export class ValidateTokenGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      const tokenExpired = this.authService.tokenExpired();
-      
-      if (!this.authService.isAuthenticated() || tokenExpired) {
-        this.authService.removeToken();
+      if (!this.authService.isAuthenticated()) {
         this.router.navigate(['/auth/signin']);
         return false;
       }

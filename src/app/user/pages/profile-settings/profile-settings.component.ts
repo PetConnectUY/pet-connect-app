@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Pet } from 'src/app/protected/dashboard/my-pets/interfaces/pet.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
@@ -36,7 +37,8 @@ export class ProfileSettingsComponent {
   constructor(
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
-    private petService: PetService
+    private petService: PetService,
+    private router: Router,
   ) {
     this.profileSettingsForm = this.fb.group({
       user_fullname_visible: [this.nameVisible, [Validators.required]],
@@ -80,12 +82,13 @@ export class ProfileSettingsComponent {
       
       this.petService.changeSettings(this.petId, formData).subscribe({
         next: (res: Pet) => {
-          this.next.emit();
+          this.router.navigate([`/pets/${this.petId}`]);
         },
         error: (error: HttpErrorResponse) => {
           this.submitting = false;
           this.unknowError = true;
           this.errorMessage = 'Ocurrió un error al guardar la configuración';
+          this.btnValue = oldBtnValue;
         }
       });
     }

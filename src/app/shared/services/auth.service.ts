@@ -80,17 +80,15 @@ export class AuthService {
 
   refreshToken(): Observable<boolean> {
     const url = `${this.baseUrl}auth/refresh`;
-    return this.http.post<AuthResponse>(url, {})
-      .pipe(
-        tap( res => {
-          this.setAuthData(res.access_token, res.user);
-        }),
-        map( valid => valid ),
-          catchError(err => {
-            return of(err)
-          })
-      );
+    return this.http.post<AuthResponse>(url, {}).pipe(
+      tap((res: AuthResponse) => {
+        this.setAuthData(res.access_token, res.user);
+      }),
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
+  
 
   private setAuthData(token: string, user: User) {
     this.setToken(token);

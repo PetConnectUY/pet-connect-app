@@ -16,8 +16,8 @@ export class QRActivationService {
     private tokenService: TokenService,
   ) { }
 
-  checkIfIsActived(token: string | null): Observable<boolean> {
-    return this.http.get<boolean>(`${this.baseUrl}qr-codes/verify-activation/${token}`);
+  checkQRStatus(token: string | null): Observable<Message> {
+    return this.http.get<Message>(`${this.baseUrl}qr-codes/verify-activation/${token}`);
   }
 
   setUserToToken(): Observable<Message> {
