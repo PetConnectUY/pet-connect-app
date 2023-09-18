@@ -86,9 +86,9 @@ export class SigninComponent implements OnInit, AfterViewInit {
             this.endSubmittingForm(oldBtnValue);
           } else {
             if (this.token) {
-              this.assignQR();
+              this.manageActivation();
             } else {
-              this.router.navigateByUrl('/app');
+              this.router.navigateByUrl('/dashboard');
             }
           }
         },
@@ -103,21 +103,68 @@ export class SigninComponent implements OnInit, AfterViewInit {
     }
   }
 
-  assignQR() {
+  manageActivation() {
     const oldBtnValue = this.btnValue;
-    this.qrActivationService.setUserToToken().subscribe({
-      next: (message: Message) => {
-        if (message.message === 'Código QR ya existe y está activado por el usuario') {
-          this.router.navigate(['/auth/signin/pet-profile/', this.token]);
-        } else if (message.message === 'El código QR ya está en uso por otro usuario.') {
-          this.tokenService.clearToken();
-          this.token = null;
-          this.router.navigate(['/auth/signin/pet-profile']);
-        } else if (message.message === 'Se asignó el código QR con éxito') {
-          this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
+    this.qrActivationService.checkQRStatus(this.token).subscribe({
+      next: (res: Message) => {
+        const tokenStatus = res.message;
+
+        switch(tokenStatus) {
+          case 'No se encontró el código qr':
+            // Componente 404
+            break;
+          case 'Código qr no activado':
+            this.qrActivationService.setUserToToken().subscribe((res: Message) => {
+              const setUserStatus = res.message;
+              switch(setUserStatus) {
+                case 'Código QR ya existe y está activado por el usuario':
+                  this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                  break;
+                case 'El código QR ya está en uso por otro usuario':
+                  this.router.navigate([`/pets/${this.token}`]);
+                  break;
+                case 'Se asignó el código QR con éxito':
+                  this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                  break;
+                default:
+                  this.unknowError = true;
+                  this.endSubmittingForm(oldBtnValue);
+                  break;
+              }
+            });
+            break;
+            case 'Código qr activado':
+              this.router.navigate([`/pets/${this.token}`]);
+              break;
+            case 'Debe asignar mascota':
+              this.router.navigate(['/auth/signin/pet-profile'], {queryParams: {token: this.token}});
+              break;
+            case 'Este qr no pertenece al usuario y no tiene una mascota asignada':
+              this.router.navigate([`/pets/${this.token}`]);
+              break;
+            case 'Código qr en uso pero no activado':
+              this.qrActivationService.setUserToToken().subscribe((res: Message) => {
+                const setUserStatus = res.message;
+                switch(setUserStatus) {
+                  case 'Código QR ya existe y está activado por el usuario':
+                    this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                    break;
+                  case 'El código QR ya está en uso por otro usuario':
+                    this.router.navigate([`/pets/${this.token}`]);
+                    break;
+                  case 'Se asignó el código QR con éxito':
+                    this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
+                    break;
+                  default:
+                    this.unknowError = true;
+                    this.endSubmittingForm(oldBtnValue);
+                    break;
+                }
+              });
+              break;
         }
       },
-      error: (res: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         this.unknowError = true;
         this.endSubmittingForm(oldBtnValue);
       }

@@ -10,15 +10,20 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { TokenService } from '../services/token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
+  token!: string | null;
 
   constructor(
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private tokenService: TokenService,
+  ) {
+    this.token = this.tokenService.getToken();
+  }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const currentUser = localStorage.getItem('user');
@@ -52,7 +57,11 @@ export class AuthInterceptor implements HttpInterceptor {
                   }
                 }
                 if (error.status === 401) {
-                  this.router.navigate(['/auth/signin']);
+                  if(this.token) {
+                    this.router.navigate(['/auth/signin'], {queryParams: {token: this.token}});
+                  } else {
+                    this.router.navigate(['/auth/signin']);
+                  }
                 }
                 return throwError(error);
               })

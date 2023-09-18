@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PetService } from '../../../../pets/services/pet.service';
-import { Pet } from '../../interfaces/pet.interface';
+import { Pet } from '../../../../pets/interfaces/pet.interface';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/shared/interfaces/user.interface';

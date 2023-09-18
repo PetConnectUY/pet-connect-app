@@ -2,12 +2,12 @@ import { Role } from "./user.role.interface";
 
 export interface User {
     id: number;
-    firstname: string;
-    lastname: string;
+    firstname: string | null;
+    lastname: string | null;
     username: string;
-    email: string;
+    email: string | null;
     birth_date: string;
     phone: string;
-    address: string;
+    address: string | null;
     role: Role;
 }

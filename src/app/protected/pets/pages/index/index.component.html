@@ -1,8 +1,18 @@
 <app-loader *ngIf="this.loader"></app-loader>
 <section class="pets" *ngIf="!this.loader">
+    <app-navbar></app-navbar>
     <div *ngIf="this.loadPet">
-        <div>
-           "mascota asignada y cargando perfil"
+        <div class="pets__container">
+            <div class="pets__container--image">
+                <picture *ngFor="let image of pet.images">
+                    <img src="{{image.url}}" alt="pet-profile-image">
+                </picture>
+                <h2>Mi nombre es {{pet.name | titlecase}}</h2>
+            </div>
+            <div class="pets__container__body">
+                <h3>Algunas cosas sobre mi</h3>
+                <p>Mi cumpleaños 🎉{{pet.birth_date}}</p>
+            </div>
         </div>
     </div>
 </section>

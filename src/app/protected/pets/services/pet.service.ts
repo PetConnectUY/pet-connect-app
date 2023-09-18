@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { Pet } from '../../dashboard/my-pets/interfaces/pet.interface';
-import { PetImage } from '../../dashboard/my-pets/interfaces/pet.image.interface';
-import { PetPagination } from '../../dashboard/my-pets/interfaces/pet.pagination.interface';
-import { PetToken } from '../../dashboard/my-pets/interfaces/pet.token.interface';
+import { Pet } from '../interfaces/pet.interface';
+import { PetImage } from '../interfaces/pet.image.interface';
+import { PetPagination } from '../interfaces/pet.pagination.interface';
+import { PetToken } from '../interfaces/pet.token.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -78,5 +78,10 @@ export class PetService {
   changeSettings(id: number | undefined, formData: FormData): Observable<Pet> {
     const url = `${this.baseUrl}pets-settings/${id}`;
     return this.http.post<Pet>(url, formData);
+  }
+
+  loadProfile(token: string | null): Observable<Pet> {
+    const url = `${this.baseUrl}pet-profiles/${token}`;
+    return this.http.get<Pet>(url);
   }
 }

@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { catchError, map, of, switchMap, throwError } from 'rxjs';
-import { Pet } from 'src/app/protected/dashboard/my-pets/interfaces/pet.interface';
+import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
 import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
 import { User } from 'src/app/shared/interfaces/user.interface';

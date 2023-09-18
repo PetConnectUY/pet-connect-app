@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
-import { Pet } from 'src/app/protected/dashboard/my-pets/interfaces/pet.interface';
+import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { TokenService } from 'src/app/shared/services/token.service';
