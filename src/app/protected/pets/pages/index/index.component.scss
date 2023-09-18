@@ -1,38 +1,84 @@
 .pets {
-    max-width: 1080px;
-    margin: 0 auto;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 8rem 2rem;
+    padding: 2rem 2rem;
     &__container {
         width: 100%;
-        padding: 2rem;
-        margin: 0 2rem;
+        max-width: 1400px;
+        padding: 2rem 0;
+        margin: 2rem 4rem;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-around;
-        background-color: var(--primary-color);
+        background-color: var(--background-color);
+        gap: 2rem;
         &--image {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             picture {
+                background-color: var(--primary-color);
                 width: 100%;
+                padding: 1rem;
+                border-radius: 50%;
+                box-shadow: 5px 4px 3px rgba($color: #000000, $alpha: .3);
                 img {
-                    height: 350px;
-                    width: 350px;
+                    height: 500px;
+                    width: 500px;
                     border-radius: 50%;
                 }
             }
             h2 {
-                font-family: var(--secondary-font);
+                margin: 1rem 0;
+                font-family: var(--primary-font);
                 font-size: 2em;
                 font-weight: 300 !important;
+                span {
+                    color: var(--primary-color);
+                    font-weight: bold;
+                }
+            }
+        }
+        &__body {
+            width: 100%;
+            background-color: var(--primary-color);
+            border-radius: 2rem;
+            box-shadow: 5px 4px 3px rgba($color: #000000, $alpha: .3);
+            padding: 2rem;
+            h3 {
+                font-size: 2em;
+                margin: 1rem 0;
+            }
+            &--item {
+                margin: 1rem;
+                p {
+                    font-size: 1.2em;
+                    span {
+                        font-family: var(--secondary-font);
+                        font-weight: 500;
+                    }
+                }
+            }
+            &__info {
+                h2 {
+                    border-top: 1px solid #000;
+                    padding-top: 1rem;
+                }
+                &--item {
+                    margin: 1rem;
+                    p {
+                        font-size: 1.2em;
+                        span {
+                            font-family: var(--secondary-font);
+                            font-weight: 500;
+                        }
+                    }
+                }
             }
         }
     }

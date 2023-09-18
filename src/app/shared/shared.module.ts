@@ -14,7 +14,7 @@ import { HtmlToSafeHtmlPipe } from './pipes/html-to-safe-html.pipe';
     NavbarComponent,
     DarkModeTogglerComponent,
     LoaderComponent,
-    HtmlToSafeHtmlPipe,
+    HtmlToSafeHtmlPipe
   ],
   imports: [
     CommonModule,

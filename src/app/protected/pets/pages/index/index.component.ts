@@ -9,6 +9,7 @@ import { TokenService } from 'src/app/shared/services/token.service';
 import { Message } from 'src/app/user/interfaces/message.interface';
 import { PetService } from '../../services/pet.service';
 import { Pet } from '../../interfaces/pet.interface';
+import { faMars, faPaw, faUser, faVenus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-index',
@@ -16,6 +17,10 @@ import { Pet } from '../../interfaces/pet.interface';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
+  faPaw = faPaw;
+  faMars = faMars;
+  faVenus = faVenus;
+  faUser = faUser;
 
   unknowError: boolean = false;
   errorMessage!: string;
@@ -44,11 +49,8 @@ export class IndexComponent implements OnInit {
       this.token = this.tokenService.getToken();
 
       this.qrActivationService.checkQRStatus(res['tokenId']).subscribe({
-        next: (response: Message) => {          
-          console.log(response);
-          
+        next: (response: Message) => {
           this.tokenStatusMessage = response.message;
-          
           switch(this.tokenStatusMessage) {
             case 'No se encontró el código qr': 
               // Retorna componente 404

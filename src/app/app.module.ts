@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,8 @@ import { SharedModule } from './shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
     RouterModule.forRoot([]),
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   exports: [
@@ -46,4 +49,8 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    registerLocaleData(localeEs); // Importa la configuración regional para 'es-ES'
+  }
+ }
