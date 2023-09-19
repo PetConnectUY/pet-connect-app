@@ -43,6 +43,10 @@
                     height: 500px;
                     width: 500px;
                     border-radius: 50%;
+                    &:hover {
+                        filter: brightness(1.10);
+                        cursor: pointer;
+                    }
                     @media (max-width: 1200px) {
                         height: 400px;
                         width: 400px;
