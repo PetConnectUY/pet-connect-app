@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { environment } from 'src/environments/environment.development';
 import { Statistics } from '../interfaces/statistic.interface';
+import { UserPetProfileSetting } from '../interfaces/user-pet-profile-setting.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,15 @@ export class UserService {
 
   getStatistics(): Observable<Statistics> {
     return this.http.get<Statistics>(`${this.baseUrl}users/statistics`);
+  }
+
+  getProfileSettings(): Observable<UserPetProfileSetting> {
+    const url = `${this.baseUrl}user-pet-profile-settings`;
+    return this.http.get<UserPetProfileSetting>(url);
+  }
+
+  changeSettings(formData: FormData): Observable<User> {
+    const url = `${this.baseUrl}user-pet-profile-settings`;
+    return this.http.post<User>(url, formData);
   }
 }

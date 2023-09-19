@@ -3,10 +3,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
-import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
-import { PetService } from 'src/app/protected/pets/services/pet.service';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { TokenService } from 'src/app/shared/services/token.service';
+import { UserService } from '../../services/user.service';
+import { User } from 'src/app/shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-profile-settings',
@@ -40,7 +40,7 @@ export class ProfileSettingsComponent {
   constructor(
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
-    private petService: PetService,
+    private userService: UserService,
     private tokenService: TokenService,
     private router: Router,
   ) {
@@ -85,8 +85,8 @@ export class ProfileSettingsComponent {
       formData.append('user_phone_visible', user_phone_visible ? '1' : '0');
       formData.append('user_email_visible', user_email_visible ? '1' : '0');
       
-      this.petService.changeSettings(this.petId, formData).subscribe({
-        next: (res: Pet) => {
+      this.userService.changeSettings(formData).subscribe({
+        next: (res: User) => {
           this.router.navigate([`/pets/${this.token}`]);
         },
         error: (error: HttpErrorResponse) => {

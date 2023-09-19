@@ -75,11 +75,6 @@ export class PetService {
     return this.http.delete<PetToken>(url);
   }
 
-  changeSettings(id: number | undefined, formData: FormData): Observable<Pet> {
-    const url = `${this.baseUrl}pets-settings/${id}`;
-    return this.http.post<Pet>(url, formData);
-  }
-
   loadProfile(token: string | null): Observable<Pet> {
     const url = `${this.baseUrl}pet-profiles/${token}`;
     return this.http.get<Pet>(url);
