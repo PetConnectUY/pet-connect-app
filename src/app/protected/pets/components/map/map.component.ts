@@ -33,7 +33,7 @@ export class MapComponent implements OnInit {
           L.circle(location, {
             color: 'blue', // Color del círculo
             fillColor: 'blue', // Color de relleno del círculo
-            fillOpacity: 0.5, // Opacidad del relleno
+            fillOpacity: 0.3, // Opacidad del relleno
             radius: 2000 // Radio del círculo en metros (ajusta según tus necesidades)
           }).addTo(this.map);
 

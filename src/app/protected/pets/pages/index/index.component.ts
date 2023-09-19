@@ -10,6 +10,8 @@ import { Message } from 'src/app/user/interfaces/message.interface';
 import { PetService } from '../../services/pet.service';
 import { Pet } from '../../interfaces/pet.interface';
 import { faMars, faPaw, faUser, faVenus } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ImageModalComponent } from '../../components/image-modal/image-modal.component';
 
 @Component({
   selector: 'app-index',
@@ -40,6 +42,7 @@ export class IndexComponent implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private petService: PetService,
+    private modalService: NgbModal
   ) {
     this.tokenExpired = this.authService.tokenExpired();
     this.user = this.authService.getUser();
@@ -176,5 +179,13 @@ export class IndexComponent implements OnInit {
         this.errorMessage = 'Ocurrió un error al obtener la mascota.';
       }
     });
+  }
+
+  openModal(imageUrl: string) {
+    const modalRef = this.modalService.open(ImageModalComponent, {
+      size: 'md',
+      centered: true,
+    });
+    modalRef.componentInstance.imageUrl = imageUrl;
   }
 }

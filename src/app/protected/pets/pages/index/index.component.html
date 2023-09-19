@@ -3,7 +3,7 @@
 <section class="pets" *ngIf="!this.loader">
     <div class="pets__container" *ngIf="this.loadPet">
         <div class="pets__container--image">
-            <picture *ngFor="let image of pet.images">
+            <picture *ngFor="let image of pet.images" (click)="openModal(image.url)">
                 <img src="{{image.url}}" alt="pet-profile-image">
             </picture>
             <h2>Me llamo <span>{{pet.name | titlecase}}</span></h2>
@@ -30,7 +30,7 @@
                     <fa-icon [icon]="faVenus"></fa-icon> Hembra</span>
                 </p>
             </div>
-            <div class="pets__container__body__info">
+            <div class="pets__container__body__info" *ngIf="pet.user.firstname || pet.user.lastname || pet.user.address || pet.user.phone || pet.user.email">
                 <h2>
                     <fa-icon [icon]="faUser"></fa-icon>
                     Algunas cosas sobre mi dueño
