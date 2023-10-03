@@ -30,6 +30,7 @@
     "leaflet-control-geocoder": "^2.4.0",
     "leaflet-routing-machine": "^3.2.12",
     "mercadopago": "^1.5.17",
+    "ng-recaptcha": "^11.0.0",
     "opencage-api-client": "^1.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

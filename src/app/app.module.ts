@@ -18,6 +18,7 @@ import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-
 import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaFormsModule } from "ng-recaptcha";
 
 @NgModule({
   declarations: [
@@ -38,14 +39,16 @@ import localeEs from '@angular/common/locales/es';
     FontAwesomeModule,
     SharedModule,
     RouterModule.forRoot([]),
+    RecaptchaV3Module,
+    RecaptchaFormsModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: "6Ld_MEYoAAAAAIymj1uB3BakkGkNlimFXm2Un_sY" },
   ],
   exports: [
     NavbarComponent,
-    
   ],
   bootstrap: [AppComponent]
 })

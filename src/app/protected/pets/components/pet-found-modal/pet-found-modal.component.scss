@@ -1,0 +1,181 @@
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    &--info {
+        font-family: var(--secondary-font);
+        font-weight: 200;
+    }
+    &__item {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        position: relative;
+        margin-top: 15px;
+        margin-bottom: 25px;
+        &--label {
+            font-family: var(--secondary-font);
+            position: absolute;
+            pointer-events: none;
+            top: 9px;
+            left: 12px;
+            transition: all 0.3s ease;
+
+            & span {
+                color: #818181;
+            }
+        }
+        &--input {
+            width: 100%;
+            padding: 10px;
+            outline: none;
+            border: none;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            border-bottom: 2px solid var(--primary-color);
+            transition: all .3s ease;
+            &:focus {
+                border-bottom: 2px solid var(--primary-color);
+                &~.form__container__content--item--label {
+                    top: -15px;
+                    bottom: 0px;
+                    left: 0px;
+                    font-size: 11px;
+                    opacity: 1;
+                    color: var(--text-color);
+                }
+            }
+        }
+        &--validation{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            text-align: center;
+            & p {
+                margin-left: 5px;
+                color: #818181;
+            }
+            & fa-icon {
+                color: red;
+            }
+        }
+        &--error{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            color: red;
+            text-align: center;
+            padding: 5px;
+            & p {
+                margin-left: 5px;
+            }
+        }
+
+        &--button{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            button {
+                padding: 10px;
+                border: none;
+                background-color: var(--primary-color);
+                color: #f2f2f2;
+                font-family: var(--secondary-font);
+                font-size: 15px;
+                border-radius: 20px;
+                transition: all .3s;
+                margin-bottom: 20px;
+                &:hover {
+                    background-color: darken(#F9B348, $amount: 10);
+                }
+                &:disabled {
+                    background-color: grayscale($color: #F9B348);
+                    cursor: not-allowed;
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+    &__success {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        fa-icon {
+            color: green;
+        }
+        p {
+            font-family: var(--primary-font);
+            font-size: 1.4em;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+}
+
+.is-valid {
+    border-bottom: 2px solid green;
+}
+  
+.is-invalid {
+    border-bottom: 2px solid red;
+}
+
+.has-content ~ .form__item--label{
+    top: -15px;
+    bottom: 0px;
+    left: 0px;
+    font-size: 11px;
+    opacity: 1;
+    color: var(--text-color);
+}
+
+.form__item--label[for="birthdate"] {
+    font-family: var(--secondary-font);
+    width: max-content;
+    position: absolute;
+    pointer-events: none;
+    top: -15px;
+    font-size: 11px;
+    left: 14px;
+    transition: all 0.3s ease;
+}
+
+.input-container {
+    position: relative;
+}
+
+.address-suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    position: absolute;
+    top: 100%;
+
+    li {
+      padding: 8px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--primary-color);
+        color: white;
+      }
+    }
+  }
+
+  

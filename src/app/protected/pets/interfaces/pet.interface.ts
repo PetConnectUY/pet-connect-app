@@ -10,6 +10,6 @@ export interface Pet {
     gender: string;
     pet_information: string;
     images: PetImage[];
-    pet_token: PetToken;
     user: User;
+    pet_token: PetToken;
 }

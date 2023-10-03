@@ -6,6 +6,7 @@ import { Pet } from '../interfaces/pet.interface';
 import { PetImage } from '../interfaces/pet.image.interface';
 import { PetPagination } from '../interfaces/pet.pagination.interface';
 import { PetToken } from '../interfaces/pet.token.interface';
+import { Message } from 'src/app/user/interfaces/message.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -78,5 +79,10 @@ export class PetService {
   loadProfile(token: string | null): Observable<Pet> {
     const url = `${this.baseUrl}pet-profiles/${token}`;
     return this.http.get<Pet>(url);
+  }
+
+  petFound(token: string, formData: FormData): Observable<Message> {
+    const url = `${this.baseUrl}pet-profiles/${token}/pet-found`;
+    return this.http.post<Message>(url, formData);
   }
 }

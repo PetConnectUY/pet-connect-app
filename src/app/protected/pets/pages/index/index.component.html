@@ -49,6 +49,11 @@
                     <app-map [address]="pet.user.address"></app-map>
                 </div>
             </div>
+            <div class="pets__container__footer">
+                <button (click)="petFound(pet.pet_token.token)">
+                    Encontré a {{pet.name | titlecase}}
+                </button>
+            </div>
         </div>
     </div>
 </section>

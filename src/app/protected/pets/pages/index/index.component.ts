@@ -12,6 +12,7 @@ import { Pet } from '../../interfaces/pet.interface';
 import { faMars, faPaw, faUser, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImageModalComponent } from '../../components/image-modal/image-modal.component';
+import { PetFoundModalComponent } from '../../components/pet-found-modal/pet-found-modal.component';
 
 @Component({
   selector: 'app-index',
@@ -173,12 +174,21 @@ export class IndexComponent implements OnInit {
         this.loadPet = true;
         this.pet = pet;
       },
-      error: (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {        
         this.unknowError = true;
         this.loader = false;
         this.errorMessage = 'Ocurrió un error al obtener la mascota.';
       }
     });
+  }
+
+  petFound(token: string) {
+    const modalRef = this.modalService.open(PetFoundModalComponent, {
+      size: 'md',
+      centered: true
+    });
+    modalRef.componentInstance.token = token;
+    modalRef.componentInstance.pet = this.pet;
   }
 
   openModal(imageUrl: string) {
