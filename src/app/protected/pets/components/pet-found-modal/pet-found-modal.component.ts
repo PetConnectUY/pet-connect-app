@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faCheckCircle, faExclamationCircle, faExclamationTriangle, faIdBadge, faPaw, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -38,6 +38,7 @@ export class PetFoundModalComponent implements OnInit {
   unknowError: boolean = false;
   errorMessage!: string;
   showSuccessMessage = false;
+  waitForNewRequest: boolean = false;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -93,6 +94,7 @@ export class PetFoundModalComponent implements OnInit {
     this.unknowError = false;
     this.submitting = true;
     this.showSuccessMessage = false;
+    this.waitForNewRequest = false;
     const { firstname, phone, email } = this.petFoundForm.value;
     const formData = new FormData();
 
@@ -105,12 +107,16 @@ export class PetFoundModalComponent implements OnInit {
         next: (res: Message) => {
           this.submitting = false;
           this.showSuccessMessage = true;
+          this.waitForNewRequest = true;
         },
         error: (error: HttpErrorResponse) => {
           this.submitting = false;
           this.showSuccessMessage = false;
           this.unknowError = true;
           this.errorMessage = error.error;
+          if(error.status === 429) {
+            this.errorMessage = 'Debes esperar 3 minutos para realizar una nueva solicitud.';
+          }
         }
       });
     });

@@ -57,6 +57,12 @@
             <p>{{getErrorMessage('email')}}</p>
           </div>
         </div>
+        <div class="form__item" *ngIf="unknowError">
+          <div class="form__item--error">
+            <fa-icon [icon]="faExclamationCircle"></fa-icon>
+            <p>{{this.errorMessage}}</p>
+          </div>
+        </div>
         <div class="form__item--button">
           <button [disabled]="submitting || petFoundForm.invalid" *ngIf="!showSuccessMessage && !submitting">
             <fa-icon *ngIf="!submitting" [icon]="faIdBadge"></fa-icon>

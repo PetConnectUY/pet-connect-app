@@ -112,5 +112,29 @@
                 }
             }
         }
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1rem;
+            button {
+                font-family: var(--secondary-font);
+                font-size: 1em;
+                padding: .8rem 1rem;
+                background-color: #fff;
+                color: #000;
+                border-radius: 2rem;
+                outline: none;
+                border: none;
+                transition: background-color 0.3s;
+                &:hover {
+                    background-color: darken($color: #fff, $amount: 10);
+                }
+                &:active {
+                    background-color: darken($color: #fff, $amount: 20);
+                }
+            }
+        }
     }
 }
