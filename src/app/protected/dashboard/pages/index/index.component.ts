@@ -42,6 +42,10 @@ export class IndexComponent implements OnInit{
     this.petService.getPets().subscribe({
       next: (pets: PetPagination) => {
         this.pets = pets;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.unknowError = true;
+        this.errorMessage = 'Ocurrió un error al obtener las mascotas.';
       }
     })
   }

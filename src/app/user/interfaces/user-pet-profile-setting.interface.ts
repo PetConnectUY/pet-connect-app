@@ -6,5 +6,4 @@ export interface UserPetProfileSetting {
     user_location_visible: boolean,
     user_phone_visible: boolean,
     user_email_visible: boolean,
-    user: User
 }

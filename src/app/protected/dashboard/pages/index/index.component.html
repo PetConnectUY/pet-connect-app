@@ -6,7 +6,7 @@
                 <h2 class="dashboard__header--title"><fa-icon [icon]="faPaw"></fa-icon> Zona de peludos</h2>
                 <div class="dashboard__body">
                     <div class="dashboard__body__header">
-                        <div class="dashboard__body__header__container" routerLink="#my-pets">
+                        <div class="dashboard__body__header__container" href="#my-pets">
                             <div class="dashboard__body__header__container--box">
                                 <h3><fa-icon [icon]="faDog" style="color: var(--text-color)"></fa-icon> Mis peludos</h3>
                                 <span *ngIf="!this.counterLoader">{{this.totalPets}}</span>

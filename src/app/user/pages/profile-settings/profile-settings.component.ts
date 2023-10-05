@@ -6,7 +6,7 @@ import { faChevronRight, faExclamationCircle, faPaw, faSpinner, faUser } from '@
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { TokenService } from 'src/app/shared/services/token.service';
 import { UserService } from '../../services/user.service';
-import { User } from 'src/app/shared/interfaces/user.interface';
+import { UserPetProfileSetting } from '../../interfaces/user-pet-profile-setting.interface';
 
 @Component({
   selector: 'app-profile-settings',
@@ -86,7 +86,7 @@ export class ProfileSettingsComponent {
       formData.append('user_email_visible', user_email_visible ? '1' : '0');
       
       this.userService.changeSettings(formData).subscribe({
-        next: (res: User) => {
+        next: (res: UserPetProfileSetting) => {
           this.router.navigate([`/pets/${this.token}`]);
         },
         error: (error: HttpErrorResponse) => {

@@ -9,6 +9,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from './componentes/confirm-modal/confirm-modal.component';
 import { ModalFormComponent } from './componentes/modal-form/modal-form.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ModalFormComponent } from './componentes/modal-form/modal-form.componen
     IndexComponent,
     SidebarComponent,
     ConfirmModalComponent,
-    ModalFormComponent
+    ModalFormComponent,
+    SettingsComponent
   ],
   imports: [
     CommonModule,

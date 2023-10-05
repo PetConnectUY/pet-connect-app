@@ -1,0 +1,76 @@
+<app-loader *ngIf="loader"></app-loader>
+<section class="page-container" *ngIf="!loader">
+    <app-sidebar></app-sidebar>
+    <div class="content">
+        <div class="settings">
+            <div class="settings__header">
+                <h2 class="settings__header--title">
+                    <fa-icon [icon]="faGears"></fa-icon> Mi configuración
+                </h2>
+            </div>
+            <div class="settings__body">
+                <div class="settings__body__content">
+                    <p>Aqui podrás cambiar la confiugración de tu usuario</p>
+                    <p>
+                        <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+                        Ten en cuenta que todos los cambios realizados se verán reflejados en los perfiles de tus mascotas.
+                    </p>
+
+                    <form [formGroup]="settingsForm" (ngSubmit)="changeSettings()">
+                        <div class="settings__body__content__item">
+                            <label for="location">*Nombre y apellido</label>
+                            <label class="switch">
+                            <input 
+                                type="checkbox" 
+                                id="location" 
+                                formControlName="user_fullname_visible">
+                            <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="settings__body__content__item">
+                            <label for="location">*Localización aproximada</label>
+                            <label class="switch">
+                            <input 
+                                type="checkbox" 
+                                id="location" 
+                                formControlName="user_location_visible">
+                            <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="settings__body__content__item">
+                            <label for="location">*Teléfono de contacto</label>
+                            <label class="switch">
+                            <input 
+                                type="checkbox" 
+                                id="location" 
+                                formControlName="user_phone_visible">
+                            <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="settings__body__content__item">
+                            <label for="location">*Email de contacto</label>
+                            <label class="switch">
+                            <input 
+                                type="checkbox" 
+                                id="location" 
+                                formControlName="user_email_visible">
+                            <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div *ngIf="unknowError" class="settings__body__content__item--error">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                            <p>{{errorMessage}}</p>
+                        </div>
+                        <div class="settings__body__content__item--button">
+                            <button [disabled]="submitting || settingsForm.invalid || !settingsForm.dirty">
+                                <fa-icon *ngIf="!submitting && successSubmittion" [icon]="faCheckCircle" style="color: green;"></fa-icon>
+                                <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                                {{btnValue}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

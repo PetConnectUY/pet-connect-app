@@ -1,0 +1,181 @@
+.page-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
+    .content {
+        flex: 1;
+        padding: 20px;
+        margin-left: 200px;
+        @media (max-width: 768px) {
+            margin: 0 auto;
+        }
+        .settings {
+            margin-bottom: 3.5rem;
+            &__header {
+                &--title {
+                    width: max-content;
+                    font-family: var(--primary-font);
+                    color: var(--text-color);
+                    font-size: 3rem;
+                    border-bottom: 3px solid var(--primary-color);
+                    fa-icon {
+                        color: var(--primary-color);
+                    }
+                    @media (max-width: 768px) {
+                        font-size: 2rem;
+                        @media (max-width: 360px) {
+                            font-size: 1.5rem;
+                        }
+                    }
+                }
+            }
+            &__body {
+                margin: 2rem;
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                border-radius: 2rem;
+                @media (max-width: 768px) {
+                    margin: 0 auto;
+                    padding: 0;
+                }
+                &__content {
+                    width: 100%;
+                    p {
+                        font-family: var(--secondary-font);
+                        text-align: start;
+                        fa-icon {
+                            color: var(--primary-color);
+                        }
+                    }
+                    form {
+                        width: 100%;
+                        margin: 3rem 0;
+                        .settings__body__content__item {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: space-between;
+                            margin: 1rem 0;
+                            padding: 0 5rem;
+                            @media (max-width: 768px) {
+                                padding: 0;
+                            }
+                            label {
+                                font-family: var(--secondary-font);
+                                font-size: 1em;
+                            }
+                    
+                            .switch {
+                            position: relative;
+                            display: inline-block;
+                            width: 60px;
+                            height: 34px;
+                    
+                            input {
+                                opacity: 0;
+                                width: 0;
+                                height: 0;
+                            }
+                    
+                            .slider {
+                                position: absolute;
+                                cursor: pointer;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background-color: #ccc;
+                                -webkit-transition: 0.4s;
+                                transition: 0.4s;
+                                border-radius: 34px;
+                    
+                                &:before {
+                                position: absolute;
+                                content: '';
+                                height: 26px;
+                                width: 26px;
+                                left: 4px;
+                                bottom: 4px;
+                                background-color: white;
+                                -webkit-transition: 0.4s;
+                                transition: 0.4s;
+                                border-radius: 50%;
+                                }
+                            }
+                    
+                            input:checked + .slider {
+                                background-color: var(--primary-color);
+                            }
+                    
+                            input:focus + .slider {
+                                box-shadow: 0 0 1px var(--primary-color);;
+                            }
+                    
+                            input:checked + .slider:before {
+                                -webkit-transform: translateX(26px);
+                                -ms-transform: translateX(26px);
+                                transform: translateX(26px);
+                            }
+                    
+                            /* Estilos del interruptor cuando está en estado 'checked' */
+                            .slider.round {
+                                border-radius: 34px;
+                            }
+                    
+                            .slider.round:before {
+                                border-radius: 50%;
+                            }
+                            }
+            
+                            &--error{
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: wrap;
+                                color: red;
+                                text-align: center;
+                                padding: 5px;
+                                & p {
+                                    margin-left: 5px;
+                                }
+                            }
+            
+                            &--button {
+                                    width: 100%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: flex-end;
+                                    button {
+                                        padding: 10px;
+                                        border: none;
+                                        background-color: var(--primary-color);
+                                        color: #f2f2f2;
+                                        font-family: var(--secondary-font);
+                                        font-size: 15px;
+                                        border-radius: 20px;
+                                        transition: all .3s;
+                                        margin-top: 3rem;
+                                        &:hover {
+                                            background-color: darken(#F9B348, $amount: 10);
+                                        }
+                                        &:disabled {
+                                            background-color: grayscale($color: #F9B348);
+                                            cursor: not-allowed;
+                                            pointer-events: none;
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

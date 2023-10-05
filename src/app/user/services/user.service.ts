@@ -34,8 +34,13 @@ export class UserService {
     return this.http.get<Statistics>(`${this.baseUrl}users/statistics`);
   }
 
-  changeSettings(formData: FormData): Observable<User> {
-    const url = `${this.baseUrl}user-pet-profile-settings`;
-    return this.http.post<User>(url, formData);
+  getSettings(): Observable<UserPetProfileSetting> {
+    const url = `${this.baseUrl}dashboard/get-settings`;
+    return this.http.get<UserPetProfileSetting>(url);
+  }
+
+  changeSettings(formData: FormData): Observable<UserPetProfileSetting> {
+    const url = `${this.baseUrl}dashboard/change-settings`;
+    return this.http.post<UserPetProfileSetting>(url, formData);
   }
 }
