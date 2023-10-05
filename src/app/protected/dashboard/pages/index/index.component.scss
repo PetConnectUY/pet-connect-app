@@ -58,7 +58,7 @@
                             display: flex;
                             flex-direction: row;
                             align-items: center;
-                            justify-content: space-around;
+                            justify-content: space-evenly;
                             h3 {
                                 font-size: 2rem;
                                 font-weight: 100;
@@ -79,14 +79,68 @@
                         justify-content: center;
                         flex-wrap: wrap;
                         gap: 2rem;
-                        &--item {
-                            picture {
-                                width: 100%;
-                                img {
-                                    max-width: 640px;
-                                    width: 100%;
-                                    border-radius: 2rem;
+                        &__item {
+                          border-radius: 2rem;
+                          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                          padding: 1rem 2rem;
+                          min-height: 400px;
+                            &--header {
+                              display: flex;
+                              align-items: center;
+                              justify-content: flex-end;
+                              button {
+                                outline: none;
+                                border: none;
+                                padding: .5rem;
+                                border-radius: 2rem;
+                                background-color: var(--primary-color);
+                                color: #fff;
+                                font-family: var(--secondary-font);
+                                &:hover {
+                                  background-color: darken($color: #F9B348, $amount: 10);
                                 }
+                              }
+                            }
+                            &--body {
+                              &--image {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                margin-bottom: 1rem;
+                                picture {
+                                  background-color: var(--primary-color);
+                                  padding: .3rem;
+                                  width: 100%;
+                                  border-radius: 50%;
+                                  img {
+                                    border-radius: 50%;
+                                    width: 200px;
+                                    height: 200px;
+                                  }
+                                }
+                                h3 {
+                                  font-family: var(--primary-font);
+                                  margin: .5rem 0;
+                                }
+                              }
+                              &--button {
+                                width: 100%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                button {
+                                  border: none;
+                                  outline: none;
+                                  background-color: var(--primary-color);
+                                  border-radius: 2rem;
+                                  color: #fff;
+                                  padding: .5rem 2rem;
+                                  &:hover {
+                                    background-color: darken($color: #F9B348, $amount: 10);
+                                  }
+                                }
+                              }
                             }
                         }
                     }

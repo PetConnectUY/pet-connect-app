@@ -26,7 +26,7 @@ export class PetService {
     if (this.cachedPets && currentTime - this.lastCacheUpdate < this.cacheExpirationTime) {
       return of(this.cachedPets);
     } else {
-      const url = `${this.baseUrl}pets`;
+      const url = `${this.baseUrl}dashboard/my-pets`;
       return this.http.get<PetPagination>(url).pipe(
         tap((pets: PetPagination) => {
           this.cachedPets = pets;

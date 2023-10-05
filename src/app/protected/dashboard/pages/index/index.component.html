@@ -22,20 +22,39 @@
                         </div>
                     </div>
                     <div class="dashboard__body__container">
-                        <div class="dashboard__body__container__box">
-                            <div class="dashboard__body__container__box--item">
-                                <a href="#">
-                                    <picture>
-                                        <img src="assets/images/banner2.png" alt="banner">
-                                    </picture>
-                                </a>
-                            </div>
-                            <div class="dashboard__body__container__box--item">
-                                <a href="#">
-                                    <picture>
-                                        <img src="assets/images/banner1.png" alt="banner">
-                                    </picture>
-                                </a>
+                        <div class="dashboard__body__container__box" *ngIf="this.pets">
+                            <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
+                                <div class="dashboard__body__container__box__item--header">
+                                    <div class="dropdown">
+                                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li>
+                                            <a class="dropdown-item" type="button">
+                                              <fa-icon [icon]="faPen" class="icon"></fa-icon> Editar
+                                            </a>
+                                          </li>
+                                          <li>
+                                            <a class="dropdown-item" type="button">
+                                              <fa-icon [icon]="faTrash" class="icon"></fa-icon> Eliminar
+                                            </a>
+                                          </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="dashboard__body__container__box__item--body">
+                                    <div class="dashboard__body__container__box__item--body--image">
+                                        <picture *ngFor="let image of pet.images">
+                                            <img src="{{image.url}}" alt="pet-image">
+                                        </picture>
+                                        <h3>{{pet.name}}</h3>
+                                    </div>
+                                    <div class="dashboard__body__container__box__item--body--button">
+                                        <button *ngIf="pet.pet_token.token" [routerLink]="['pets/', pet.pet_token.token]">Ver perfil</button>
+                                        <button *ngIf="!pet.pet_token.token" [routerLink]="['/get-qr-code/', pet.id]">Obtener chapita</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
