@@ -9,10 +9,6 @@ const routes: Routes = [
     component: IndexComponent,
     canActivate: [ValidateTokenGuard]
   },
-  {
-    path: 'my-pets',
-    loadChildren: () => import('./my-pets/pet-profile.module').then(m => m.PetProfileModule),
-  }
 ];
 
 @NgModule({
