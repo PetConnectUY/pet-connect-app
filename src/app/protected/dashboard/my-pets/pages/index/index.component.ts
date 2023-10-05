@@ -5,11 +5,11 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { PetService } from '../../../../pets/services/pet.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PetPagination } from '../../../../pets/interfaces/pet.pagination.interface';
-import { ModalFormComponent } from '../../components/modal-form/modal-form.component';
+import { ModalFormComponent } from '../../../componentes/modal-form/modal-form.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Pet } from '../../../../pets/interfaces/pet.interface';
 import { PetImage } from '../../../../pets/interfaces/pet.image.interface';
-import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
+import { ConfirmModalComponent } from '../../../componentes/confirm-modal/confirm-modal.component';
 import { concatMap, finalize } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
 

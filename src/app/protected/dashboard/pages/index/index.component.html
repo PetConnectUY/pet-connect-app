@@ -31,12 +31,12 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li>
-                                            <a class="dropdown-item" type="button">
+                                            <a class="dropdown-item" type="button" (click)="editPet(pet)">
                                               <fa-icon [icon]="faPen" class="icon"></fa-icon> Editar
                                             </a>
                                           </li>
                                           <li>
-                                            <a class="dropdown-item" type="button">
+                                            <a class="dropdown-item" type="button" (click)="deletePet(pet)">
                                               <fa-icon [icon]="faTrash" class="icon"></fa-icon> Eliminar
                                             </a>
                                           </li>

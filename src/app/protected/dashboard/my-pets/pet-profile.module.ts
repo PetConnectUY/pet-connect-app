@@ -8,9 +8,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PaginationModule } from '../../shared/modules/pagination/pagination.module';
 import { PetService } from '../../pets/services/pet.service';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ModalFormComponent } from './components/modal-form/modal-form.component';
+import { ModalFormComponent } from '../componentes/modal-form/modal-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { ConfirmModalComponent } from '../componentes/confirm-modal/confirm-modal.component';
 
 @NgModule({
   declarations: [

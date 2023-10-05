@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Pet } from '../../../../pets/interfaces/pet.interface';
+import { Pet } from '../../../pets/interfaces/pet.interface';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { PetService } from '../../../../pets/services/pet.service';
+import { PetService } from '../../../pets/services/pet.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { PetImage } from '../../../../pets/interfaces/pet.image.interface';
+import { PetImage } from '../../../pets/interfaces/pet.image.interface';
 
 @Component({
   selector: 'app-modal-form',
