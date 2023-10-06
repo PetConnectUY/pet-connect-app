@@ -76,10 +76,10 @@
                         display: flex;
                         flex-direction: row;
                         align-items: center;
-                        justify-content: center;
+                        justify-content: space-evenly;
                         flex-wrap: wrap;
-                        gap: 2rem;
                         &__item {
+                          flex-basis: calc(25% - 20px);
                           border-radius: 2rem;
                           box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
                           padding: 1rem 2rem;
@@ -111,7 +111,6 @@
                                 picture {
                                   background-color: var(--primary-color);
                                   padding: .3rem;
-                                  width: 100%;
                                   border-radius: 50%;
                                   img {
                                     border-radius: 50%;

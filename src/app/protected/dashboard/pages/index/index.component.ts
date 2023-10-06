@@ -11,6 +11,7 @@ import { ModalFormComponent } from '../../componentes/modal-form/modal-form.comp
 import { PetImage } from 'src/app/protected/pets/interfaces/pet.image.interface';
 import { ConfirmModalComponent } from '../../componentes/confirm-modal/confirm-modal.component';
 import { finalize, forkJoin } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-index',
@@ -31,6 +32,7 @@ export class IndexComponent implements OnInit{
   totalTokens!: number;
   counterLoader: boolean = true;
   pets!: PetPagination;
+  petsLoader: boolean = false;
   unknowError: boolean = false;
   errorMessage!: string;
 
@@ -38,16 +40,9 @@ export class IndexComponent implements OnInit{
     private userService: UserService,
     private petService: PetService,
     private modalService: NgbModal,
+    private route: ActivatedRoute,
   ){
-    this.petService.getPets().subscribe({
-      next: (pets: PetPagination) => {
-        this.pets = pets;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al obtener las mascotas.';
-      }
-    })
+    this.updatePets();
   }
 
   ngOnInit(): void {
@@ -63,7 +58,26 @@ export class IndexComponent implements OnInit{
         this.totalTokens = NaN;
         this.counterLoader = true;
       }
-    })
+    });
+  }
+
+  updatePets() {
+    if(!this.petsLoader) {
+      this.petsLoader = true;
+      this.route.queryParamMap.subscribe(paramMap => {
+        this.petService.getPets(paramMap).subscribe({
+          next: (pets: PetPagination) => {
+            this.pets = pets;
+            this.petsLoader = false;
+          },
+          error: (error: HttpErrorResponse) => {
+            this.unknowError = true;
+            this.errorMessage = 'Ocurrió un error al obtener las mascotas.';
+            this.petsLoader = false;
+          }
+        });
+      });
+    }
   }
 
   editPet(pet: Pet) {

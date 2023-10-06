@@ -1,42 +1,22 @@
-<div class="d-flex justify-content-between align-items-center">
-
-    <div class="results text-secondary">
-
-        Mostrando {{ this.pagination.from }} al {{ this.pagination.to }} de {{ this.pagination.total }}
-
-    </div>
-
-    <nav class="mt-3">
-
-        <ul class="pagination">
-
-          <li *ngIf="this.pagination.current_page!=1" class="page-item">
-
-            <a class="page-link" (click)="getCurrentPage()" [routerLink]="['.']" [queryParams]="{ page: this.pagination.current_page-1 }" queryParamsHandling="merge">
-
-              <span aria-hidden="true"><fa-icon [icon]="faChevronLeft"></fa-icon></span>
-
-            </a>
-
-          </li>
-          <li *ngFor="let item of this.paginationItems()" class="page-item" [ngClass]="{'active': this.pagination.current_page === item}">
-
-            <a class="page-link" (click)="getCurrentPage()" [routerLink]="['.']" [queryParams]="{ page: item }" queryParamsHandling="merge">{{ item }}</a>
-
-          </li>
-
-          <li *ngIf="this.pagination.current_page!=this.pagination.last_page" class="page-item">
-
-            <a (click)="getCurrentPage()" class="page-link" [routerLink]="['.']" [queryParams]="{ page: this.pagination.current_page+1 }" queryParamsHandling="merge">
-
-              <span aria-hidden="true"><fa-icon [icon]="faChevronRight"></fa-icon></span>
-
-            </a>
-
-          </li>
-
-        </ul>
-
-    </nav>
-
+<div class="d-flex justify-content-between align-items-center gap-2">
+  <div class="results text-secondary">
+      Mostrando {{ this.pagination.from }} al {{ this.pagination.to }} de {{ this.pagination.total }}
+  </div>
+  <nav class="mt-3">
+      <ul class="pagination">
+        <li *ngIf="this.pagination.current_page!=1" class="page-item">
+          <a class="page-link" [routerLink]="['.']" [queryParams]="{ page: this.pagination.current_page-1 }" queryParamsHandling="merge">
+            <span aria-hidden="true"><fa-icon [icon]="faChevronLeft"></fa-icon></span>
+          </a>
+        </li>
+        <li *ngFor="let item of this.paginationItems()" class="page-item" [ngClass]="{'active': this.pagination.current_page === item}">
+          <a class="page-link" [routerLink]="['.']" [queryParams]="{ page: item }" queryParamsHandling="merge">{{ item }}</a>
+        </li>
+        <li *ngIf="this.pagination.current_page!=this.pagination.last_page" class="page-item">
+          <a class="page-link" [routerLink]="['.']" [queryParams]="{ page: this.pagination.current_page+1 }" queryParamsHandling="merge">
+            <span aria-hidden="true"><fa-icon [icon]="faChevronRight"></fa-icon></span>
+          </a>
+        </li>
+      </ul>
+  </nav>
 </div>

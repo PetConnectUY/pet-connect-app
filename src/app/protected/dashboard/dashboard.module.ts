@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from './componentes/confirm-modal/confirm-modal.component';
 import { ModalFormComponent } from './componentes/modal-form/modal-form.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { PaginationModule } from '../shared/modules/pagination/pagination.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    PaginationModule,
   ],
   exports: [
     SidebarComponent,

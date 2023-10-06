@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
@@ -7,33 +7,24 @@ import { PetImage } from '../interfaces/pet.image.interface';
 import { PetPagination } from '../interfaces/pet.pagination.interface';
 import { PetToken } from '../interfaces/pet.token.interface';
 import { Message } from 'src/app/user/interfaces/message.interface';
+import { HelperService } from 'src/app/shared/services/helper.service';
+import { ParamMap } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PetService {
   private baseUrl: string = environment.apiUrl;
-  private cachedPets: PetPagination | null = null;
-  private cacheExpirationTime: number = 60 * 1000;
-  private lastCacheUpdate: number = 0;
   constructor(
     private http: HttpClient,
+    private helperService: HelperService
   ) { }
 
-  getPets(): Observable<PetPagination> {
-    const currentTime = Date.now();
-
-    if (this.cachedPets && currentTime - this.lastCacheUpdate < this.cacheExpirationTime) {
-      return of(this.cachedPets);
-    } else {
-      const url = `${this.baseUrl}dashboard/my-pets`;
-      return this.http.get<PetPagination>(url).pipe(
-        tap((pets: PetPagination) => {
-          this.cachedPets = pets;
-          this.lastCacheUpdate = currentTime;
-        })
-      );
-    }
+  getPets(paramMap: ParamMap): Observable<PetPagination> {
+    const url = `${this.baseUrl}dashboard/my-pets`;
+    return this.http.get<PetPagination>(url, {
+      params: this.helperService.getHttpParams(paramMap, ['search', 'page'])
+    });
   }
 
   getPet(id: number): Observable<Pet> {
