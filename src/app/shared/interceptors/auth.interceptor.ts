@@ -6,24 +6,21 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, switchMap, filter, take, mergeMap, finalize } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { TokenService } from '../services/token.service';
+import { AuthResponse } from '../interfaces/auth-response.interface';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
-  token!: string | null;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private tokenService: TokenService,
-  ) {
-    this.token = this.tokenService.getToken();
-  }
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const currentUser = localStorage.getItem('user');
@@ -42,8 +39,10 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           if (!this.isRefreshing) {
             this.isRefreshing = true;
+            this.refreshTokenSubject.next(null);
+
             return this.authService.refreshToken().pipe(
-              switchMap((refreshed: boolean) => {
+              switchMap((refreshed: AuthResponse) => {
                 this.isRefreshing = false;
                 if (refreshed) {
                   const newToken = this.authService.getToken();
@@ -53,17 +52,36 @@ export class AuthInterceptor implements HttpInterceptor {
                         'Authorization': `Bearer ${newToken}`
                       }
                     });
-                    return next.handle(request);
+                    // Aquí estamos utilizando finalize para asegurarnos de que la solicitud se realice después de actualizar el token.
+                    return next.handle(request).pipe(finalize(() => {
+                      // Reintentar las solicitudes pendientes
+                      this.refreshTokenSubject.next(newToken);
+                    }));
                   }
                 }
                 if (error.status === 401) {
-                  if(this.token) {
-                    this.router.navigate(['/auth/signin'], {queryParams: {token: this.token}});
+                  const currentToken = this.authService.getToken();
+                  if (currentToken) {
+                    this.router.navigate(['/auth/signin'], {queryParams: {token: currentToken}});
                   } else {
                     this.router.navigate(['/auth/signin']);
                   }
                 }
                 return throwError(error);
+              })
+            );
+          } else {
+            // Si ya hay una actualización de token en curso, espera y reintentar la solicitud una vez que se actualice
+            return this.refreshTokenSubject.pipe(
+              filter(token => token !== null),
+              take(1),
+              switchMap((newToken) => {
+                request = request.clone({
+                  setHeaders: {
+                    'Authorization': `Bearer ${newToken}`
+                  }
+                });
+                return next.handle(request);
               })
             );
           }

@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { AuthResponse } from '../interfaces/auth-response.interface';
-import { catchError, map, of, tap, Observable } from 'rxjs';
+import { catchError, map, of, tap, Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../interfaces/user.interface';
-
 
 @Injectable({
   providedIn: 'root'
@@ -13,53 +12,58 @@ export class AuthService {
   private baseUrl: string = environment.apiUrl;
   private tokenKey: string = 'token';
   private userKey: string = 'user';
-  constructor(
-    private http: HttpClient,
-  ) { }
+  private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getToken());
+  constructor(private http: HttpClient) {
+    this.tokenSubject = new BehaviorSubject<string | null>(this.getToken());
+  }
 
   login(email: string, password: string) {
     const url = `${this.baseUrl}auth/login`;
     const body = { email, password };
     return this.http.post<AuthResponse>(url, body)
       .pipe(
-        tap(
-          res => {
-            this.setAuthData(res.access_token, res.user);
-          }
-        ),
+        tap(res => {
+          this.setToken(res.access_token);
+          this.setUser(res.user);
+        }),
         map(valid => valid),
-        catchError( err => {
+        catchError(err => {
           return of(err);
         })
-      )
+      );
   }
 
   setToken(token: string) {
-    return sessionStorage.setItem(this.tokenKey, token);
+    sessionStorage.setItem(this.tokenKey, token);
+    this.tokenSubject.next(token); // Emitir el nuevo valor a los suscriptores
   }
 
   getToken() {
     return sessionStorage.getItem(this.tokenKey);
   }
 
+  getTokenValue(): string | null {
+    return this.tokenSubject.value;
+  }
+
   removeToken() {
-    return sessionStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.tokenKey);
+    this.tokenSubject.next(null); // Emitir null a los suscriptores
   }
 
   setUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
   } 
 
-  getUser(): User|null {
+  getUser(): User | null {
     const jsonUser = localStorage.getItem(this.userKey);
-    if(jsonUser)
-    {
+    if (jsonUser) {
       return JSON.parse(jsonUser);
     }
     return null;
   }
 
-  isAuthenticated():boolean {
+  isAuthenticated(): boolean {
     return Boolean(this.getToken());
   }
 
@@ -78,25 +82,21 @@ export class AuthService {
     return Date.now() >= expirationTime;
   }
 
-  refreshToken(): Observable<boolean> {
+  refreshToken(): Observable<AuthResponse> {
     const url = `${this.baseUrl}auth/refresh`;
     return this.http.post<AuthResponse>(url, {}).pipe(
       tap((res: AuthResponse) => {
-        this.setAuthData(res.access_token, res.user);
+        this.setToken(res.access_token);
+        this.setUser(res.user);
+        this.tokenSubject.next(res.access_token);
       }),
-      map(() => true),
-      catchError(() => of(false))
+      map((valid) => valid),
+      catchError((error) => of(error))
     );
-  }
-  
-
-  private setAuthData(token: string, user: User) {
-    this.setToken(token);
-    this.setUser(user);
   }
 
   getTokenHeaders() {
-    return {Authorizathion: `Bearer ${this.getToken() || ''}`};
+    return { Authorization: `Bearer ${this.getToken() || ''}` };
   }
 
   clearStorage() {
