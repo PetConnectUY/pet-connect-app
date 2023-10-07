@@ -1,15 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RotateProp } from '@fortawesome/fontawesome-svg-core';
-import { faCircleNotch, faDog, faEllipsisVertical, faPaw, faPen, faQrcode, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNotch, faDog, faEllipsisVertical, faFilter, faPaw, faPen, faQrcode, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetPagination } from 'src/app/protected/pets/interfaces/pet.pagination.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
 import { UserService } from 'src/app/user/services/user.service';
-import { ModalFormComponent } from '../../componentes/modal-form/modal-form.component';
+import { ModalFormComponent } from '../../components/modal-form/modal-form.component';
 import { PetImage } from 'src/app/protected/pets/interfaces/pet.image.interface';
-import { ConfirmModalComponent } from '../../componentes/confirm-modal/confirm-modal.component';
+import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { finalize, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -27,6 +27,7 @@ export class IndexComponent implements OnInit{
   faEllipsisVertical = faEllipsisVertical;
   faPen = faPen;
   faTrash = faTrash;
+  faFilter = faFilter;
 
   totalPets!: number;
   totalTokens!: number;

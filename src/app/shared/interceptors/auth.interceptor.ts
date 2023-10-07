@@ -52,9 +52,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         'Authorization': `Bearer ${newToken}`
                       }
                     });
-                    // Aquí estamos utilizando finalize para asegurarnos de que la solicitud se realice después de actualizar el token.
                     return next.handle(request).pipe(finalize(() => {
-                      // Reintentar las solicitudes pendientes
                       this.refreshTokenSubject.next(newToken);
                     }));
                   }
@@ -71,7 +69,6 @@ export class AuthInterceptor implements HttpInterceptor {
               })
             );
           } else {
-            // Si ya hay una actualización de token en curso, espera y reintentar la solicitud una vez que se actualice
             return this.refreshTokenSubject.pipe(
               filter(token => token !== null),
               take(1),

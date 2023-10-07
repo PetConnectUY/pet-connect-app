@@ -72,6 +72,18 @@
                 }
                 &__container {
                     margin: 2rem 0;
+                    &__header {
+                        width: 100%;
+                        margin-bottom: 2rem;
+                        button {
+                            background-color: var(--primary-color);
+                            color: #fff;
+                            font-size: .7em;
+                            fa-icon {
+                                margin: 0 .3rem;
+                            }
+                        }
+                    }
                     &__box {
                         display: flex;
                         flex-direction: row;
