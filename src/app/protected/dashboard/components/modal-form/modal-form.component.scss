@@ -181,3 +181,26 @@
     opacity: 1;
     color: var(--text-color);
 }
+
+.form__container__content--item--label {
+    position: absolute;
+    pointer-events: none;
+    top: 9px;
+    left: 12px;
+    transition: all 0.3s ease;
+  
+    & span {
+      color: #818181;
+    }
+  }
+  
+  .form__container__content--item--input:focus + .form__container__content--item--label,
+  .form__container__content--item--input:valid + .form__container__content--item--label {
+    top: -15px;
+    bottom: 0px;
+    left: 0px;
+    font-size: 11px;
+    opacity: 1;
+    color: var(--text-color);
+  }
+  

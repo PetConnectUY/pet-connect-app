@@ -17,7 +17,7 @@
                 <p>🎉Mi cumpleaños es el <span>{{pet.birth_date | date:'d MMMM y'}}</span></p>
             </div>
             <div class="pets__container__body--item" *ngIf="pet.race">
-                <p>ℹ️ Mi raza es <span>{{pet.race | titlecase}}</span></p>
+                <p>ℹ️ Mi raza es <span>{{pet.race.name | titlecase}}</span></p>
             </div>
             <div class="pets__container__body--item">
                 <p>📃 Algunas características sobre mi: <span>{{pet.pet_information}}</span></p>

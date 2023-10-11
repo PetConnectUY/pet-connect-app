@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { catchError, map, of, switchMap, throwError } from 'rxjs';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
+import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
 import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
 import { User } from 'src/app/shared/interfaces/user.interface';
@@ -35,6 +36,7 @@ export class PetProfileComponent {
   submitting: boolean = false;
   btnValue: string = 'Siguiente';
 
+  races: PetRace[] = [];
   token: string | null;
   petId!: number;
 
@@ -49,10 +51,19 @@ export class PetProfileComponent {
   ){
     this.user = this.authService.getUser();
     this.token = this.tokenService.getToken();
+    this.petService.getRaces().subscribe({
+      next: (res: PetRace[]) => {
+        this.races = res;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.unknowError = true;
+        this.errorMessage = 'Ocurrió un error al obtener las razas.';
+      }
+    });
     this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
       birth_date: [''],
-      race: ['', [Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
+      race_id: ['',],
       gender: ['', [Validators.required, this.genderValidation]],
       pet_information: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ\s\d.,!?-]*$/)]],
       image: [null],
@@ -117,11 +128,11 @@ export class PetProfileComponent {
     this.submitting = true;
     this.unknowError = false;
     const oldBtnValue = this.btnValue;
-    const { name, birth_date, race, gender, pet_information, image } = this.petForm.value; 
+    const { name, birth_date, race_id, gender, pet_information, image } = this.petForm.value; 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('birth_date', birth_date);
-    formData.append('race', race);
+    formData.append('race_id', race_id);
     formData.append('gender', gender);
     formData.append('pet_information', pet_information);
   

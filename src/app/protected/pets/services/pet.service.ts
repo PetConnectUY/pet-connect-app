@@ -9,6 +9,7 @@ import { PetToken } from '../interfaces/pet.token.interface';
 import { Message } from 'src/app/user/interfaces/message.interface';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { ParamMap } from '@angular/router';
+import { PetRace } from '../interfaces/pet.race.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -75,5 +76,10 @@ export class PetService {
   petFound(token: string, formData: FormData): Observable<Message> {
     const url = `${this.baseUrl}pet-profiles/${token}/pet-found`;
     return this.http.post<Message>(url, formData);
+  }
+
+  getRaces(): Observable<PetRace[]> {
+    const url = `${this.baseUrl}pets-races`;
+    return this.http.get<PetRace[]>(url);
   }
 }

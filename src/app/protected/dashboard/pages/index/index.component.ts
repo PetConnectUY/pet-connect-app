@@ -12,6 +12,7 @@ import { PetImage } from 'src/app/protected/pets/interfaces/pet.image.interface'
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { finalize, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
 
 @Component({
   selector: 'app-index',
@@ -32,6 +33,7 @@ export class IndexComponent implements OnInit{
   totalTokens!: number;
   counterLoader: boolean = true;
   pets!: PetPagination;
+  races: PetRace[] = [];
   petsLoader: boolean = false;
   unknowError: boolean = false;
   errorMessage!: string;
@@ -42,6 +44,17 @@ export class IndexComponent implements OnInit{
     private modalService: NgbModal,
     private route: ActivatedRoute,
   ){
+    this.petService.getRaces().subscribe({
+      next: (res: PetRace[]) => {
+        this.races = res;
+        this.petsLoader = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.unknowError = true;
+        this.petsLoader = false;
+        this.errorMessage = 'Ocurrió un error al obtener las razas';
+      }
+    });
     this.updatePets();
   }
 
@@ -87,6 +100,7 @@ export class IndexComponent implements OnInit{
     });
   
     modalRef.componentInstance.petToEdit = pet;
+    modalRef.componentInstance.races = this.races;
     modalRef.componentInstance.emitPet.subscribe((res: Pet) => {
       const updatedPetIndex = this.pets.data.findIndex(item => item.id === res.id);
       if (updatedPetIndex !== -1) {

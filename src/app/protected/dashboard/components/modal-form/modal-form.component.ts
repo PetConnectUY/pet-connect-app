@@ -7,6 +7,7 @@ import { faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icon
 import { PetService } from '../../../pets/services/pet.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PetImage } from '../../../pets/interfaces/pet.image.interface';
+import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
 
 @Component({
   selector: 'app-modal-form',
@@ -18,6 +19,7 @@ export class ModalFormComponent implements OnInit {
   faSpinner = faSpinner;
 
   @Input() petToEdit!: Pet;
+  @Input() races!: PetRace[];
   @Output() emitPet: EventEmitter<Pet> = new EventEmitter();
   @Output() emitPetImage: EventEmitter<PetImage> = new EventEmitter();
   @Output() emitAtCreate: EventEmitter<{pet: Pet, image: PetImage}> = new EventEmitter();
@@ -48,15 +50,18 @@ export class ModalFormComponent implements OnInit {
       this.petForm = this.fb.group({
         name: [this.petToEdit.name, [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
         birth_date: [this.petToEdit.birth_date, []],
-        race: [this.petToEdit.race, [Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
+        race_id: [this.petToEdit ? this.petToEdit.race.id : this.races[0].id, [Validators.required]],
         gender: [this.petToEdit.gender, [Validators.required, this.genderValidation]],
         pet_information: [this.petToEdit.pet_information, [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ\s\d.,!?-]*$/)]],
         image: [null]
       });
       Object.keys(this.petForm.controls).forEach(controlName => {
         const control = this.petForm.get(controlName);
-        if (control && control.value) {
-            this.fieldHasContent[controlName] = control.value.trim() !== '';
+        if (control) {
+          const controlValue = control.value;
+          if (typeof controlValue === 'string') {
+            this.fieldHasContent[controlName] = controlValue.trim() !== '';
+          }
         }
       });
       if (this.petToEdit.images.length > 0) {
@@ -68,7 +73,7 @@ export class ModalFormComponent implements OnInit {
       this.petForm = this.fb.group({
         name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
         birth_date: ['', []],
-        race: ['', [Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
+        race_id: ['', [Validators.required]],
         gender: ['', [Validators.required, this.genderValidation]],
         pet_information: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ\s\d.,!?-]*$/)]],
         image: [null]
@@ -93,9 +98,15 @@ export class ModalFormComponent implements OnInit {
   }
 
   hasContent(controlName: string): boolean {
-    const controlValue = this.petForm.get(controlName)?.value;
-    return controlValue ? controlValue.trim() !== '' : false;
-  } 
+    const control = this.petForm.get(controlName);
+    if (control) {
+      const controlValue = control.value;
+      if (typeof controlValue === 'string') {
+        return controlValue.trim() !== '';
+      }
+    }
+    return false;
+  }
 
   genderValidation(control: FormControl) {
     const value = control.value ? control.value.toLowerCase() : null;
@@ -140,13 +151,13 @@ export class ModalFormComponent implements OnInit {
       this.submitting = true;
       this.unknowError = false;
       const oldBtnValue = this.btnValue;
-      const { name, birth_date, race, gender, pet_information } = this.petForm.value;
+      const { name, birth_date, race_id, gender, pet_information } = this.petForm.value;
 
       const formData = new FormData();
 
       formData.append('name', name);
       formData.append('birth_date', birth_date);
-      formData.append('race', race);
+      formData.append('race_id', race_id);
       formData.append('gender', gender);
       formData.append('pet_information', pet_information);
 

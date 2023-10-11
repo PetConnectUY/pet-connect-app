@@ -12,7 +12,8 @@ export class FormValidationService {
     pattern: 'El campo tiene caracteres inválidos',
     passwordPattern: 'La contraseña debe contener al menos una letra mayúscula',
     email: 'El campo debe contener un correo válido.',
-    invalidGender: 'El genero es erróneo, debe seleccionar uno de la lista'
+    invalidGender: 'El genero es erróneo, debe seleccionar uno de la lista',
+    invalidRace: 'La raza no es válida',
   };
 
   getErrorMessage(validatorName: string, validatorValue?: any): string {
