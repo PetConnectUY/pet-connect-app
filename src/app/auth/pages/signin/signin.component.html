@@ -60,7 +60,7 @@
             </div>
             <div class="signin__container__item--footer">
                 <a *ngIf="!this.user" routerLink="/users/signup">registrarse</a>
-                <a *ngIf="!this.user" routerLink="">google</a>
+                <app-google-auth></app-google-auth>
             </div>
         </div>
     </form>

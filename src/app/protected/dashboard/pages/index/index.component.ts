@@ -27,7 +27,6 @@ export class IndexComponent implements OnInit{
   faEllipsisVertical = faEllipsisVertical;
   faPen = faPen;
   faTrash = faTrash;
-  faFilter = faFilter;
 
   totalPets!: number;
   totalTokens!: number;

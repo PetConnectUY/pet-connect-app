@@ -7,12 +7,14 @@ import { SigninComponent } from './pages/signin/signin.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from '../shared/shared.module';
 import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
-
+import { SocialLoginModule, GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
 
 @NgModule({
   declarations: [
     SigninComponent,
     AlertModalComponent,
+    GoogleAuthComponent,
   ],
   imports: [
     CommonModule,
@@ -20,9 +22,29 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
     ReactiveFormsModule,
     FontAwesomeModule,
     SharedModule,
+    SocialLoginModule,
   ],
   exports: [
     SigninComponent,
+  ],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '278355435963-u6t78a0chpjfes0ea9ai7u7591tbus8s.apps.googleusercontent.com'
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
   ]
 })
 export class AuthModule { }

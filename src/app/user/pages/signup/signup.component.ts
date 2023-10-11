@@ -227,7 +227,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
           this.submitting = false;
           this.unknowError = true;
           this.errorMessage = 'Ocurrió un error al registrar el usuario.';
-          return throwError(error);
+          return throwError(error.error);
         })
       ).subscribe();
     }

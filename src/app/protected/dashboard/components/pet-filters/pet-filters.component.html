@@ -1,1 +1,51 @@
-<p>pet-filters works!</p>
+<div ngbAccordion>
+    <div ngbAccordionItem [collapsed]="false">
+        <h2 ngbAccordionHeader>
+            <button ngbAccordionButton class="accordion-button"><fa-icon [icon]="faFilter"></fa-icon> Filtros</button>
+        </h2>
+        <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+                <ng-template>
+                    <form [formGroup]="form">
+                        <div class="filters">
+                            <div class="filters__container">
+                                    <div class="filters__container__item">
+                                        <input 
+                                            formControlName="name" 
+                                            class="filters__container__item--input" 
+                                            type="text" 
+                                            name="name" 
+                                            id="pet_name"
+                                            [ngClass]="{ 'is-valid': isFieldValid('name'), 'is-invalid': isFieldInvalid('name'), 'has-content': hasContent('name') }"
+                                        >
+                                        <label for="pet_name" class="filters__container__item--label">Nombre de la mascota</label>
+                                    </div>
+                                    <div class="filters__container__item d-flex flex-row gap-2 align-items-center justify-content-center">
+                                        <input
+                                            type="date"
+                                            id="birthdate"
+                                            name="birthdate"
+                                            formControlName="birth_date"
+                                            class="filters__container__item--input"
+                                            [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
+                                        >
+                                        <label for="birthdate" class="filters__container__item--label">Fecha de nacimiento <span>(Opcional)</span></label>
+                                        <input
+                                            type="date"
+                                            id="birthdate"
+                                            name="birthdate"
+                                            formControlName="birth_date"
+                                            class="filters__container__item--input"
+                                            [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
+                                        >
+                                        <label for="birthdate" class="filters__container__item--label">Fecha de nacimiento <span>(Opcional)</span></label>
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                    </form>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

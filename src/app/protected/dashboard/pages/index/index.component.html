@@ -10,7 +10,7 @@
                             <div class="dashboard__body__header__container--box">
                                 <h3><fa-icon [icon]="faDog" style="color: var(--text-color)"></fa-icon> Mis peludos</h3>
                                 <span *ngIf="!this.counterLoader">{{this.totalPets}}</span>
-                                <fa-icon [icon]="faCircleNotch" animation="spin" size="2x" *ngIf="!this.totalPets"></fa-icon>
+                                <fa-icon [icon]="faCircleNotch" animation="spin" size="2x" *ngIf="this.counterLoader"></fa-icon>
                             </div>
                         </div>
                         <div class="dashboard__body__header__container">
@@ -24,20 +24,7 @@
                     <div class="dashboard__body__container">
                         <app-loader *ngIf="petsLoader"></app-loader>
                         <div class="dashboard__body__container__header">
-                            <div ngbAccordion>
-                                <div ngbAccordionItem [collapsed]="false">
-                                    <h2 ngbAccordionHeader>
-                                        <button ngbAccordionButton><fa-icon [icon]="faFilter"></fa-icon> Filtros</button>
-                                    </h2>
-                                    <div ngbAccordionCollapse>
-                                        <div ngbAccordionBody>
-                                            <ng-template>
-                                                <app-pet-filters></app-pet-filters>
-                                            </ng-template>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           <app-pet-filters></app-pet-filters>
                         </div>
                         <div class="dashboard__body__container__box" *ngIf="this.pets && !petsLoader" id="#my-pets">
                             <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">

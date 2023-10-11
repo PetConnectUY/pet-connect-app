@@ -70,7 +70,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
     this.showLoader = false;
     this.cdr.detectChanges();
   }
-
+  
   login() {
     this.invalidCredentials = false;
     this.unknowError = false;

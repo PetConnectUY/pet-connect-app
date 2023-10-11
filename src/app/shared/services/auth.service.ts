@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { catchError, map, of, tap, Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../interfaces/user.interface';
+import { SocialUser } from '@abacritt/angularx-social-login';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,21 @@ export class AuthService {
     const url = `${this.baseUrl}auth/login`;
     const body = { email, password };
     return this.http.post<AuthResponse>(url, body)
+      .pipe(
+        tap(res => {
+          this.setToken(res.access_token);
+          this.setUser(res.user);
+        }),
+        map(valid => valid),
+        catchError(err => {
+          return of(err);
+        })
+      );
+  }
+
+  authWithGoogle(user: SocialUser) {
+    const url = `${this.baseUrl}auth/google`;
+    return this.http.post<AuthResponse>(url, user)
       .pipe(
         tap(res => {
           this.setToken(res.access_token);

@@ -6,26 +6,25 @@ import { DarkModeTogglerComponent } from '../components/dark-mode-toggler/dark-m
 import { RouterModule } from '@angular/router';
 import { LoaderComponent } from '../components/loader/loader.component';
 import { HtmlToSafeHtmlPipe } from './pipes/html-to-safe-html.pipe';
-
-
+import { GoogleAuthComponent } from '../auth/components/google-auth/google-auth.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
     DarkModeTogglerComponent,
     LoaderComponent,
-    HtmlToSafeHtmlPipe
+    HtmlToSafeHtmlPipe,
   ],
   imports: [
     CommonModule,
     FontAwesomeModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [
     NavbarComponent,
     DarkModeTogglerComponent,
     LoaderComponent,
     HtmlToSafeHtmlPipe,
-  ]
+  ],
 })
 export class SharedModule { }
