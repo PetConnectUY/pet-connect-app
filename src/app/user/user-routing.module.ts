@@ -6,6 +6,7 @@ import { PetProfileComponent } from './pages/pet-profile/pet-profile.component';
 import { ProgressTemplateComponent } from './templates/progress-template/progress-template.component';
 import { LoggedUserCannotRegisterGuard } from './guards/logged-user-cannot-register.guard';
 import { ProfileSettingsComponent } from './pages/profile-settings/profile-settings.component';
+import { GoogleSignupComponent } from './pages/google-signup/google-signup.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
       {path: 'profile-settings', component: ProfileSettingsComponent, canActivate: [ValidateTokenGuard]},
     ]
   },
+  {
+    path: 'signup/google',
+    component: GoogleSignupComponent,
+    canActivate: [ValidateTokenGuard],
+  }
 ];
 
 @NgModule({

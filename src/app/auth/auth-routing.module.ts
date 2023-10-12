@@ -33,7 +33,7 @@ const routes: Routes = [
           {path: '', component: PetProfileComponent, canActivate: [ValidateTokenGuard]},
           {path: 'profile-settings', component: ProfileSettingsComponent, canActivate: [ValidateTokenGuard]}
         ]
-      }
+      },
     ]
   }
 ];

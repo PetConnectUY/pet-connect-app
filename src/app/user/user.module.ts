@@ -10,6 +10,7 @@ import { PetProfileComponent } from './pages/pet-profile/pet-profile.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { ProgressTemplateComponent } from './templates/progress-template/progress-template.component';
 import { ProfileSettingsComponent } from './pages/profile-settings/profile-settings.component';
+import { GoogleSignupComponent } from './pages/google-signup/google-signup.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ProfileSettingsComponent } from './pages/profile-settings/profile-setti
     ProgressBarComponent,
     ProgressTemplateComponent,
     ProfileSettingsComponent,
+    GoogleSignupComponent,
   ],
   imports: [
     CommonModule,

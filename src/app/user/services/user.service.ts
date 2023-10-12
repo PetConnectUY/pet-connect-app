@@ -30,6 +30,16 @@ export class UserService {
     return this.http.post<User>(url, formData);
   }
 
+  update(formData: FormData, id: number): Observable<User> {
+    const url = `${this.baseUrl}users/${id}`;
+    return this.http.post<User>(url, formData);
+  }
+
+  updateGoogleRegistration(formData: FormData, id: number): Observable<User> {
+    const url = `${this.baseUrl}users/${id}/google`;
+    return this.http.post<User>(url, formData); 
+  }
+
   getStatistics(): Observable<Statistics> {
     return this.http.get<Statistics>(`${this.baseUrl}users/statistics`);
   }

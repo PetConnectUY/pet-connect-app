@@ -8,14 +8,16 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./progress-template.component.scss']
 })
 export class ProgressTemplateComponent {
+  
   user: User | null;
   isAuthenticated: boolean = false;
   petId: number | undefined;
   
   constructor(private authService: AuthService) {
     this.user = this.authService.getUser();
-    this.isAuthenticated = this.authService.isAuthenticated();
+    this.isAuthenticated = this.authService.isAuthenticated();    
   }
+  
   currentStep: number = 0;
   eventPetId($event: number | undefined) {    
     this.petId = $event;

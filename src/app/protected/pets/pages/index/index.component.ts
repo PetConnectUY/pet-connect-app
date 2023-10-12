@@ -54,6 +54,10 @@ export class IndexComponent implements OnInit {
 
       this.qrActivationService.checkQRStatus(res['tokenId']).subscribe({
         next: (response: Message) => {
+          console.log(response);
+          console.log(this.tokenExpired);
+          
+          
           this.tokenStatusMessage = response.message;
           switch(this.tokenStatusMessage) {
             case 'No se encontró el código qr': 
@@ -61,28 +65,11 @@ export class IndexComponent implements OnInit {
               break;
             case 'Código qr no activado':
               if(this.user) {
+                console.log(this.user+'-'+this.tokenExpired);
+                
                 //Token no activado & usuario no autenticado
                 if (this.tokenExpired) {
-                  this.qrActivationService.setUserToToken().subscribe((res: Message) => {
-                    const setUserStatus = res.message;
-                    switch(setUserStatus) {
-                      case 'Código QR ya existe y está activado por el usuario':
-                        this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
-                        break;
-                      case 'El código QR ya está en uso por otro usuario':
-                        this.loadPetProfile();
-                        break;
-                      case 'Se asignó el código QR con éxito':
-                        this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
-                        break;
-                      default:
-                        this.loader = false;
-                        this.unknowError = true;
-                        //Error component
-                        this.errorMessage = 'Ocurrió un error al asignar el código qr al usuario. Por favor ponte en contacto'; 
-                        break;
-                    }
-                  });
+                  this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
                 } else {
                   this.qrActivationService.setUserToToken().subscribe({
                     next: (message: Message) => {
@@ -151,7 +138,7 @@ export class IndexComponent implements OnInit {
               break;
           }
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {          
           if (error.status === 401 && this.user) {
             this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
           } else {

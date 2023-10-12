@@ -6,14 +6,12 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { SigninComponent } from './pages/signin/signin.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from '../shared/shared.module';
-import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
 import { SocialLoginModule, GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
 
 @NgModule({
   declarations: [
     SigninComponent,
-    AlertModalComponent,
     GoogleAuthComponent,
   ],
   imports: [

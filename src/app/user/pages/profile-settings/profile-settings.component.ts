@@ -34,7 +34,6 @@ export class ProfileSettingsComponent {
 
   profileSettingsForm!: FormGroup;
 
-  @Input() petId!: number | undefined;
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(

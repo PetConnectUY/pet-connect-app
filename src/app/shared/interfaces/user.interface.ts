@@ -4,10 +4,9 @@ export interface User {
     id: number;
     firstname: string | null;
     lastname: string | null;
-    username: string;
     email: string | null;
-    birth_date: string;
-    phone: string;
+    birth_date: string | null;
+    phone: string | null;
     address: string | null;
     role: Role;
 }

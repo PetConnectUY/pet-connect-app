@@ -6,7 +6,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { AlertModalComponent } from '../../components/alert-modal/alert-modal.component';
 import { TokenService } from 'src/app/shared/services/token.service';
 import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
 import { Message } from 'src/app/user/interfaces/message.interface';
@@ -54,17 +53,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const tokenParam = params['token'];
-      if(tokenParam) {
-        this.modalService.open(AlertModalComponent, {
-          size: 'md',
-          centered: true,
-        });
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.showLoader = false;

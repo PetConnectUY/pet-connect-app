@@ -18,14 +18,14 @@
     </div>
     <!-- Si el usuario está autenticado, muestra el componente de profile-settings -->
     <div *ngIf="isAuthenticated">
-      <app-profile-settings [petId]="this.petId"></app-profile-settings>
+      <app-profile-settings></app-profile-settings>
     </div>
   </div>
   <!-- Step 2 -->
   <div *ngSwitchCase="2">
     <!-- Si el usuario no está autenticado, muestra el componente de profile-settings -->
     <div *ngIf="!isAuthenticated">
-      <app-profile-settings [petId]="this.petId"></app-profile-settings>
+      <app-profile-settings></app-profile-settings>
     </div>
   </div>
 </ng-container>
