@@ -43,7 +43,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   btnValue: string = 'Siguiente';
   private destroy$ = new Subject<void>();
 
-  token: string | null;
+  token!: string | null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -65,7 +65,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       address: ['', [Validators.required]],
       birth_date: ['', [Validators.required]],
     });
-    this.token = this.tokenService.getToken();
+    // this.token = this.tokenService.getToken();
   }
 
   ngOnInit(): void {
@@ -184,29 +184,30 @@ export class SignupComponent implements OnInit, AfterViewInit {
             switchMap((loginResult: AuthResponse) => {
               // Inicia sesión y obtiene un resultado de autenticación
               if (this.token) {
-                return this.qrActivationService.setUserToToken().pipe(
-                  map((message: Message) => {
-                    // Asigna el token al código QR y maneja los mensajes
-                    if (message.message === 'Código QR ya existe y está activado por el usuario') {
-                      this.router.navigate(['/users/pet-profile/', this.token]);
-                    } else if (message.message === 'El código QR ya está en uso por otro usuario.') {
-                      this.tokenService.clearToken();
-                      this.token = null;
-                      this.next.emit();
-                    } else if (message.message === 'Se asignó el código QR con éxito') {
-                      this.next.emit();
-                    }
-                    this.unknowError = false;
-                    this.submitting = false;
-                  }),
-                  catchError((error: HttpErrorResponse) => {
-                    // Manejo de errores al asignar el código QR
-                    this.unknowError = true;
-                    this.submitting = false;
-                    this.errorMessage = 'Ocurrió un error al asignar el código QR a tu usuario.';
-                    return throwError(error);
-                  })
-                );
+                return '';
+                // return this.qrActivationService.setUserToToken().pipe(
+                //   map((message: Message) => {
+                //     // Asigna el token al código QR y maneja los mensajes
+                //     if (message.message === 'Código QR ya existe y está activado por el usuario') {
+                //       this.router.navigate(['/users/pet-profile/', this.token]);
+                //     } else if (message.message === 'El código QR ya está en uso por otro usuario.') {
+                //       this.tokenService.clearToken();
+                //       this.token = null;
+                //       this.next.emit();
+                //     } else if (message.message === 'Se asignó el código QR con éxito') {
+                //       this.next.emit();
+                //     }
+                //     this.unknowError = false;
+                //     this.submitting = false;
+                //   }),
+                //   catchError((error: HttpErrorResponse) => {
+                //     // Manejo de errores al asignar el código QR
+                //     this.unknowError = true;
+                //     this.submitting = false;
+                //     this.errorMessage = 'Ocurrió un error al asignar el código QR a tu usuario.';
+                //     return throwError(error);
+                //   })
+                // );
               } else {
                 // Si no hay token, emite el evento next
                 this.next.emit();

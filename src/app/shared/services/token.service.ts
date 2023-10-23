@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment.development';
+import { CookieService } from './cookie.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
-  private token: string | null = null;
+  private cookieName = environment.cookies.tokenCookie;
+  private token!: string;
 
-  setToken(token: string): void {
-    this.token = token;
+  constructor(
+    private cookieService: CookieService,
+  ) {}
+
+  getToken(token: string | null) {    
+    return this.cookieService.getCookie(token);
   }
 
-  getToken(): string | null {
-    return this.token;
-  }
-
-  clearToken(): void {
-    this.token = null;
+  setToken(token:string | null) {
+    sessionStorage.setItem('token', token!);
   }
 }

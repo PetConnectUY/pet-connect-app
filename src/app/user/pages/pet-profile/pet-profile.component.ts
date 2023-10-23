@@ -37,7 +37,7 @@ export class PetProfileComponent {
   btnValue: string = 'Siguiente';
 
   races: PetRace[] = [];
-  token: string | null;
+  token!: string | null;
   petId!: number;
 
   constructor(
@@ -50,7 +50,7 @@ export class PetProfileComponent {
     private router: Router,
   ){
     this.user = this.authService.getUser();
-    this.token = this.tokenService.getToken();
+    // this.token = this.tokenService.getToken();
     this.petService.getRaces().subscribe({
       next: (res: PetRace[]) => {
         this.races = res;
@@ -163,9 +163,10 @@ export class PetProfileComponent {
       switchMap(() => {
         // Realiza la asignación de la mascota al código QR
         if (this.token) {
-          return this.qrActivateService.setPetToToken(this.petId).pipe(
-            map(() => 'Mascota asignada al código QR con éxito')
-          );
+          return '';
+          //  this.qrActivateService.setPetToToken(this.petId).pipe(
+          //   map(() => 'Mascota asignada al código QR con éxito')
+          // );
         } else {
           return of('Mascota creada con éxito, pero no se asignó al código QR');
         }

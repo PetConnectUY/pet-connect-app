@@ -16,17 +16,10 @@ export class QRActivationService {
     private tokenService: TokenService,
   ) { }
 
-  checkQRStatus(token: string | null): Observable<Message> {
-    return this.http.get<Message>(`${this.baseUrl}qr-codes/verify-activation/${token}`);
-  }
-
-  setUserToToken(): Observable<Message> {
-    const token = this.tokenService.getToken();
-    return this.http.post<Message>(`${this.baseUrl}qr-codes/activate/set-user/${token}`, []);
-  }
-
-  setPetToToken(petId: number): Observable<string> {
-    const token = this.tokenService.getToken();    
-    return this.http.post<string>(`${this.baseUrl}qr-codes/activate/${token}`, {pet_id: petId});
+  manageActivation(token: string): Observable<Pet | Message> {
+    const url = `${this.baseUrl}qr-codes/manage-activation/${token}`;
+    return this.http.get<Pet | Message>(url, {
+      withCredentials: true
+    });
   }
 }

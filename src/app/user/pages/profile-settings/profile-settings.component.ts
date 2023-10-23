@@ -30,7 +30,7 @@ export class ProfileSettingsComponent {
   contactPhone: number = 1;
   contactMail: number = 1;
 
-  token: string | null;
+  token!: string | null;
 
   profileSettingsForm!: FormGroup;
 
@@ -43,7 +43,7 @@ export class ProfileSettingsComponent {
     private tokenService: TokenService,
     private router: Router,
   ) {
-    this.token = this.tokenService.getToken();
+    // this.token = this.tokenService.getToken();
     this.profileSettingsForm = this.fb.group({
       user_fullname_visible: [this.nameVisible, [Validators.required]],
       user_location_visible: [this.locationVisible, [Validators.required]],

@@ -44,7 +44,7 @@ export class GoogleSignupComponent {
   btnValue: string = 'Siguiente';
   private destroy$ = new Subject<void>();
 
-  token: string | null;
+  token!: string | null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -68,7 +68,7 @@ export class GoogleSignupComponent {
       address: ['', [Validators.required]],
       birth_date: ['', [Validators.required]],
     });
-    this.token = this.tokenService.getToken();
+    // this.token = this.tokenService.getToken();
   }
 
   ngOnInit(): void {
@@ -181,61 +181,36 @@ export class GoogleSignupComponent {
       formData.append('g-recaptcha-response', token);
       
       if(this.signupForm.valid) {
-        this.userService.updateGoogleRegistration(formData, this.user!.id).pipe(
-          switchMap((res: User) => {
-            return this.authService.login(email, password).pipe(
-              switchMap((loginResult: AuthResponse) => {
-                // Inicia sesión y obtiene un resultado de autenticación
-                if (this.token) {
-                  return this.qrActivationService.setUserToToken().pipe(
-                    map((message: Message) => {
-                      switch(message.message) {
-                        case 'Código QR ya existe y está activado por el usuario':
-                          this.router.navigate(['/users/pet-profile'], { queryParams: { token: this.token } });
-                          break;
-                        case 'El código QR ya está en uso por otro usuario.':
-                          this.tokenService.clearToken();
-                          this.token = null;
-                          this.router.navigate(['/users/pet-profile/']);
-                          break;
-                        case 'Se asignó el código QR con éxito':
-                          this.router.navigate(['/users/pet-profile'], { queryParams: { token: this.token } });
-                          break;
-                      }
-                      this.unknowError = false;
-                      this.submitting = false;
-                    }),
-                    catchError((error: HttpErrorResponse) => {
-                      // Manejo de errores al asignar el código QR
-                      this.unknowError = true;
-                      this.submitting = false;
-                      this.errorMessage = 'Ocurrió un error al asignar el código QR a tu usuario.';
-                      return throwError(error);
-                    })
-                  );
-                } else {
-                  // Si no hay token, emite el evento next
-                  this.router.navigateByUrl('/dashboard');
-                  return of(null);
-                }
-              }),
-              catchError((error: HttpErrorResponse) => {
-                // Manejo de errores al iniciar sesión
-                this.unknowError = true;
-                this.submitting = false;
-                this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
-                return throwError(error);
-              })
-            );
-          }),
-          catchError((error: HttpErrorResponse) => {
-            // Manejo de errores al registrar al usuario
-            this.submitting = false;
-            this.unknowError = true;
-            this.errorMessage = 'Ocurrió un error al registrar el usuario.';
-            return throwError(error.error);
-          })
-        ).subscribe();
+        // this.userService.updateGoogleRegistration(formData, this.user!.id).pipe(
+        //   switchMap((res: User) => {
+        //     return this.authService.login(email, password).pipe(
+        //       switchMap((loginResult: AuthResponse) => {
+        //         // Inicia sesión y obtiene un resultado de autenticación
+        //         if (this.token) {
+        //           //
+        //         } else {
+        //           // Si no hay token, emite el evento next
+        //           this.router.navigateByUrl('/dashboard');
+        //           return of(null);
+        //         }
+        //       }),
+        //       catchError((error: HttpErrorResponse) => {
+        //         // Manejo de errores al iniciar sesión
+        //         this.unknowError = true;
+        //         this.submitting = false;
+        //         this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
+        //         return throwError(error);
+        //       })
+        //     );
+        //   }),
+        //   catchError((error: HttpErrorResponse) => {
+        //     // Manejo de errores al registrar al usuario
+        //     this.submitting = false;
+        //     this.unknowError = true;
+        //     this.errorMessage = 'Ocurrió un error al registrar el usuario.';
+        //     return throwError(error.error);
+        //   })
+        // ).subscribe();
       }
     });
   }

@@ -49,101 +49,66 @@ export class IndexComponent implements OnInit {
     this.user = this.authService.getUser();
 
     this.route.params.subscribe((res) => {
-      this.tokenService.setToken(res['tokenId']);
-      this.token = this.tokenService.getToken();
-
-      this.qrActivationService.checkQRStatus(res['tokenId']).subscribe({
-        next: (response: Message) => {
-          console.log(response);
-          console.log(this.tokenExpired);
-          
-          
-          this.tokenStatusMessage = response.message;
-          switch(this.tokenStatusMessage) {
-            case 'No se encontró el código qr': 
-              // Retorna componente 404
-              break;
-            case 'Código qr no activado':
-              if(this.user) {
-                console.log(this.user+'-'+this.tokenExpired);
-                
-                //Token no activado & usuario no autenticado
-                if (this.tokenExpired) {
-                  this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
-                } else {
-                  this.qrActivationService.setUserToToken().subscribe({
-                    next: (message: Message) => {
-                      this.loader = false;
-                      this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
-                    },
-                    error: (error: HttpErrorResponse) => {
-                      this.unknowError = true;
-                      this.errorMessage = 'Ocurrió un error al asignar el código QR a tu usuario.';
-                    }
-                  });
-                }
-              } else {
-                this.router.navigate(['/users/signup/'], {queryParams: { token: this.token }});
-              }
-              break;
-            case 'Código qr activado':
-              this.loadPetProfile();
-              break;
-            case 'Debe asignar mascota':
-              this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
-              break;
-            case 'Este qr no pertenece al usuario y no tiene una mascota asignada':
-              this.qrNotActived = true;
-              this.loader = false;
-              this.loadPet = false;
-              break;
-            case 'Código qr en uso pero no activado':
-              if(this.user) {
-                if(this.tokenExpired) {
-                  this.qrActivationService.setUserToToken().subscribe((res: Message) => {
-                    const setUserStatus = res.message;
-                    switch(setUserStatus) {
-                      case 'Código QR ya existe y está activado por el usuario':
-                        this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
-                        break;
-                      case 'El código QR ya está en uso por otro usuario':
-                        this.loadPetProfile();
-                        break;
-                      case 'Se asignó el código QR con éxito':
-                        this.router.navigate(['/auth/signin'], { queryParams: { token: this.token } });
-                        break;
-                      default:
-                        this.loader = false;
-                        this.unknowError = true;
-                        //Error component
-                        this.errorMessage = 'Ocurrió un error al asignar el código qr al usuario. Por favor ponte en contacto'; 
-                        break;
-                    }
-                  });
-                } else {
-                  this.qrActivationService.setUserToToken().subscribe({
-                    next: (message: Message) => {
-                      this.loader = false;
-                      this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
-                    },
-                    error: (error: HttpErrorResponse) => {
-                      this.unknowError = true;
-                      this.errorMessage = 'Ocurrió un error al asignar el código QR a tu usuario.';
-                    }
-                  });
-                }
-              } else {
-                this.router.navigate(['/users/signup/'], {queryParams: { token: this.token }});
-              }
-              break;
+      this.tokenService.getToken(res['tokenId']).subscribe({
+        next: (res: any) => {
+          if(res.message === 'La cookie expiró y se reinició la información del qr.') {
+            window.location.reload();
+          }
+          this.token = res.data;
+        },
+        error: (error: HttpErrorResponse) => {
+          if(error.status === 404) {
+            this.unknowError = true;
+            this.errorMessage = 'No se encontró el token.';
+          }
+        }
+      });
+      
+      this.qrActivationService.manageActivation(res['tokenId']).subscribe({
+        next: (res: Pet | Message) => {
+          if('pet' in res) {
+            this.loadPet = true;            
+            this.loader = false;
+            this.pet = res.pet as Pet;
+          } else if ('message' in res) {
+            switch(res.message) {
+              case 'Se asignó el código QR con éxito':
+                this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
+                break;
+              default:
+                this.unknowError = true;
+                this.errorMessage = 'Ocurrió un error inesperado.';
+                break;
+            }
           }
         },
-        error: (error: HttpErrorResponse) => {          
-          if (error.status === 401 && this.user) {
-            this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
-          } else {
-            this.loader = false; // Establece el loader en false solo si no es un error 401 o no hay un usuario
-            this.errorMessage = 'Ocurrió un error al validar el estado del código QR.';
+        error: (error: HttpErrorResponse) => {
+                
+          switch(error.status) {
+            case 404: 
+              // Notfound component
+              break;
+            case 400:
+              switch(error.error.error) {
+                case 'Debe asignar la mascota al código QR.':
+                  this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
+                  break;
+                case 'Intente nuevamente.':
+                  this.router.navigate([this.router.url]);
+                  break;
+                case 'Este código QR no te pertenece.':
+                  this.unknowError = true;
+                  this.errorMessage = 'El código ya pertenece a otro usuario.';
+                  break;
+                case 'Hay un caso no cubierto.':
+                  this.unknowError = true;
+                  this.errorMessage = 'Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.';
+              }
+              break;
+            case 500:
+              this.unknowError = true;
+              this.errorMessage = 'Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.';
+              break;
           }
         }
       });
@@ -151,23 +116,6 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
-  loadPetProfile() {
-    this.loader = true;
-    this.loadPet = false;
-    this.petService.loadProfile(this.token).subscribe({
-      next: (pet: Pet) => {
-        this.loader = false;
-        this.loadPet = true;
-        this.pet = pet;
-      },
-      error: (error: HttpErrorResponse) => {        
-        this.unknowError = true;
-        this.loader = false;
-        this.errorMessage = 'Ocurrió un error al obtener la mascota.';
-      }
-    });
-  }
 
   petFound(token: string) {
     const modalRef = this.modalService.open(PetFoundModalComponent, {
