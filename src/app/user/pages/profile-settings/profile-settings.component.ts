@@ -86,7 +86,7 @@ export class ProfileSettingsComponent {
       
       this.userService.changeSettings(formData).subscribe({
         next: (res: UserPetProfileSetting) => {
-          this.router.navigate([`/pets/${this.token}`]);
+          this.router.navigate(['/dashboard']);
         },
         error: (error: HttpErrorResponse) => {
           this.submitting = false;

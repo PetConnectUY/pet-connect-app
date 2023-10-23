@@ -161,40 +161,9 @@ export class PetProfileComponent {
         );
       }),
       switchMap(() => {
-        // Realiza la asignación de la mascota al código QR
-        if (this.token) {
-          return '';
-          //  this.qrActivateService.setPetToToken(this.petId).pipe(
-          //   map(() => 'Mascota asignada al código QR con éxito')
-          // );
-        } else {
-          return of('Mascota creada con éxito, pero no se asignó al código QR');
-        }
-      }),
-      catchError((error: HttpErrorResponse) => {        
-        // Manejo de errores relacionados con la asignación al código QR
-        return throwError('Ocurrió un error al asignar el código QR a la mascota.');
+        this.next.emit();
+        return of(null);
       })
-    ).subscribe({
-      next: (message: string) => {
-        this.submitting = false;
-        this.unknowError = false;
-        
-        if(this.token) {
-          // Emitir el evento 'next' solo si la asignación se realizó con éxito
-          if (message === 'Mascota asignada al código QR con éxito') {      
-            this.eventPetId.emit(this.petId);      
-            this.next.emit();
-          }
-        } else {
-          this.router.navigate(['/dashboard']);
-        }
-      },
-      error: (error: string) => {
-        this.submitting = false;
-        this.unknowError = true;
-        this.errorMessage = error;
-      }
-    });
+    ).subscribe();
   }
 }

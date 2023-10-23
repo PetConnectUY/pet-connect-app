@@ -181,36 +181,30 @@ export class GoogleSignupComponent {
       formData.append('g-recaptcha-response', token);
       
       if(this.signupForm.valid) {
-        // this.userService.updateGoogleRegistration(formData, this.user!.id).pipe(
-        //   switchMap((res: User) => {
-        //     return this.authService.login(email, password).pipe(
-        //       switchMap((loginResult: AuthResponse) => {
-        //         // Inicia sesión y obtiene un resultado de autenticación
-        //         if (this.token) {
-        //           //
-        //         } else {
-        //           // Si no hay token, emite el evento next
-        //           this.router.navigateByUrl('/dashboard');
-        //           return of(null);
-        //         }
-        //       }),
-        //       catchError((error: HttpErrorResponse) => {
-        //         // Manejo de errores al iniciar sesión
-        //         this.unknowError = true;
-        //         this.submitting = false;
-        //         this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
-        //         return throwError(error);
-        //       })
-        //     );
-        //   }),
-        //   catchError((error: HttpErrorResponse) => {
-        //     // Manejo de errores al registrar al usuario
-        //     this.submitting = false;
-        //     this.unknowError = true;
-        //     this.errorMessage = 'Ocurrió un error al registrar el usuario.';
-        //     return throwError(error.error);
-        //   })
-        // ).subscribe();
+        this.userService.updateGoogleRegistration(formData, this.user!.id).pipe(
+          switchMap((res: User) => {
+            return this.authService.login(email, password).pipe(
+              switchMap((loginResult: AuthResponse) => {
+                this.router.navigateByUrl('/dashboard');
+                return of(null);
+              }),
+              catchError((error: HttpErrorResponse) => {
+                // Manejo de errores al iniciar sesión
+                this.unknowError = true;
+                this.submitting = false;
+                this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
+                return throwError(error);
+              })
+            );
+          }),
+          catchError((error: HttpErrorResponse) => {
+            // Manejo de errores al registrar al usuario
+            this.submitting = false;
+            this.unknowError = true;
+            this.errorMessage = 'Ocurrió un error al registrar el usuario.';
+            return throwError(error.error);
+          })
+        ).subscribe();
       }
     });
   }
