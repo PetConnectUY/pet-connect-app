@@ -19,6 +19,7 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaFormsModule } from "ng-recaptcha";
+import { ErrorComponent } from './components/error/error.component';
 
 
 
@@ -30,6 +31,7 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaFormsModule } from "
     AboutComponent,
     FrequentQuestionsComponent,
     PurchaseComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
