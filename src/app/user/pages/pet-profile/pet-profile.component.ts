@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { catchError, map, of, switchMap, throwError } from 'rxjs';
+import { catchError, of, switchMap, throwError, map } from 'rxjs';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
@@ -39,18 +39,25 @@ export class PetProfileComponent {
   races: PetRace[] = [];
   token!: string | null;
   petId!: number;
+  hasToken: boolean = false;
 
   constructor(
     private authService: AuthService,
     private formValidationService: FormValidationService,
     private petService: PetService,
     private fb: FormBuilder,
-    private tokenService: TokenService,
-    private qrActivateService: QRActivationService,
     private router: Router,
+    private route: ActivatedRoute,
+    private tokenService: TokenService,
+    private qrActivationService: QRActivationService,
   ){
     this.user = this.authService.getUser();
-    // this.token = this.tokenService.getToken();
+    this.route.queryParamMap.subscribe((res) => {
+      if(res.has('hasToken')) {
+        this.hasToken = true;
+      }
+    });
+    
     this.petService.getRaces().subscribe({
       next: (res: PetRace[]) => {
         this.races = res;
@@ -161,8 +168,22 @@ export class PetProfileComponent {
         );
       }),
       switchMap(() => {
+        if(this.hasToken) {
+          const token = this.tokenService.getCookie();
+          const tokenForm = new FormData();
+          tokenForm.append('pet_id', this.petId.toString());
+          return this.qrActivationService.manageActivation(token, tokenForm).pipe(
+            catchError((error: HttpErrorResponse) => {
+              return throwError('Ocurrió un error al asignar la mascota al código.');
+            }),
+          );
+        } else {
+          this.next.emit();
+          return of(null);
+        }
+      }),
+      map(() => {
         this.next.emit();
-        return of(null);
       })
     ).subscribe();
   }

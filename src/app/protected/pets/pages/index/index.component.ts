@@ -42,48 +42,39 @@ export class IndexComponent implements OnInit {
     private qrActivationService: QRActivationService,
     private authService: AuthService,
     private tokenService: TokenService,
-    private petService: PetService,
     private modalService: NgbModal
   ) {
     this.tokenExpired = this.authService.tokenExpired();
     this.user = this.authService.getUser();
 
     this.route.params.subscribe((res) => {
-      this.tokenService.getToken(res['tokenId']).subscribe({
-        next: (res: any) => {
-          if(res.message === 'La cookie expiró y se reinició la información del qr.') {
-            window.location.reload();
-          }
-          this.token = res.data;
-        },
-        error: (error: HttpErrorResponse) => {
-          if(error.status === 404) {
-            this.unknowError = true;
-            this.errorMessage = 'No se encontró el token.';
-          }
-        }
-      });
-      
-      this.qrActivationService.manageActivation(res['tokenId']).subscribe({
+      if(res['tokenId'] !== this.tokenService.getCookie()) {
+        this.tokenService.deleteCookie();
+        this.tokenService.setCookie(res['tokenId']);
+      } 
+      this.qrActivationService.manageActivation(this.tokenService.getCookie()).subscribe({
         next: (res: Pet | Message) => {
+          console.log(res);
+          
           if('pet' in res) {
+            this.tokenService.deleteCookie();
             this.loadPet = true;            
             this.loader = false;
             this.pet = res.pet as Pet;
           } else if ('message' in res) {
             switch(res.message) {
               case 'Se asignó el código QR con éxito':
-                this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
+                this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { hasToken: true } });
                 break;
               default:
+                this.tokenService.deleteCookie();
                 this.unknowError = true;
                 this.errorMessage = 'Ocurrió un error inesperado.';
                 break;
             }
           }
         },
-        error: (error: HttpErrorResponse) => {
-                
+        error: (error: HttpErrorResponse) => {              
           switch(error.status) {
             case 404: 
               // Notfound component
@@ -91,21 +82,25 @@ export class IndexComponent implements OnInit {
             case 400:
               switch(error.error.error) {
                 case 'Debe asignar la mascota al código QR.':
-                  this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { token: this.token } });
+                  this.router.navigate(['/auth/signin/pet-profile'], { queryParams: { hasToken: true } });
                   break;
                 case 'Intente nuevamente.':
-                  this.router.navigate([this.router.url]);
+                  this.tokenService.deleteCookie();
+                  window.location.reload();
                   break;
                 case 'Este código QR no te pertenece.':
+                  this.tokenService.deleteCookie();
                   this.unknowError = true;
                   this.errorMessage = 'El código ya pertenece a otro usuario.';
                   break;
                 case 'Hay un caso no cubierto.':
+                  this.tokenService.deleteCookie();
                   this.unknowError = true;
                   this.errorMessage = 'Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.';
               }
               break;
             case 500:
+              this.tokenService.deleteCookie();
               this.unknowError = true;
               this.errorMessage = 'Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.';
               break;

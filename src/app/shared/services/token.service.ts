@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
-import { CookieService } from './cookie.service';
 import { Observable } from 'rxjs';
+import * as CryptoJS from 'crypto-js';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,26 @@ export class TokenService {
   private token!: string;
 
   constructor(
-    private cookieService: CookieService,
+    private cookieService: CookieService,  
   ) {}
 
-  getToken(token: string | null) {    
-    return this.cookieService.getCookie(token);
+  setCookie(token: string | null) {
+    const encryption = CryptoJS.AES.encrypt(token!, environment.keys.encryption);    
+    this.cookieService.set(this.cookieName, encryption.toString());
   }
 
-  setToken(token:string | null) {
-    sessionStorage.setItem('token', token!);
+  getCookie() {
+    const cookie = this.cookieService.get(this.cookieName);
+    if(cookie) {
+      let key = environment.keys.encryption;
+      
+      const decrypted = CryptoJS.AES.decrypt(cookie, key);
+      return decrypted.toString(CryptoJS.enc.Utf8);    
+    }
+    return null;
+  }
+
+  deleteCookie() {
+    this.cookieService.delete(this.cookieName);
   }
 }
