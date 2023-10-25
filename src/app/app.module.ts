@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,7 +19,8 @@ import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaFormsModule } from "ng-recaptcha";
-import { ErrorComponent } from './components/error/error.component';
+import { ErrorComponent } from './errors/components/error/error.component';
+import { MyErrorHandler } from './errors/error.handler';
 
 
 
@@ -50,6 +51,7 @@ import { ErrorComponent } from './components/error/error.component';
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: "6Ld_MEYoAAAAAIymj1uB3BakkGkNlimFXm2Un_sY" },
+    { provide: ErrorHandler, useClass: MyErrorHandler }
   ],
   exports: [
     NavbarComponent,

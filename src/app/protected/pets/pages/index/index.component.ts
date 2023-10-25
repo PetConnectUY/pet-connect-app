@@ -1,4 +1,3 @@
-// Frontend Component
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QRActivationService } from '../../services/qractivation.service';
@@ -7,7 +6,6 @@ import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { TokenService } from 'src/app/shared/services/token.service';
 import { Message } from 'src/app/user/interfaces/message.interface';
-import { PetService } from '../../services/pet.service';
 import { Pet } from '../../interfaces/pet.interface';
 import { faMars, faPaw, faUser, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -77,7 +75,7 @@ export class IndexComponent implements OnInit {
         error: (error: HttpErrorResponse) => {              
           switch(error.status) {
             case 404: 
-              // Notfound component
+              throw new Error('404');
               break;
             case 400:
               switch(error.error.error) {

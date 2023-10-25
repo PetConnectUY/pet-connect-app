@@ -1,4 +1,5 @@
-.mensaje {
+.message {
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,8 +8,8 @@
     color: var(--primary-color);
     text-align: center; 
     
-    h2{
-      font-size: 2rem;
+    h4{
+      font-size: 1.3rem;
     }
 
     &--error {
@@ -18,8 +19,6 @@
  
     &--image {
         width: 250px;
-    
-       
       }
     @media (max-width: 768px) {
       &--error {
@@ -28,13 +27,13 @@
       &--image{
         width: 150px;
       }
-      h2{
+      h4{
         font-size: 1rem;
       }
     }
 }
 
-.boton {
+.button {
     background-color: var(--primary-color);
     color: var(--background-color);
     border-radius: .6rem;

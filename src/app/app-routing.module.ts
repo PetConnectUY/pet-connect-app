@@ -4,8 +4,8 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { ValidateTokenGuard } from './protected/shared/guards/ValidateToken.guard';
 import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
 import { PurchaseComponent } from './pages/purchase/purchase.component';
-import { ErrorComponent } from './components/error/error.component';
-import { errors } from './constants/errors.constant';
+import { ErrorComponent } from './errors/components/error/error.component';
+import { errors } from './errors/constants/errors.constant';
 
 const routes: Routes = [
   {
@@ -42,7 +42,7 @@ const routes: Routes = [
     loadChildren: () => import('./protected/pets/pets.module').then(m => m.PetsModule),
   },
   {
-    path: 'error',
+    path: 'error/:code',
     component: ErrorComponent,
   }
 ];
