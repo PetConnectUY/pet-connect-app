@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { TokenService } from 'src/app/shared/services/token.service';
@@ -30,7 +30,7 @@ export class ProfileSettingsComponent {
   contactPhone: number = 1;
   contactMail: number = 1;
 
-  token: string | null;
+  hasToken: boolean = false;
 
   profileSettingsForm!: FormGroup;
 
@@ -42,8 +42,13 @@ export class ProfileSettingsComponent {
     private userService: UserService,
     private tokenService: TokenService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
-    this.token = this.tokenService.getToken();
+    this.route.queryParamMap.subscribe((res) => {
+      if(res.has('hasToken')) {
+        this.hasToken = true;
+      }
+    });
     this.profileSettingsForm = this.fb.group({
       user_fullname_visible: [this.nameVisible, [Validators.required]],
       user_location_visible: [this.locationVisible, [Validators.required]],
@@ -86,7 +91,11 @@ export class ProfileSettingsComponent {
       
       this.userService.changeSettings(formData).subscribe({
         next: (res: UserPetProfileSetting) => {
-          this.router.navigate([`/pets/${this.token}`]);
+          if(this.hasToken) {
+            this.router.navigate([`/pets/${this.tokenService.getCookie()}`]);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
         error: (error: HttpErrorResponse) => {
           this.submitting = false;

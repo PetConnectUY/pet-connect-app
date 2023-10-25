@@ -23,7 +23,7 @@
                     </div>
                     <div class="dashboard__body__container">
                         <app-loader *ngIf="petsLoader"></app-loader>
-                        <div class="dashboard__body__container__header">
+                        <div *ngIf="!petsLoader" class="dashboard__body__container__header">
                            <app-pet-filters></app-pet-filters>
                         </div>
                         <div class="dashboard__body__container__box" *ngIf="this.pets && !petsLoader" id="#my-pets">

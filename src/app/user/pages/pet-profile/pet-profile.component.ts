@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { catchError, map, of, switchMap, throwError } from 'rxjs';
+import { catchError, of, switchMap, throwError, map } from 'rxjs';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
@@ -37,20 +37,27 @@ export class PetProfileComponent {
   btnValue: string = 'Siguiente';
 
   races: PetRace[] = [];
-  token: string | null;
+  token!: string | null;
   petId!: number;
+  hasToken: boolean = false;
 
   constructor(
     private authService: AuthService,
     private formValidationService: FormValidationService,
     private petService: PetService,
     private fb: FormBuilder,
-    private tokenService: TokenService,
-    private qrActivateService: QRActivationService,
     private router: Router,
+    private route: ActivatedRoute,
+    private tokenService: TokenService,
+    private qrActivationService: QRActivationService,
   ){
     this.user = this.authService.getUser();
-    this.token = this.tokenService.getToken();
+    this.route.queryParamMap.subscribe((res) => {
+      if(res.has('hasToken')) {
+        this.hasToken = true;
+      }
+    });
+    
     this.petService.getRaces().subscribe({
       next: (res: PetRace[]) => {
         this.races = res;
@@ -161,39 +168,23 @@ export class PetProfileComponent {
         );
       }),
       switchMap(() => {
-        // Realiza la asignación de la mascota al código QR
-        if (this.token) {
-          return this.qrActivateService.setPetToToken(this.petId).pipe(
-            map(() => 'Mascota asignada al código QR con éxito')
+        if(this.hasToken) {
+          const token = this.tokenService.getCookie();
+          const tokenForm = new FormData();
+          tokenForm.append('pet_id', this.petId.toString());
+          return this.qrActivationService.manageActivation(token, tokenForm).pipe(
+            catchError((error: HttpErrorResponse) => {
+              return throwError('Ocurrió un error al asignar la mascota al código.');
+            }),
           );
         } else {
-          return of('Mascota creada con éxito, pero no se asignó al código QR');
+          this.next.emit();
+          return of(null);
         }
       }),
-      catchError((error: HttpErrorResponse) => {        
-        // Manejo de errores relacionados con la asignación al código QR
-        return throwError('Ocurrió un error al asignar el código QR a la mascota.');
+      map(() => {
+        this.next.emit();
       })
-    ).subscribe({
-      next: (message: string) => {
-        this.submitting = false;
-        this.unknowError = false;
-        
-        if(this.token) {
-          // Emitir el evento 'next' solo si la asignación se realizó con éxito
-          if (message === 'Mascota asignada al código QR con éxito') {      
-            this.eventPetId.emit(this.petId);      
-            this.next.emit();
-          }
-        } else {
-          this.router.navigate(['/dashboard']);
-        }
-      },
-      error: (error: string) => {
-        this.submitting = false;
-        this.unknowError = true;
-        this.errorMessage = error;
-      }
-    });
+    ).subscribe();
   }
 }

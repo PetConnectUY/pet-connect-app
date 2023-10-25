@@ -14,6 +14,7 @@ import { AuthResponse } from 'src/app/shared/interfaces/auth-response.interface'
 import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
 import { TokenService } from 'src/app/shared/services/token.service';
 import { Message } from '../../interfaces/message.interface';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-signup',
@@ -43,7 +44,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   btnValue: string = 'Siguiente';
   private destroy$ = new Subject<void>();
 
-  token: string | null;
+  token!: string | null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -53,6 +54,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
     private nominatimService: NominatimService,
+    private recaptchaV3Service: ReCaptchaV3Service,
     private tokenService: TokenService,
     private qrActivationService: QRActivationService,
   ) {
@@ -65,19 +67,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
       address: ['', [Validators.required]],
       birth_date: ['', [Validators.required]],
     });
-    this.token = this.tokenService.getToken();
+    // this.token = this.tokenService.getToken();
   }
 
   ngOnInit(): void {
-      this.signupForm.get('email')?.valueChanges
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-      )
-      .subscribe(() => {
-        this.validateEmail();
-      });
-
       this.signupForm.get('address')?.valueChanges
       .pipe(
         debounceTime(500),
@@ -128,20 +121,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
     return this.formValidationService.getErrorMessage(errorKey, formControl.errors[errorKey]);
   }
 
-  validateEmail(): void {
-    const emailControl = this.signupForm.get('email');
-    if (emailControl?.valid) {
-      this.loaderForEmailExists = true;
-      this.userService.checkEmailExists(emailControl.value).then((exists) => {
-        this.emailExists = exists;
-        this.loaderForEmailExists = false;
-      });
-    } else {
-      this.emailExists = false;
-      this.loaderForEmailExists = false;
-    }
-  }
-
   toggleShow() {
     this.show = !this.show;
   }
@@ -167,69 +146,40 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
     const { firstname, lastname, email, password, phone, address, birth_date } = this.signupForm.value;
     const formData = new FormData();
+    this.recaptchaV3Service.execute('save').subscribe((token) => {
+      formData.append('firstname', firstname);
+      formData.append('lastname', lastname);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('phone', phone);
+      formData.append('address', address);
+      formData.append('birth_date', birth_date);
+      formData.append('g-recaptcha-response', token);
 
-    formData.append('firstname', firstname);
-    formData.append('lastname', lastname);
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('phone', phone);
-    formData.append('address', address);
-    formData.append('birth_date', birth_date);
-
-    if(this.signupForm.valid) {
-      this.userService.register(formData).pipe(
-        switchMap((res: User) => {
-          // Registra al usuario y obtiene una respuesta (res)
-          return this.authService.login(email, password).pipe(
-            switchMap((loginResult: AuthResponse) => {
-              // Inicia sesión y obtiene un resultado de autenticación
-              if (this.token) {
-                return this.qrActivationService.setUserToToken().pipe(
-                  map((message: Message) => {
-                    // Asigna el token al código QR y maneja los mensajes
-                    if (message.message === 'Código QR ya existe y está activado por el usuario') {
-                      this.router.navigate(['/users/pet-profile/', this.token]);
-                    } else if (message.message === 'El código QR ya está en uso por otro usuario.') {
-                      this.tokenService.clearToken();
-                      this.token = null;
-                      this.next.emit();
-                    } else if (message.message === 'Se asignó el código QR con éxito') {
-                      this.next.emit();
-                    }
-                    this.unknowError = false;
-                    this.submitting = false;
-                  }),
-                  catchError((error: HttpErrorResponse) => {
-                    // Manejo de errores al asignar el código QR
-                    this.unknowError = true;
-                    this.submitting = false;
-                    this.errorMessage = 'Ocurrió un error al asignar el código QR a tu usuario.';
-                    return throwError(error);
-                  })
-                );
-              } else {
-                // Si no hay token, emite el evento next
+      if(this.signupForm.valid) {
+        this.userService.register(formData).pipe(
+          switchMap((res: User) => {
+            return this.authService.login(email, password).pipe(
+              switchMap((loginResult: AuthResponse) => {
                 this.next.emit();
                 return of(null);
-              }
-            }),
-            catchError((error: HttpErrorResponse) => {
-              // Manejo de errores al iniciar sesión
-              this.unknowError = true;
-              this.submitting = false;
-              this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
-              return throwError(error);
-            })
-          );
-        }),
-        catchError((error: HttpErrorResponse) => {
-          // Manejo de errores al registrar al usuario
-          this.submitting = false;
-          this.unknowError = true;
-          this.errorMessage = 'Ocurrió un error al registrar el usuario.';
-          return throwError(error.error);
-        })
-      ).subscribe();
-    }
+              }),
+              catchError((error: HttpErrorResponse) => {
+                this.unknowError = true;
+                this.submitting = false;
+                this.errorMessage = 'Ocurrió un error al iniciar sesión de forma automática.';
+                return throwError(error);
+              })
+            );
+          }),
+          catchError((error: HttpErrorResponse) => {
+            this.submitting = false;
+            this.unknowError = true;
+            this.errorMessage = 'Ocurrió un error al registrar el usuario.';
+            return throwError(error.error);
+          })
+        ).subscribe();
+      }
+    });
   }
 }

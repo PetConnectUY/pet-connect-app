@@ -14,7 +14,7 @@ export class ValidateTokenGuard implements CanActivate {
     private router: Router,
     private tokenService: TokenService,
   ) {
-    this.token = this.tokenService.getToken();
+    // this.token = this.tokenService.getToken();
   }
 
 
