@@ -28,6 +28,11 @@ export class PetService {
     });
   }
 
+  getPetsIndex(): Observable<PetPagination> {
+    const url = `${this.baseUrl}pets?total=9999`;
+    return this.http.get<PetPagination>(url);
+  }
+
   getPet(id: number): Observable<Pet> {
     const url = `${this.baseUrl}pets/${id}`;
     return this.http.get<Pet>(url);

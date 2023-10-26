@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output, ViewChild, AfterViewInit, OnDestroy, O
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { catchError, of, switchMap, throwError, map, takeUntil, take } from 'rxjs';
+import { catchError, of, switchMap, throwError, map, takeUntil, take, forkJoin } from 'rxjs';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
@@ -14,6 +14,7 @@ import { FormValidationService } from 'src/app/shared/services/form-validation.s
 import { TokenService } from 'src/app/shared/services/token.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
+import { PetPagination } from 'src/app/protected/pets/interfaces/pet.pagination.interface';
 
 @Component({
   selector: 'app-pet-profile',
@@ -31,6 +32,8 @@ export class PetProfileComponent implements OnDestroy {
 
   user: User|null;
 
+  loading: boolean = true;
+
   petForm!: FormGroup;
   selectedImage: string | null = null;
   unknowError: boolean = false;
@@ -38,6 +41,7 @@ export class PetProfileComponent implements OnDestroy {
   submitting: boolean = false;
   btnValue: string = 'Siguiente';
 
+  pets!: PetPagination;
   races: PetRace[] = [];
   token!: string | null;
   petId!: number;
@@ -65,10 +69,13 @@ export class PetProfileComponent implements OnDestroy {
         this.hasToken = true;
       }
     });
-    
-    this.petService.getRaces().subscribe({
-      next: (res: PetRace[]) => {
-        this.races = res;
+    const getRaces$ = this.petService.getRaces();
+    const getUserPets$ = this.petService.getPetsIndex();
+
+    forkJoin([getRaces$, getUserPets$]).subscribe({
+      next: ([races, pets]) => {
+        this.pets = pets;
+        this.races = races;
         this.raceCtrl.setValue(this.races);
         this.filteredRaces.next(this.races.slice());
         this.raceFilterCtrl.valueChanges
@@ -76,12 +83,17 @@ export class PetProfileComponent implements OnDestroy {
           .subscribe(() => {
             this.filterRaces();
           });
+          this.loading = false;
+          console.log(this.pets);
+          
       },
       error: (error: HttpErrorResponse) => {
         this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al obtener las razas.';
+        this.errorMessage = 'Ocurrió un error al obtener las razas o las mascotas.';
+        this.loading = false;
       }
     });
+
     this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
       birth_date: [''],
