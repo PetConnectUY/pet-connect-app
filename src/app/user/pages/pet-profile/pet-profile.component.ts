@@ -172,7 +172,7 @@ export class PetProfileComponent implements OnDestroy {
     this.unknowError = false;
     const oldBtnValue = this.btnValue;
     const { name, birth_date, gender, pet_information, image } = this.petForm.value; 
-    const race_id = this.raceCtrl.value.id;
+    const race_id = this.raceCtrl.value;
     const formData = new FormData();
     formData.append('name', name);
     formData.append('birth_date', birth_date);
@@ -187,6 +187,10 @@ export class PetProfileComponent implements OnDestroy {
       this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
       return;
     }
+    formData.forEach((r) => {
+      console.log(r);
+    })
+    
   
     this.petService.createPet(formData).pipe(
       switchMap((res: Pet) => {
@@ -199,8 +203,10 @@ export class PetProfileComponent implements OnDestroy {
         // Realiza la solicitud para crear la imagen de la mascota
         return this.petService.createImage(imageFormData).pipe(
           catchError((error: HttpErrorResponse) => {
-            // Manejo de errores relacionados con la imagen
-            return throwError('Ocurrió un error al subir la imagen de la mascota.');
+            this.submitting = false;
+            this.unknowError = true;
+            this.errorMessage = 'Ocurrió un error inesperado al subir la imagen de la mascota.';
+            return throwError('');
           })
         );
       }),
@@ -211,7 +217,10 @@ export class PetProfileComponent implements OnDestroy {
           tokenForm.append('pet_id', this.petId.toString());
           return this.qrActivationService.manageActivation(token, tokenForm).pipe(
             catchError((error: HttpErrorResponse) => {
-              return throwError('Ocurrió un error al asignar la mascota al código.');
+              this.submitting = false;
+              this.unknowError = true;
+              this.errorMessage = 'Ocurrió un error inesperado al activar el código qr.';
+              return throwError('');
             }),
           );
         } else {

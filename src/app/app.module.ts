@@ -23,6 +23,15 @@ import { ErrorComponent } from './errors/components/error/error.component';
 import { MyErrorHandler } from './errors/error.handler';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { APP_DATEFORMAT } from './shared/configs/app.dateformat';
+
 
 @NgModule({
   declarations: [
@@ -48,11 +57,19 @@ import { MatSelectModule } from '@angular/material/select';
     RecaptchaFormsModule,
     BrowserAnimationsModule,
     MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: "6Ld_MEYoAAAAAIymj1uB3BakkGkNlimFXm2Un_sY" },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATEFORMAT }
+
     // { provide: ErrorHandler, useClass: MyErrorHandler }
   ],
   exports: [

@@ -48,16 +48,16 @@
                 </div>
                 <div class="row justify-content-around ">
                     <div class="col-sm-12 col-md-6 col-lg-6 profile__container__items__item">
-                        <input
-                            type="date"
-                            id="birthdate"
-                            name="birthdate"
-                            formControlName="birth_date"
-                            class="profile__container__items__item--input"
-                            [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date') }"
-                        >
-                        <label for="birthdate" class="profile__container__items__item--label">Fecha de nacimiento <span>(Opcional)</span></label>
-                        <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('birth_date')">
+                        <mat-form-field>
+                            <mat-label>Fecha de nacimiento (opcional)</mat-label>
+                            <input (click)="picker.open()" formControlName="birth_date" matInput [matDatepicker]="picker">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker">
+                              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>   
+                       <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('birth_date')">
                             <fa-icon [icon]="faExclamationCircle"></fa-icon> 
                             <p *ngIf="petForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
                         </div>   
@@ -90,19 +90,19 @@
                     </div>
                 </div>
                 <div class="profile__container__items__item">
-                    <select 
-                        name="gender" 
-                        id="gender" 
-                        class="profile__container__items__item--input" 
-                        formControlName="gender" 
-                        [ngClass]="{ 'is-valid': isFieldValid('gender'), 'is-invalid': isFieldInvalid('gender')}"
-                        (input)="onInputChanged($event)"
-                    >
-                        <option value=""></option>
-                        <option value="male">Macho</option>
-                        <option value="female">Hembra</option>
-                    </select>
-                    <label for="gender" class="profile__container__items__item--label">Sexo</label>
+                    <mat-form-field>
+                        <mat-select 
+                            placeholder="Seleccione el género"
+                            name="gender" 
+                            id="gender" 
+                            formControlName="gender" 
+                            [ngClass]="{ 'is-valid': isFieldValid('gender'), 'is-invalid': isFieldInvalid('gender')}"
+                            (input)="onInputChanged($event)">
+                            <mat-option value="">Género de la mascota</mat-option>
+                            <mat-option value="male">Macho</mat-option>
+                            <mat-option value="female">Hembra</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                     <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('gender')">
                         <fa-icon [icon]="faExclamationCircle"></fa-icon> 
                         <p>{{getErrorMessage('gender')}}</p>
