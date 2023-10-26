@@ -186,11 +186,7 @@ export class PetProfileComponent implements OnDestroy {
       this.unknowError = true;
       this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
       return;
-    }
-    formData.forEach((r) => {
-      console.log(r);
-    })
-    
+    }    
   
     this.petService.createPet(formData).pipe(
       switchMap((res: Pet) => {
@@ -211,7 +207,7 @@ export class PetProfileComponent implements OnDestroy {
         );
       }),
       switchMap(() => {
-        if(this.hasToken) {
+        if(this.hasToken && this.tokenService.getCookie() !== null) {
           const token = this.tokenService.getCookie();
           const tokenForm = new FormData();
           tokenForm.append('pet_id', this.petId.toString());
