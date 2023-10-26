@@ -20,9 +20,14 @@ export class ErrorComponent {
           this.errorCode = errors.NOT_FOUND.code,
           this.errorMessage = errors.NOT_FOUND.message;
           break;
-        case '404': 
+        case '502': 
           this.errorCode = errors.TIME_OUT.code;
           this.errorMessage = errors.TIME_OUT.message;
+          break;
+        case '500':
+          this.errorCode = errors.INTERNAL_SERVER_ERROR.code;
+          this.errorMessage = errors.INTERNAL_SERVER_ERROR.message;
+          break;
       }
     });
   }

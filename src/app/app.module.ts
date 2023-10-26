@@ -21,8 +21,8 @@ import localeEs from '@angular/common/locales/es';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaFormsModule } from "ng-recaptcha";
 import { ErrorComponent } from './errors/components/error/error.component';
 import { MyErrorHandler } from './errors/error.handler';
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -46,18 +46,21 @@ import { MyErrorHandler } from './errors/error.handler';
     RouterModule.forRoot([]),
     RecaptchaV3Module,
     RecaptchaFormsModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: "6Ld_MEYoAAAAAIymj1uB3BakkGkNlimFXm2Un_sY" },
-    { provide: ErrorHandler, useClass: MyErrorHandler }
+    // { provide: ErrorHandler, useClass: MyErrorHandler }
   ],
   exports: [
     NavbarComponent,
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
   constructor() {
     registerLocaleData(localeEs); // Importa la configuración regional para 'es-ES'

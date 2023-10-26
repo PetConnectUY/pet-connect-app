@@ -63,21 +63,30 @@
                         </div>   
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 profile__container__items__item">
-                        <select 
-                            name="race_id" 
-                            id="race_id" 
-                            class="profile__container__items__item--input" 
-                            formControlName="race_id" 
-                            [ngClass]="{ 'is-valid': isFieldValid('race_id'), 'is-invalid': isFieldInvalid('race_id')}"
-                            (input)="onInputChanged($event)"
-                        >
-                            <option *ngFor="let race of races" [value]="race.id">{{ race.name }}</option>
-                        </select>
-                        <label for="race_id" class="profile__container__items__item--label">Raza</label>
-                        <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('race_id')">
-                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                            <p>{{getErrorMessage('race_id')}}</p>
-                        </div>
+                        <mat-form-field>
+                            <mat-select 
+                                name="race_id" 
+                                id="race_id" 
+                                [formControl]="raceCtrl"
+                                #raceSelect
+                                [ngClass]="{ 'is-valid': isFieldValid('race_id'), 'is-invalid': isFieldInvalid('race_id')}"
+                                (input)="onInputChanged($event)"
+                                placeholder="Seleccione una raza"
+                                (keydown.enter)="$event.preventDefault()"
+                                >
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="raceFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let race of (filteredRaces | async)" [value]="race.id">
+                                    {{race.name}}
+                                </mat-option>
+                            </mat-select>
+                            <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('race_id')">
+                                <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                                <p>{{getErrorMessage('race_id')}}</p>
+                            </div>
+                        </mat-form-field>
+                        
                     </div>
                 </div>
                 <div class="profile__container__items__item">

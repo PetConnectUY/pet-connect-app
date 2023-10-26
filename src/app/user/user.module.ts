@@ -11,6 +11,8 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 import { ProgressTemplateComponent } from './templates/progress-template/progress-template.component';
 import { ProfileSettingsComponent } from './pages/profile-settings/profile-settings.component';
 import { GoogleSignupComponent } from './pages/google-signup/google-signup.component';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { GoogleSignupComponent } from './pages/google-signup/google-signup.compo
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule,
   ],
 })
 export class UserModule { }
