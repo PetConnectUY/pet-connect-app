@@ -224,7 +224,11 @@ export class PetProfileComponent implements OnDestroy {
           return of(null);
         }
       }),
-      map(() => {})
+      map(() => {
+        if(this.hasToken && this.tokenService.getCookie() !== null) {
+          this.next.emit();
+        }
+      })
     ).subscribe();
   }
 }

@@ -91,7 +91,7 @@ export class ProfileSettingsComponent {
       
       this.userService.changeSettings(formData).subscribe({
         next: (res: UserPetProfileSetting) => {
-          if(this.hasToken) {
+          if(this.hasToken && this.tokenService.getCookie() !== null) {
             this.router.navigate([`/pets/${this.tokenService.getCookie()}`]);
           } else {
             this.router.navigate(['/dashboard']);
