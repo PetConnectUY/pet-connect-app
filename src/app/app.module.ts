@@ -62,6 +62,7 @@ import { APP_DATEFORMAT } from './shared/configs/app.dateformat';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
+    MatInputModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },

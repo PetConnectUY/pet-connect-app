@@ -65,12 +65,12 @@ $pet-connect-app-theme: mat.define-light-theme((
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($pet-connect-app-theme);
-
 /* You can add global styles to this file, and also import other style files */
 :root {
     --primary-color: #F9B348;
     --primary-font: 'Cinzel', serif;
     --secondary-font: 'Montserrat', sans-serif;
+    --mat-select-panel-background-color: #fff;
 
     --background-color: #fff;
     --text-color: #2b2b2b;

@@ -42,6 +42,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatNativeDateModule,
     MatIconModule,
     NgxMatSelectSearchModule,
+    MatInputModule,
   ],
 })
 export class UserModule { }

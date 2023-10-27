@@ -41,18 +41,26 @@ export class PetProfileComponent implements OnDestroy {
   submitting: boolean = false;
   btnValue: string = 'Siguiente';
 
-  pets!: PetPagination;
+  pets: Pet[] = [];
   races: PetRace[] = [];
   token!: string | null;
   petId!: number;
   hasToken: boolean = false;
+  petSelected: boolean = false;
+  
   public raceCtrl: FormControl = new FormControl();
   public raceFilterCtrl: FormControl = new FormControl();
   public filteredRaces: ReplaySubject<PetRace[]> = new ReplaySubject<PetRace[]>(1);
 
-  @ViewChild('raceSelect') raceSelect!: MatSelect;
+  public petCtrl: FormControl = new FormControl();
+  public petFilterCtrl: FormControl = new FormControl();
+  public filteredPets: ReplaySubject<Pet[]> = new ReplaySubject<Pet[]>(1);
 
-  protected _onDestroy = new Subject<void>();
+  @ViewChild('raceSelect') raceSelect!: MatSelect;
+  @ViewChild('petSelect') petSelect!: MatSelect;
+
+  protected _onDestroyRace = new Subject<void>();
+  protected _onDestroyPet = new Subject<void>();
 
   constructor(
     private authService: AuthService,
@@ -63,6 +71,7 @@ export class PetProfileComponent implements OnDestroy {
     private tokenService: TokenService,
     private qrActivationService: QRActivationService,
   ){
+    this.token = this.tokenService.getCookie();
     this.user = this.authService.getUser();
     this.route.queryParamMap.subscribe((res) => {
       if(res.has('hasToken')) {
@@ -74,15 +83,31 @@ export class PetProfileComponent implements OnDestroy {
 
     forkJoin([getRaces$, getUserPets$]).subscribe({
       next: ([races, pets]) => {
-        this.pets = pets;
+        this.pets = pets.data;
         this.races = races;
         this.raceCtrl.setValue(this.races);
+        this.petCtrl.setValue(this.pets);
         this.filteredRaces.next(this.races.slice());
+        this.filteredPets.next(this.pets.slice());
         this.raceFilterCtrl.valueChanges
-          .pipe(takeUntil(this._onDestroy))
+          .pipe(takeUntil(this._onDestroyRace))
           .subscribe(() => {
             this.filterRaces();
           });
+        this.petFilterCtrl.valueChanges
+          .pipe(takeUntil(this._onDestroyPet))
+          .subscribe((selected) => {
+            if (selected) {
+              // Aquí puedes realizar las acciones que desees cuando se selecciona una mascota
+              console.log('Mascota seleccionada:', selected);
+              // También puedes establecer una variable para rastrear si se seleccionó una mascota
+              this.petSelected = true;
+            } else {
+              // Aquí puedes realizar acciones si se deselecciona una mascota (si es necesario)
+              this.petSelected = false;
+            }
+            this.filterPets();
+          })
           this.loading = false;
           console.log(this.pets);
           
@@ -105,24 +130,54 @@ export class PetProfileComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._onDestroy.next();
-    this._onDestroy.complete();
+    this._onDestroyRace.next();
+    this._onDestroyRace.complete();
+    this._onDestroyPet.next();
+    this._onDestroyPet.complete();
   }
 
   protected filterRaces() {
-    if(!this.races) {
-      return;
+    if (!this.races) {
+        return;
     }
     let search = this.raceFilterCtrl.value;
-    if(!search) {
-      this.filteredRaces.next(this.races.slice());
-      return;
+    if (!search) {
+        this.filteredRaces.next(this.races.slice());
+        return;
     } else {
-      search = search.toLowerCase();
+        search = search.toLowerCase();
     }
     this.filteredRaces.next(
-      this.races.filter(race => race.name.toLocaleLowerCase().indexOf(search) > -1)
+        this.races.filter(race => race.name.toLocaleLowerCase().indexOf(search) > -1)
     );
+  }
+
+  protected filterPets() {
+    if (!this.pets) {
+        return;
+    }
+    let search = this.petFilterCtrl.value;
+    if (!search) {
+        this.filteredPets.next(this.pets.slice());
+        return;
+    } else {
+        search = search.toLowerCase();
+    }
+    this.filteredPets.next(
+        this.pets.filter(pet => pet.name.toLocaleLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  onPetChange() {
+    if(this.petCtrl.value != undefined) {
+      this.petSelected = true;
+      this.raceCtrl.disable();
+      this.petForm.disable();
+    } else {
+      this.petSelected = false;
+      this.petForm.enable();
+      this.raceCtrl.enable();
+    }
   }
 
   genderValidation(control: FormControl) {
@@ -183,64 +238,80 @@ export class PetProfileComponent implements OnDestroy {
     this.submitting = true;
     this.unknowError = false;
     const oldBtnValue = this.btnValue;
-    const { name, birth_date, gender, pet_information, image } = this.petForm.value; 
-    const race_id = this.raceCtrl.value;
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('birth_date', birth_date);
-    formData.append('race_id', race_id);
-    formData.append('gender', gender);
-    formData.append('pet_information', pet_information);
-  
-    const petImage = this.petForm.get('image')?.value as File | null;
-    if (!petImage) {
-      this.submitting = false;
-      this.unknowError = true;
-      this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
-      return;
-    }    
-  
-    this.petService.createPet(formData).pipe(
-      switchMap((res: Pet) => {
-        this.petId = res.id;
-        const imageFormData = new FormData();
-        imageFormData.append('pet_id', this.petId.toString());
-        imageFormData.append('image', this.petForm.get('image')?.value);
-        imageFormData.append('cover_image', '1');
-        
-        // Realiza la solicitud para crear la imagen de la mascota
-        return this.petService.createImage(imageFormData).pipe(
-          catchError((error: HttpErrorResponse) => {
-            this.submitting = false;
-            this.unknowError = true;
-            this.errorMessage = 'Ocurrió un error inesperado al subir la imagen de la mascota.';
-            return throwError('');
-          })
-        );
-      }),
-      switchMap(() => {
-        if(this.hasToken && this.tokenService.getCookie() !== null) {
-          const token = this.tokenService.getCookie();
-          const tokenForm = new FormData();
-          tokenForm.append('pet_id', this.petId.toString());
-          return this.qrActivationService.manageActivation(token, tokenForm).pipe(
+    if(this.petSelected = true && this.hasToken && this.tokenService.getCookie() !== null) {
+      const token = this.tokenService.getCookie();
+      const tokenForm = new FormData();
+      tokenForm.append('pet_id', this.petCtrl.value);
+      this.qrActivationService.manageActivation(token, tokenForm).subscribe({
+        next: (res) => {
+          this.next.emit();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al asignar la mascota.';
+          this.submitting = false;
+        }
+      });
+    } else {
+      const { name, birth_date, gender, pet_information, image } = this.petForm.value; 
+      const race_id = this.raceCtrl.value;
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('birth_date', birth_date);
+      formData.append('race_id', race_id);
+      formData.append('gender', gender);
+      formData.append('pet_information', pet_information);
+    
+      const petImage = this.petForm.get('image')?.value as File | null;
+      if (!petImage) {
+        this.submitting = false;
+        this.unknowError = true;
+        this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
+        return;
+      }    
+    
+      this.petService.createPet(formData).pipe(
+        switchMap((res: Pet) => {
+          this.petId = res.id;
+          const imageFormData = new FormData();
+          imageFormData.append('pet_id', this.petId.toString());
+          imageFormData.append('image', this.petForm.get('image')?.value);
+          imageFormData.append('cover_image', '1');
+          
+          // Realiza la solicitud para crear la imagen de la mascota
+          return this.petService.createImage(imageFormData).pipe(
             catchError((error: HttpErrorResponse) => {
               this.submitting = false;
               this.unknowError = true;
-              this.errorMessage = 'Ocurrió un error inesperado al activar el código qr.';
+              this.errorMessage = 'Ocurrió un error inesperado al subir la imagen de la mascota.';
               return throwError('');
-            }),
+            })
           );
-        } else {
-          this.next.emit();
-          return of(null);
-        }
-      }),
-      map(() => {
-        if(this.hasToken && this.tokenService.getCookie() !== null) {
-          this.next.emit();
-        }
-      })
-    ).subscribe();
+        }),
+        switchMap(() => {
+          if(this.hasToken && this.tokenService.getCookie() !== null) {
+            const token = this.tokenService.getCookie();
+            const tokenForm = new FormData();
+            tokenForm.append('pet_id', this.petId.toString());
+            return this.qrActivationService.manageActivation(token, tokenForm).pipe(
+              catchError((error: HttpErrorResponse) => {
+                this.submitting = false;
+                this.unknowError = true;
+                this.errorMessage = 'Ocurrió un error inesperado al activar el código qr.';
+                return throwError('');
+              }),
+            );
+          } else {
+            this.next.emit();
+            return of(null);
+          }
+        }),
+        map(() => {
+          if(this.hasToken && this.tokenService.getCookie() !== null) {
+            this.next.emit();
+          }
+        })
+      ).subscribe();
+    }
   }
 }
