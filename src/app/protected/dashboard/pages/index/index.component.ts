@@ -44,7 +44,7 @@ export class IndexComponent implements OnInit{
     private modalService: NgbModal,
     private route: ActivatedRoute,
   ){
-    this.petService.getRaces().subscribe({
+    this.petService.getRaces('').subscribe({
       next: (res: PetRace[]) => {
         this.races = res;
         this.petsLoader = false;

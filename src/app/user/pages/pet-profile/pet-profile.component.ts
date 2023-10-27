@@ -47,6 +47,9 @@ export class PetProfileComponent implements OnDestroy {
   petId!: number;
   hasToken: boolean = false;
   petSelected: boolean = false;
+  loadingRaces: boolean = false;
+
+  public petType: FormControl = new FormControl();
   
   public raceCtrl: FormControl = new FormControl();
   public raceFilterCtrl: FormControl = new FormControl();
@@ -72,53 +75,74 @@ export class PetProfileComponent implements OnDestroy {
     private qrActivationService: QRActivationService,
   ){
     this.token = this.tokenService.getCookie();
-    
     this.user = this.authService.getUser();
+    this.raceCtrl.disable();
+
     this.route.queryParamMap.subscribe((res) => {
       if(res.has('hasToken')) {
         this.hasToken = true;
       }
     });
-    console.log(this.token+'-'+this.hasToken);
-    const getRaces$ = this.petService.getRaces();
-    const getUserPets$ = this.petService.getPetsIndex();
 
-    forkJoin([getRaces$, getUserPets$]).subscribe({
-      next: ([races, pets]) => {
-        this.pets = pets.data;
-        this.races = races;
-        this.raceCtrl.setValue(this.races);
-        this.petCtrl.setValue(this.pets);
-        this.filteredRaces.next(this.races.slice());
-        this.filteredPets.next(this.pets.slice());
-        this.raceFilterCtrl.valueChanges
-          .pipe(takeUntil(this._onDestroyRace))
-          .subscribe(() => {
-            this.filterRaces();
-          });
-        this.petFilterCtrl.valueChanges
-          .pipe(takeUntil(this._onDestroyPet))
-          .subscribe(() => {
-            this.filterPets();
-          })
-          this.loading = false;
-          console.log(this.pets);
+    if(this.token && this.hasToken) {
+      this.petService.getPetsIndex().subscribe({
+        next: (pets) => {
+          this.pets = pets.data;
           
-      },
-      error: (error: HttpErrorResponse) => {
-        this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al obtener las razas o las mascotas.';
-        this.loading = false;
-      }
-    });
+          this.petCtrl.setValue(this.pets);
+          this.filteredPets.next(this.pets.slice());
+          this.petFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroyPet))
+            .subscribe(() => {
+              this.filterPets();
+            })
+            this.loading = false;
+            
+        },
+        error: (error: HttpErrorResponse) => {
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al obtener las razas o las mascotas.';
+          this.loading = false;
+        }
+      });
+    } else {
+      this.loading = false;
+    }
 
     this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
+      type: [this.petType.value, [Validators.required]],
       birth_date: [''],
-      race_id: [this.raceCtrl.value],
+      race_id: ['', [Validators.required]],
       gender: ['', [Validators.required, this.genderValidation]],
       pet_information: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ\s\d.,!?-]*$/)]],
       image: [null],
+    });
+  }
+
+  protected getRaces() {
+    this.petForm.controls['type'].setValue(this.petType.value);
+    this.petType.disable();
+      this.loadingRaces = true;
+      this.petService.getRaces(this.petType.value).subscribe({
+        next: (res: PetRace[]) => {
+          this.races = res;
+          this.raceCtrl.setValue(this.races);
+          this.filteredRaces.next(this.races.slice());
+          this.raceFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroyRace))
+            .subscribe(() => {
+              this.filterRaces();
+            });
+            this.loadingRaces = false;
+            this.raceCtrl.enable();
+            this.petType.enable();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loadingRaces = false;
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al obtener las razas.';
+        }
     });
   }
 
@@ -171,6 +195,10 @@ export class PetProfileComponent implements OnDestroy {
       this.petForm.enable();
       this.raceCtrl.enable();
     }
+  }
+
+  onRaceChange() {
+    this.petForm.controls['race_id'].setValue(this.raceCtrl.value);
   }
 
   genderValidation(control: FormControl) {
@@ -246,10 +274,10 @@ export class PetProfileComponent implements OnDestroy {
         }
       });
     } else {
-      const { name, birth_date, gender, pet_information, image } = this.petForm.value; 
-      const race_id = this.raceCtrl.value;
+      const { name, birth_date, gender, pet_information, image, race_id, type } = this.petForm.value; 
       const formData = new FormData();
       formData.append('name', name);
+      formData.append('type', type);
       formData.append('birth_date', birth_date);
       formData.append('race_id', race_id);
       formData.append('gender', gender);

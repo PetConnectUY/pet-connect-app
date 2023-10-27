@@ -71,7 +71,24 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <div class="row justify-content-around ">
+                <div class="profile__container__items__item">
+                    <mat-form-field>
+                        <mat-label>Especie de peludito</mat-label>
+                        <mat-select
+                            name="petType"
+                            [formControl]="petType"
+                            (selectionChange)="getRaces()"
+                        >
+                            <mat-option value="d">Perro</mat-option>
+                            <mat-option value="c">Gato</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="isFieldInvalid('petType')">
+                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                            <p *ngIf="petForm.get('petType')?.errors?.['required']">La especie del peludito es requerida.</p>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row justify-content-around">
                     <div class="col-sm-12 col-md-6 col-lg-6 profile__container__items__item">
                         <mat-form-field>
                             <mat-label>Fecha de nacimiento (opcional)</mat-label>
@@ -95,14 +112,17 @@
                         <mat-form-field>
                             <mat-select 
                                 name="race_id" 
-                                id="race_id" 
+                                id="race_id"
                                 [formControl]="raceCtrl"
+                                (selectionChange)="onRaceChange()"
                                 #raceSelect
                                 [ngClass]="{ 'is-valid': isFieldValid('race_id'), 'is-invalid': isFieldInvalid('race_id')}"
                                 (input)="onInputChanged($event)"
                                 placeholder="Seleccione una raza"
                                 placeholderLabel="Selecciona una mascota..."
                                 noEntriesFoundLabel="'No se encontraron mascotas'"
+                                [panelClass]="getRaces"
+                                required
                                 >
                                 <mat-option>
                                     <ngx-mat-select-search 
@@ -115,12 +135,13 @@
                                     {{race.name}}
                                 </mat-option>
                             </mat-select>
+                            <mat-spinner *ngIf="loadingRaces" class="spinner internal-spinner" diameter="20"></mat-spinner>
+                            <mat-hint *ngIf="this.races.length <= 0">Selecciona la especie del peludito para ver las razas</mat-hint>
                             <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('race_id')">
                                 <fa-icon [icon]="faExclamationCircle"></fa-icon> 
                                 <p>{{getErrorMessage('race_id')}}</p>
                             </div>
                         </mat-form-field>
-                        
                     </div>
                 </div>
                 <div class="profile__container__items__item">

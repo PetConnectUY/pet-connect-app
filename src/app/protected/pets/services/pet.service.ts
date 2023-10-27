@@ -83,8 +83,8 @@ export class PetService {
     return this.http.post<Message>(url, formData);
   }
 
-  getRaces(): Observable<PetRace[]> {
-    const url = `${this.baseUrl}pets-races`;
+  getRaces(type: string): Observable<PetRace[]> {
+    const url = `${this.baseUrl}pets-races?type=${type}`;
     return this.http.get<PetRace[]>(url);
   }
 }
