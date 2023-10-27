@@ -9,15 +9,16 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class TokenService {
   private cookieName = environment.cookies.tokenCookie;
-  private token!: string;
 
   constructor(
     private cookieService: CookieService,  
   ) {}
 
   setCookie(token: string | null) {
-    const encryption = CryptoJS.AES.encrypt(token!, environment.keys.encryption);    
-    this.cookieService.set(this.cookieName, encryption.toString());
+    let date = new Date();
+    date.setDate(date.getDate() + 1);
+    const encryption = CryptoJS.AES.encrypt(token!, environment.keys.encryption);   
+    this.cookieService.set(this.cookieName, encryption.toString(), date, '/', undefined, true, 'Strict');
   }
 
   getCookie() {
@@ -27,8 +28,9 @@ export class TokenService {
       
       const decrypted = CryptoJS.AES.decrypt(cookie, key);
       return decrypted.toString(CryptoJS.enc.Utf8);    
+    } else {
+      return null;
     }
-    return null;
   }
 
   deleteCookie() {

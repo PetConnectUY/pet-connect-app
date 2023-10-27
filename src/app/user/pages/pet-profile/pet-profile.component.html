@@ -29,32 +29,35 @@
             <app-progress-bar [currentStep]="1"></app-progress-bar>
             <form [formGroup]="petForm" (ngSubmit)="createPet()">
                 <h1 class="profile__container__items--title">Perfil de tu mascota</h1>
-                <mat-form-field *ngIf="this.hasToken && this.token !== null">
-                    <mat-select 
-                        name="pet_id" 
-                        id="pet_id" 
-                        [formControl]="petCtrl"
-                        #petSelect
-                        (selectionChange)="onPetChange()"
-                        (input)="onInputChanged($event)"
-                        placeholder="Seleccione una mascota"
-                        placeholderLabel="Selecciona una mascota..."
-                        noEntriesFoundLabel="'No se encontraron mascotas'"
-                        (keydown.enter)="$event.preventDefault()"
-                        >
-                        <mat-option>
-                            <ngx-mat-select-search 
-                                [noEntriesFoundLabel]="'No se encontaron mascotas'" 
-                                [formControl]="petFilterCtrl"
-                                placeholderLabel="Buscar"
-                            ></ngx-mat-select-search>
-                        </mat-option>
-                        <mat-option></mat-option>
-                        <mat-option *ngFor="let pet of (filteredPets | async)" [value]="pet.id">
-                            {{pet.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div class="profile__container__items__item" *ngIf="this.hasToken && this.token !== null">
+                    <mat-form-field>
+                        <mat-label>Parece que ya tienes mascotas en tu cuenta (opcional)</mat-label>
+                        <mat-select 
+                            name="pet_id" 
+                            id="pet_id" 
+                            [formControl]="petCtrl"
+                            #petSelect
+                            (selectionChange)="onPetChange()"
+                            (input)="onInputChanged($event)"
+                            placeholder="Seleccione una mascota"
+                            placeholderLabel="Selecciona una mascota..."
+                            noEntriesFoundLabel="'No se encontraron mascotas'"
+                            (keydown.enter)="$event.preventDefault()"
+                            >
+                            <mat-option>
+                                <ngx-mat-select-search 
+                                    [noEntriesFoundLabel]="'No se encontaron mascotas'" 
+                                    [formControl]="petFilterCtrl"
+                                    placeholderLabel="Buscar"
+                                ></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let pet of (filteredPets | async)" [value]="pet.id">
+                                {{pet.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div class="profile__container__items__item">
                     <mat-form-field>
                         <mat-label>Nombre</mat-label>
@@ -77,7 +80,7 @@
                                 formControlName="birth_date" 
                                 matInput 
                                 [matDatepicker]="picker">
-                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-hint>DD/MM/AAAA</mat-hint>
                             <mat-error *ngIf="isFieldInvalid('birth_date')">
                                 <fa-icon [icon]="faExclamationCircle"></fa-icon> 
                                 <p *ngIf="petForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
@@ -145,8 +148,8 @@
                         <textarea
                             matInput
                             formControlName="pet_information"
+                            placeholder="Aquí podrás describir todas las características de tu peludito"
                         ></textarea>
-                        <mat-hint>Aquí podrás describir todas las características de tu peludito</mat-hint>
                         <mat-error *ngIf="isFieldInvalid('pet_information')">
                             {{getErrorMessage('pet_information')}}
                         </mat-error>

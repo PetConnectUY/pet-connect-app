@@ -43,7 +43,7 @@ export class PetProfileComponent implements OnDestroy {
 
   pets: Pet[] = [];
   races: PetRace[] = [];
-  token!: string | null;
+  token: string | null;
   petId!: number;
   hasToken: boolean = false;
   petSelected: boolean = false;
@@ -72,12 +72,14 @@ export class PetProfileComponent implements OnDestroy {
     private qrActivationService: QRActivationService,
   ){
     this.token = this.tokenService.getCookie();
+    
     this.user = this.authService.getUser();
     this.route.queryParamMap.subscribe((res) => {
       if(res.has('hasToken')) {
         this.hasToken = true;
       }
     });
+    console.log(this.token+'-'+this.hasToken);
     const getRaces$ = this.petService.getRaces();
     const getUserPets$ = this.petService.getPetsIndex();
 
@@ -96,16 +98,7 @@ export class PetProfileComponent implements OnDestroy {
           });
         this.petFilterCtrl.valueChanges
           .pipe(takeUntil(this._onDestroyPet))
-          .subscribe((selected) => {
-            if (selected) {
-              // Aquí puedes realizar las acciones que desees cuando se selecciona una mascota
-              console.log('Mascota seleccionada:', selected);
-              // También puedes establecer una variable para rastrear si se seleccionó una mascota
-              this.petSelected = true;
-            } else {
-              // Aquí puedes realizar acciones si se deselecciona una mascota (si es necesario)
-              this.petSelected = false;
-            }
+          .subscribe(() => {
             this.filterPets();
           })
           this.loading = false;
