@@ -28,6 +28,11 @@ export class PetService {
     });
   }
 
+  getPetsIndex(): Observable<PetPagination> {
+    const url = `${this.baseUrl}pets?total=9999`;
+    return this.http.get<PetPagination>(url);
+  }
+
   getPet(id: number): Observable<Pet> {
     const url = `${this.baseUrl}pets/${id}`;
     return this.http.get<Pet>(url);
@@ -78,8 +83,8 @@ export class PetService {
     return this.http.post<Message>(url, formData);
   }
 
-  getRaces(): Observable<PetRace[]> {
-    const url = `${this.baseUrl}pets-races`;
+  getRaces(type: string): Observable<PetRace[]> {
+    const url = `${this.baseUrl}pets-races?type=${type}`;
     return this.http.get<PetRace[]>(url);
   }
 }

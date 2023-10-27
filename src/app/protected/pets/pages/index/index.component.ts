@@ -46,10 +46,9 @@ export class IndexComponent implements OnInit {
     this.user = this.authService.getUser();
 
     this.route.params.subscribe((res) => {
-      if(res['tokenId'] !== this.tokenService.getCookie()) {
-        this.tokenService.deleteCookie();
-        this.tokenService.setCookie(res['tokenId']);
-      } 
+      
+      this.tokenService.deleteCookie();
+      this.tokenService.setCookie(res['tokenId']);
       this.qrActivationService.manageActivation(this.tokenService.getCookie()).subscribe({
         next: (res: Pet | Message) => {
           console.log(res);

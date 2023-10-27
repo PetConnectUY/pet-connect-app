@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output, ViewChild, AfterViewInit, OnDestroy, O
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { catchError, of, switchMap, throwError, map, takeUntil, take } from 'rxjs';
+import { catchError, of, switchMap, throwError, map, takeUntil, take, forkJoin } from 'rxjs';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
 import { PetService } from 'src/app/protected/pets/services/pet.service';
@@ -14,6 +14,7 @@ import { FormValidationService } from 'src/app/shared/services/form-validation.s
 import { TokenService } from 'src/app/shared/services/token.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
+import { PetPagination } from 'src/app/protected/pets/interfaces/pet.pagination.interface';
 
 @Component({
   selector: 'app-pet-profile',
@@ -31,6 +32,8 @@ export class PetProfileComponent implements OnDestroy {
 
   user: User|null;
 
+  loading: boolean = true;
+
   petForm!: FormGroup;
   selectedImage: string | null = null;
   unknowError: boolean = false;
@@ -38,17 +41,29 @@ export class PetProfileComponent implements OnDestroy {
   submitting: boolean = false;
   btnValue: string = 'Siguiente';
 
+  pets: Pet[] = [];
   races: PetRace[] = [];
-  token!: string | null;
+  token: string | null;
   petId!: number;
   hasToken: boolean = false;
+  petSelected: boolean = false;
+  loadingRaces: boolean = false;
+
+  public petType: FormControl = new FormControl();
+  
   public raceCtrl: FormControl = new FormControl();
   public raceFilterCtrl: FormControl = new FormControl();
   public filteredRaces: ReplaySubject<PetRace[]> = new ReplaySubject<PetRace[]>(1);
 
-  @ViewChild('raceSelect') raceSelect!: MatSelect;
+  public petCtrl: FormControl = new FormControl();
+  public petFilterCtrl: FormControl = new FormControl();
+  public filteredPets: ReplaySubject<Pet[]> = new ReplaySubject<Pet[]>(1);
 
-  protected _onDestroy = new Subject<void>();
+  @ViewChild('raceSelect') raceSelect!: MatSelect;
+  @ViewChild('petSelect') petSelect!: MatSelect;
+
+  protected _onDestroyRace = new Subject<void>();
+  protected _onDestroyPet = new Subject<void>();
 
   constructor(
     private authService: AuthService,
@@ -59,58 +74,131 @@ export class PetProfileComponent implements OnDestroy {
     private tokenService: TokenService,
     private qrActivationService: QRActivationService,
   ){
+    this.token = this.tokenService.getCookie();
     this.user = this.authService.getUser();
+    this.raceCtrl.disable();
+
     this.route.queryParamMap.subscribe((res) => {
       if(res.has('hasToken')) {
         this.hasToken = true;
       }
     });
-    
-    this.petService.getRaces().subscribe({
-      next: (res: PetRace[]) => {
-        this.races = res;
-        this.raceCtrl.setValue(this.races);
-        this.filteredRaces.next(this.races.slice());
-        this.raceFilterCtrl.valueChanges
-          .pipe(takeUntil(this._onDestroy))
-          .subscribe(() => {
-            this.filterRaces();
-          });
-      },
-      error: (error: HttpErrorResponse) => {
-        this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al obtener las razas.';
-      }
-    });
+
+    if(this.token && this.hasToken) {
+      this.petService.getPetsIndex().subscribe({
+        next: (pets) => {
+          this.pets = pets.data;
+          
+          this.petCtrl.setValue(this.pets);
+          this.filteredPets.next(this.pets.slice());
+          this.petFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroyPet))
+            .subscribe(() => {
+              this.filterPets();
+            })
+            this.loading = false;
+            
+        },
+        error: (error: HttpErrorResponse) => {
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al obtener las razas o las mascotas.';
+          this.loading = false;
+        }
+      });
+    } else {
+      this.loading = false;
+    }
+
     this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
+      type: [this.petType.value, [Validators.required]],
       birth_date: [''],
-      race_id: [this.raceCtrl.value],
+      race_id: ['', [Validators.required]],
       gender: ['', [Validators.required, this.genderValidation]],
       pet_information: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZñÑáÁéÉíÍóÓúÚüÜ\s\d.,!?-]*$/)]],
       image: [null],
     });
   }
 
+  protected getRaces() {
+    this.petForm.controls['type'].setValue(this.petType.value);
+    this.petType.disable();
+      this.loadingRaces = true;
+      this.petService.getRaces(this.petType.value).subscribe({
+        next: (res: PetRace[]) => {
+          this.races = res;
+          this.raceCtrl.setValue(this.races);
+          this.filteredRaces.next(this.races.slice());
+          this.raceFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroyRace))
+            .subscribe(() => {
+              this.filterRaces();
+            });
+            this.loadingRaces = false;
+            this.raceCtrl.enable();
+            this.petType.enable();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loadingRaces = false;
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al obtener las razas.';
+        }
+    });
+  }
+
   ngOnDestroy(): void {
-    this._onDestroy.next();
-    this._onDestroy.complete();
+    this._onDestroyRace.next();
+    this._onDestroyRace.complete();
+    this._onDestroyPet.next();
+    this._onDestroyPet.complete();
   }
 
   protected filterRaces() {
-    if(!this.races) {
-      return;
+    if (!this.races) {
+        return;
     }
     let search = this.raceFilterCtrl.value;
-    if(!search) {
-      this.filteredRaces.next(this.races.slice());
-      return;
+    if (!search) {
+        this.filteredRaces.next(this.races.slice());
+        return;
     } else {
-      search = search.toLowerCase();
+        search = search.toLowerCase();
     }
     this.filteredRaces.next(
-      this.races.filter(race => race.name.toLocaleLowerCase().indexOf(search) > -1)
+        this.races.filter(race => race.name.toLocaleLowerCase().indexOf(search) > -1)
     );
+  }
+
+  protected filterPets() {
+    if (!this.pets) {
+        return;
+    }
+    let search = this.petFilterCtrl.value;
+    if (!search) {
+        this.filteredPets.next(this.pets.slice());
+        return;
+    } else {
+        search = search.toLowerCase();
+    }
+    this.filteredPets.next(
+        this.pets.filter(pet => pet.name.toLocaleLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  onPetChange() {
+    if(this.petCtrl.value != undefined) {
+      this.petSelected = true;
+      this.raceCtrl.disable();
+      this.petForm.disable();
+    } else {
+      this.petSelected = false;
+      this.petForm.enable();
+      this.raceCtrl.enable();
+    }
+  }
+
+  onRaceChange() {
+    this.petForm.controls['race_id'].setValue(this.raceCtrl.value);
   }
 
   genderValidation(control: FormControl) {
@@ -171,57 +259,80 @@ export class PetProfileComponent implements OnDestroy {
     this.submitting = true;
     this.unknowError = false;
     const oldBtnValue = this.btnValue;
-    const { name, birth_date, gender, pet_information, image } = this.petForm.value; 
-    const race_id = this.raceCtrl.value.id;
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('birth_date', birth_date);
-    formData.append('race_id', race_id);
-    formData.append('gender', gender);
-    formData.append('pet_information', pet_information);
-  
-    const petImage = this.petForm.get('image')?.value as File | null;
-    if (!petImage) {
-      this.submitting = false;
-      this.unknowError = true;
-      this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
-      return;
-    }
-  
-    this.petService.createPet(formData).pipe(
-      switchMap((res: Pet) => {
-        this.petId = res.id;
-        const imageFormData = new FormData();
-        imageFormData.append('pet_id', this.petId.toString());
-        imageFormData.append('image', this.petForm.get('image')?.value);
-        imageFormData.append('cover_image', '1');
-        
-        // Realiza la solicitud para crear la imagen de la mascota
-        return this.petService.createImage(imageFormData).pipe(
-          catchError((error: HttpErrorResponse) => {
-            // Manejo de errores relacionados con la imagen
-            return throwError('Ocurrió un error al subir la imagen de la mascota.');
-          })
-        );
-      }),
-      switchMap(() => {
-        if(this.hasToken) {
-          const token = this.tokenService.getCookie();
-          const tokenForm = new FormData();
-          tokenForm.append('pet_id', this.petId.toString());
-          return this.qrActivationService.manageActivation(token, tokenForm).pipe(
-            catchError((error: HttpErrorResponse) => {
-              return throwError('Ocurrió un error al asignar la mascota al código.');
-            }),
-          );
-        } else {
+    if(this.petSelected = true && this.hasToken && this.tokenService.getCookie() !== null) {
+      const token = this.tokenService.getCookie();
+      const tokenForm = new FormData();
+      tokenForm.append('pet_id', this.petCtrl.value);
+      this.qrActivationService.manageActivation(token, tokenForm).subscribe({
+        next: (res) => {
           this.next.emit();
-          return of(null);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al asignar la mascota.';
+          this.submitting = false;
         }
-      }),
-      map(() => {
-        this.next.emit();
-      })
-    ).subscribe();
+      });
+    } else {
+      const { name, birth_date, gender, pet_information, image, race_id, type } = this.petForm.value; 
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('type', type);
+      formData.append('birth_date', birth_date);
+      formData.append('race_id', race_id);
+      formData.append('gender', gender);
+      formData.append('pet_information', pet_information);
+    
+      const petImage = this.petForm.get('image')?.value as File | null;
+      if (!petImage) {
+        this.submitting = false;
+        this.unknowError = true;
+        this.errorMessage = 'Por favor, selecciona una imagen para la mascota.';
+        return;
+      }    
+    
+      this.petService.createPet(formData).pipe(
+        switchMap((res: Pet) => {
+          this.petId = res.id;
+          const imageFormData = new FormData();
+          imageFormData.append('pet_id', this.petId.toString());
+          imageFormData.append('image', this.petForm.get('image')?.value);
+          imageFormData.append('cover_image', '1');
+          
+          // Realiza la solicitud para crear la imagen de la mascota
+          return this.petService.createImage(imageFormData).pipe(
+            catchError((error: HttpErrorResponse) => {
+              this.submitting = false;
+              this.unknowError = true;
+              this.errorMessage = 'Ocurrió un error inesperado al subir la imagen de la mascota.';
+              return throwError('');
+            })
+          );
+        }),
+        switchMap(() => {
+          if(this.hasToken && this.tokenService.getCookie() !== null) {
+            const token = this.tokenService.getCookie();
+            const tokenForm = new FormData();
+            tokenForm.append('pet_id', this.petId.toString());
+            return this.qrActivationService.manageActivation(token, tokenForm).pipe(
+              catchError((error: HttpErrorResponse) => {
+                this.submitting = false;
+                this.unknowError = true;
+                this.errorMessage = 'Ocurrió un error inesperado al activar el código qr.';
+                return throwError('');
+              }),
+            );
+          } else {
+            this.next.emit();
+            return of(null);
+          }
+        }),
+        map(() => {
+          if(this.hasToken && this.tokenService.getCookie() !== null) {
+            this.next.emit();
+          }
+        })
+      ).subscribe();
+    }
   }
 }

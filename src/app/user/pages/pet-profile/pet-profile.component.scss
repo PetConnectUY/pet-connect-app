@@ -204,3 +204,9 @@
     opacity: 1;
     color: var(--text-color);
 }
+
+.internal-spinner {
+    display: inline-block;
+    position: absolute;
+    right: 25px;
+}
