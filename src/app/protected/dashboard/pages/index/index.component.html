@@ -10,14 +10,14 @@
                             <div class="dashboard__body__header__container--box">
                                 <h3><fa-icon [icon]="faDog" style="color: var(--text-color)"></fa-icon> Mis peludos</h3>
                                 <span *ngIf="!this.counterLoader">{{this.totalPets}}</span>
-                                <fa-icon [icon]="faCircleNotch" animation="spin" size="2x" *ngIf="this.counterLoader"></fa-icon>
+                                <mat-spinner *ngIf="this.counterLoader" style="--mdc-circular-progress-active-indicator-color: #fff;" diameter="50"></mat-spinner>
                             </div>
                         </div>
                         <div class="dashboard__body__header__container">
                             <div class="dashboard__body__header__container--box">
                                 <h3><fa-icon [icon]="faQrcode" style="color: var(--text-color)"></fa-icon> Mis códigos</h3>
                                 <span *ngIf="!this.counterLoader">{{this.totalTokens}}</span>
-                                <fa-icon [icon]="faCircleNotch" animation="spin" size="2x" *ngIf="this.counterLoader"></fa-icon>
+                                <mat-spinner *ngIf="this.counterLoader" style="--mdc-circular-progress-active-indicator-color: #fff;" diameter="50"></mat-spinner>
                             </div>
                         </div>
                     </div>

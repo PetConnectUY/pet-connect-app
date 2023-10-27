@@ -13,7 +13,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { PaginationModule } from '../shared/modules/pagination/pagination.module';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { PetFiltersComponent } from './components/pet-filters/pet-filters.component';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -33,6 +33,7 @@ import { PetFiltersComponent } from './components/pet-filters/pet-filters.compon
     ReactiveFormsModule,
     PaginationModule,
     NgbAccordionModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     SidebarComponent,
