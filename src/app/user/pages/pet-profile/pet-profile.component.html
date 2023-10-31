@@ -40,7 +40,7 @@
                             (selectionChange)="onPetChange()"
                             (input)="onInputChanged($event)"
                             placeholder="Seleccione una mascota"
-                            placeholderLabel="Selecciona una mascota..."
+                            placeholderLabel="Selecciona una mascota"
                             noEntriesFoundLabel="'No se encontraron mascotas'"
                             (keydown.enter)="$event.preventDefault()"
                             >
@@ -157,11 +157,10 @@
                             <mat-option value="male">Macho</mat-option>
                             <mat-option value="female">Hembra</mat-option>
                         </mat-select>
+                        <mat-error *ngIf="isFieldInvalid('gender')">
+                            {{getErrorMessage('gender')}}
+                        </mat-error>
                     </mat-form-field>
-                    <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('gender')">
-                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                        <p>{{getErrorMessage('gender')}}</p>
-                    </div>
                 </div>
                 <div class="profile__container__items__item">
                     <mat-form-field>

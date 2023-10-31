@@ -23,29 +23,20 @@
                     </div>
                     <div class="dashboard__body__container">
                         <app-loader *ngIf="petsLoader"></app-loader>
-                        <div *ngIf="!petsLoader" class="dashboard__body__container__header">
-                           <app-pet-filters></app-pet-filters>
-                        </div>
-                        <div class="dashboard__body__container__box" *ngIf="this.pets && !petsLoader" id="#my-pets">
+                        <div class="dashboard__body__container__box" *ngIf="!petsLoader" id="#my-pets">
                             <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
                                 <div class="dashboard__body__container__box__item--header">
-                                    <div class="dropdown">
-                                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+                                    <button mat-icon-button [matMenuTriggerFor]="actions" aria-label="Example icon-button with a menu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu #actions="matMenu">
+                                        <button mat-menu-item color="primary" (click)="editPet(pet)">
+                                                <mat-icon class="icon">edit</mat-icon> Editar
                                         </button>
-                                        <ul class="dropdown-menu">
-                                          <li>
-                                            <a class="dropdown-item" type="button" (click)="editPet(pet)">
-                                              <fa-icon [icon]="faPen" class="icon"></fa-icon> Editar
-                                            </a>
-                                          </li>
-                                          <li>
-                                            <a class="dropdown-item" type="button" (click)="deletePet(pet)">
-                                              <fa-icon [icon]="faTrash" class="icon"></fa-icon> Eliminar
-                                            </a>
-                                          </li>
-                                        </ul>
-                                    </div>
+                                        <button mat-menu-item (click)="deletePet(pet)">
+                                            <mat-icon class="icon">delete</mat-icon> Eliminar
+                                        </button>
+                                    </mat-menu>
                                 </div>
                                 <div class="dashboard__body__container__box__item--body">
                                     <div class="dashboard__body__container__box__item--body--image">
@@ -55,14 +46,20 @@
                                         <h3>{{pet.name}}</h3>
                                     </div>
                                     <div class="dashboard__body__container__box__item--body--button">
-                                        <button *ngIf="pet.pet_token.token" [routerLink]="['/pets/', pet.pet_token.token]">Ver perfil</button>
-                                        <button *ngIf="!pet.pet_token.token" [routerLink]="['/get-qr-code/', pet.id]">Obtener chapita</button>
+                                        <button 
+                                            mat-raised-button 
+                                            color="primary"
+                                            *ngIf="pet.pet_token.token" [routerLink]="['/pets/', pet.pet_token.token]">Ver perfil</button>
+                                        <button 
+                                            mat-stroked-button 
+                                            color="basic"
+                                            *ngIf="!pet.pet_token.token" [routerLink]="['/get-qr-code/', pet.id]">Obtener chapita</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <app-pagination 
-                            *ngIf="this.pets && !petsLoader" 
+                            *ngIf="this.pets && this.pets.data.length > 0" 
                             [pagination]="this.pets" 
                             (OnPageChange)="updatePets()"
                         ></app-pagination>

@@ -4,7 +4,8 @@
 </div>
 
 <div class="modal-body">
-    <form [formGroup]="petForm" (submit)="save()">
+    <mat-progress-bar mode="indeterminate" *ngIf="loadingRaces"></mat-progress-bar>
+    <form [formGroup]="petForm" (submit)="save()" *ngIf="!loadingRaces">
         <div class="form">
             <div class="form__container">
                 <div class="form__container--image">
@@ -35,79 +36,101 @@
                 </div>
                 <div class="form__container__content">
                     <div class="form__container__content--item">
-                        <input 
-                            type="text"
-                            id="name"
-                            name="name"
-                            formControlName="name"
-                            class="form__container__content--item--input"
-                            [ngClass]="{ 'is-valid': isFieldValid('name'), 'is-invalid': isFieldInvalid('name'), 'has-content': hasContent('name') }"
-                            required
-                        >
-                        <label for="name" class="form__container__content--item--label">Nombre de tu mascota</label>
-                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('name')">
-                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                            <p>{{getErrorMessage('name')}}</p>
-                        </div>
+                        <mat-form-field>
+                            <mat-label>Nombre de la mascota</mat-label>
+                            <input 
+                                type="text"
+                                matInput
+                                placeholder="Ingresa el nombre de la mascota"
+                                formControlName="name"
+                            >
+                            <mat-error *ngIf="isFieldInvalid('name')">
+                                {{getErrorMessage('name')}}
+                            </mat-error>
+                        </mat-form-field>
                     </div>
                     <div class="form__container__content--item">
-                        <input 
-                            type="date"
-                            id="birthdate"
-                            name="birthdate"
-                            formControlName="birth_date"
-                            class="form__container__content--item--input birthdate-input"
-                            [ngClass]="{ 'is-valid': isFieldValid('birth_date'), 'is-invalid': isFieldInvalid('birth_date'), 'has-content': hasContent('birth_date') }"
-                            required
-                        >
-                        <label for="birthdate" class="form__container__content--item--label">Cumpleaños de tu mascota</label>
-                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('birth_date')">
-                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                            <p>{{getErrorMessage('birth_date')}}</p>
-                        </div>
+                        <mat-form-field>
+                            <mat-label>Fecha de nacimiento (opcional)</mat-label>
+                            <input 
+                                (focus)="picker.open()"
+                                formControlName="birth_date" 
+                                matInput 
+                                [matDatepicker]="picker">
+                            <mat-hint>DD/MM/AAAA</mat-hint>
+                            <mat-error *ngIf="isFieldInvalid('birth_date')">
+                                {{getErrorMessage('birth_date')}}
+                            </mat-error>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
                     </div>
                     <div class="form__container__content--item">
-                        <select name="race_id" id="race_id" class="form__container__content--item--input" formControlName="race_id" [ngClass]="{ 'is-valid': isFieldValid('race_id'), 'is-invalid': isFieldInvalid('race_id'), 'has-content': hasContent('race_id') }" required>
-                            <option *ngFor="let race of races" [value]="race.id">{{ race.name }}</option>
-                        </select>                        
-                        <label for="race_id" class="form__container__content--item--label">Raza</label>
-                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('race_id')">
-                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                            <p>{{getErrorMessage('race_id')}}</p>
-                        </div>
+                        <mat-form-field>
+                            <mat-label>Raza</mat-label>
+                            <mat-select 
+                                name="race_id" 
+                                id="race_id"
+                                [formControl]="raceCtrl"
+                                (selectionChange)="onRaceChange()"
+                                #raceSelect
+                                [ngClass]="{ 'is-valid': isFieldValid('race_id'), 'is-invalid': isFieldInvalid('race_id')}"
+                                (input)="onInputChanged($event)"
+                                placeholder="Seleccione una raza"
+                                placeholderLabel="Selecciona una mascota..."
+                                noEntriesFoundLabel="'No se encontraron mascotas'"
+                                [panelClass]="getRaces"
+                                required
+                                >
+                                <mat-option>
+                                    <ngx-mat-select-search 
+                                        [formControl]="raceFilterCtrl"
+                                        [noEntriesFoundLabel]="'No se encontaron mascotas'" 
+                                        placeholderLabel="Buscar"
+                                    ></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let race of (filteredRaces | async)" [value]="race.id">
+                                    {{race.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-spinner *ngIf="loadingRaces" class="spinner internal-spinner" diameter="20"></mat-spinner>
+                            <mat-hint *ngIf="this.races.length <= 0">Selecciona la especie del peludito para ver las razas</mat-hint>
+                            <div class="profile__container__items__item--validation" *ngIf="isFieldInvalid('race_id')">
+                                <fa-icon [icon]="faExclamationCircle"></fa-icon> 
+                                <p>{{getErrorMessage('race_id')}}</p>
+                            </div>
+                        </mat-form-field>
                     </div>
                     <div class="form__container__content--item">
-                        <select 
-                            name="gender" 
-                            id="gender"
-                            class="form__container__content--item--input"
-                            formControlName="gender"
-                            [ngClass]="{ 'is-valid': isFieldValid('gender'), 'is-invalid': isFieldInvalid('gender'), 'has-content': hasContent('gender') }"
-                            required
-                        >
-                            <option value=""></option>
-                            <option value="male">Macho</option>
-                            <option value="female">Hembra</option>
-                        </select>
-                        <label for="gender" class="form__container__content--item--label">Sexo</label>
-                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('gender')">
-                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                            <p>{{getErrorMessage('gender')}}</p>
-                        </div>
+                        <mat-form-field>
+                            <mat-select 
+                                placeholder="Seleccione el género"
+                                name="gender" 
+                                id="gender" 
+                                formControlName="gender" 
+                                [ngClass]="{ 'is-valid': isFieldValid('gender'), 'is-invalid': isFieldInvalid('gender')}"
+                                (input)="onInputChanged($event)">
+                                <mat-option value="">Género de la mascota</mat-option>
+                                <mat-option value="male">Macho</mat-option>
+                                <mat-option value="female">Hembra</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="isFieldInvalid('gender')">
+                                {{getErrorMessage('gender')}}
+                            </mat-error>
+                        </mat-form-field>
                     </div>
                     <div class="form__container__content--item">
-                        <textarea 
-                            name="pet_information" 
-                            id="pet_information" 
-                            formControlName="pet_information"
-                            class="form__container__content--item--input"
-                            [ngClass]="{ 'is-valid': isFieldValid('pet_information'), 'is-invalid': isFieldInvalid('pet_information'), 'has-content': hasContent('pet_information') }"
-                        ></textarea>
-                        <label for="pet_information" class="form__container__content--item--label">Características</label>
-                        <div class="form__container__content--item--validation" *ngIf="isFieldInvalid('pet_information')">
-                            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                            <p>{{getErrorMessage('pet_information')}}</p>
-                        </div>
+                        <mat-form-field>
+                            <mat-label>Descríbe a tu peludo</mat-label>
+                            <textarea
+                                matInput
+                                formControlName="pet_information"
+                                placeholder="Aquí podrás describir todas las características de tu peludito"
+                            ></textarea>
+                            <mat-error *ngIf="isFieldInvalid('pet_information')">
+                                {{getErrorMessage('pet_information')}}
+                            </mat-error>
+                        </mat-form-field>
                     </div>
                     <div *ngIf="unknowError" class="form__container__content--item--error">
                         <fa-icon [icon]="faExclamationCircle"></fa-icon>

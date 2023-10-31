@@ -6,6 +6,7 @@ import { PetRace } from "./pet.race.interface";
 export interface Pet {
     id: number;
     name: string;
+    type: string;
     birth_date: Date | null;
     race: PetRace;
     gender: string;

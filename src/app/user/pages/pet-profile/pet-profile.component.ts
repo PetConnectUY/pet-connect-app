@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Output, ViewChild, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { catchError, of, switchMap, throwError, map, takeUntil, take, forkJoin } from 'rxjs';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
@@ -14,7 +14,6 @@ import { FormValidationService } from 'src/app/shared/services/form-validation.s
 import { TokenService } from 'src/app/shared/services/token.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
-import { PetPagination } from 'src/app/protected/pets/interfaces/pet.pagination.interface';
 
 @Component({
   selector: 'app-pet-profile',

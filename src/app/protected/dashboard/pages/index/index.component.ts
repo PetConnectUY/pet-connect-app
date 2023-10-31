@@ -33,8 +33,7 @@ export class IndexComponent implements OnInit{
   totalTokens!: number;
   counterLoader: boolean = true;
   pets!: PetPagination;
-  races: PetRace[] = [];
-  petsLoader: boolean = false;
+  petsLoader: boolean = true;
   unknowError: boolean = false;
   errorMessage!: string;
 
@@ -43,22 +42,10 @@ export class IndexComponent implements OnInit{
     private petService: PetService,
     private modalService: NgbModal,
     private route: ActivatedRoute,
-  ){
-    this.petService.getRaces('').subscribe({
-      next: (res: PetRace[]) => {
-        this.races = res;
-        this.petsLoader = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.unknowError = true;
-        this.petsLoader = false;
-        this.errorMessage = 'Ocurrió un error al obtener las razas';
-      }
-    });
-    this.updatePets();
-  }
+  ){}
 
   ngOnInit(): void {
+    this.updatePets();
     this.counterLoader = true;
     this.userService.getStatistics().subscribe({
       next: (res) => {
@@ -75,32 +62,28 @@ export class IndexComponent implements OnInit{
   }
 
   updatePets() {
-    if(!this.petsLoader) {
+    this.route.queryParamMap.subscribe(paramMap => {
       this.petsLoader = true;
-      this.route.queryParamMap.subscribe(paramMap => {
-        this.petService.getPets(paramMap).subscribe({
-          next: (pets: PetPagination) => {
-            this.pets = pets;
-            this.petsLoader = false;
-          },
-          error: (error: HttpErrorResponse) => {
-            this.unknowError = true;
-            this.errorMessage = 'Ocurrió un error al obtener las mascotas.';
-            this.petsLoader = false;
-          }
-        });
+      this.petService.getPets(paramMap).subscribe({
+        next: (pets: PetPagination) => {
+          this.pets = pets;
+          this.petsLoader = false;
+        },
+        error: (error: HttpErrorResponse) => {
+          this.unknowError = true;
+          this.errorMessage = 'Ocurrió un error al obtener las mascotas.';
+          this.petsLoader = false;
+        }
       });
-    }
+    });
   }
 
   editPet(pet: Pet) {
     const modalRef = this.modalService.open(ModalFormComponent, {
-      size: "lg",
+      size: "md",
       centered: true,
     });
-  
     modalRef.componentInstance.petToEdit = pet;
-    modalRef.componentInstance.races = this.races;
     modalRef.componentInstance.emitPet.subscribe((res: Pet) => {
       const updatedPetIndex = this.pets.data.findIndex(item => item.id === res.id);
       if (updatedPetIndex !== -1) {

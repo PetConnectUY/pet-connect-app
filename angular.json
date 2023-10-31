@@ -18,7 +18,8 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "leaflet"
+              "leaflet",
+              "moment"
             ],
             "outputPath": "dist/pet-connect-app",
             "index": "src/index.html",
