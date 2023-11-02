@@ -1,0 +1,18 @@
+<app-loader *ngIf="loader"></app-loader>
+<section class="page-container" *ngIf="!loader">
+    <app-sidebar></app-sidebar>
+    <div class="content">
+        <div class="settings">
+            <div class="settings__header">
+                <h2 class="settings__header--title">
+                    <fa-icon [icon]="faGears"></fa-icon> Mi perfil
+                </h2>
+            </div>
+            <div class="settings__body">
+                <div class="settings__body__content">
+                    <p>Cambia la información de tu perfil</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

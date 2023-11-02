@@ -9,7 +9,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
-import { SettingsComponent } from './pages/settings/settings.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { PaginationModule } from '../shared/modules/pagination/pagination.module';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -23,6 +23,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     SidebarComponent,
     ConfirmModalComponent,
     ModalFormComponent,
-    SettingsComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +53,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSidenavModule,
   ],
   exports: [
     SidebarComponent,
