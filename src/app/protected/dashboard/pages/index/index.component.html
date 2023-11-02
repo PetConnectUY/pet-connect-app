@@ -40,9 +40,16 @@
                                 </div>
                                 <div class="dashboard__body__container__box__item--body">
                                     <div class="dashboard__body__container__box__item--body--image">
-                                        <picture *ngFor="let image of pet.images">
-                                            <img src="{{image.url}}" alt="pet-image">
-                                        </picture>
+                                        <ng-container *ngIf="pet.images.length <= 0">
+                                            <picture>
+                                                <img src="assets/images/pet-avatar.webp" alt="pet-avatar">
+                                            </picture>
+                                        </ng-container>
+                                        <ng-container *ngIf="pet.images.length > 0">
+                                            <picture *ngFor="let image of pet.images">
+                                                <img src="{{image.url}}" alt="pet-image">
+                                            </picture>
+                                        </ng-container>
                                         <h3>{{pet.name}}</h3>
                                     </div>
                                     <div class="dashboard__body__container__box__item--body--button">

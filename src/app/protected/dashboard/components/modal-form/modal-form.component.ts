@@ -226,38 +226,27 @@ export class ModalFormComponent implements OnInit, OnDestroy {
             this.emitPet.emit(res);
             const imageFormData = new FormData();
             imageFormData.append('image', this.petForm.get('image')?.value);
-            if(this.selectedImage && this.petToEdit.images.length > 0) {
-              this.petService.updateImage(imageFormData, res.images[0].id).subscribe({
-                next: (image: PetImage) => {
-                  this.emitPetImage.emit(image);
-                  this.unknowError = false;
-                  this.submitting = false;
-                  this.closeModal();
-                },
-                error: (error: HttpErrorResponse) => {
-                  this.btnValue = oldBtnValue;
-                  this.unknowError = true;
-                  this.submitting = false;
-                  this.errorMessage = 'Ocurrió un error al actualizar la imagen.';
-                }
-              });
-            } else if (this.selectedImage) {
-              imageFormData.append('pet_id', res.id.toString());
-              imageFormData.append('cover_image', '1');
-              this.petService.createImage(imageFormData).subscribe({
-                next: (image: PetImage) => {
-                  this.emitPetImage.emit(image);
-                  this.unknowError = false;
-                  this.submitting = false;
-                  this.closeModal();
-                },
-                error: (error: HttpErrorResponse) => {
-                  this.btnValue = oldBtnValue;
-                  this.unknowError = true;
-                  this.submitting = false;
-                  this.errorMessage = 'Ocurrió un error al subir la nueva imagen.';
-                }
-              });
+            if(this.selectedImage) {
+              if(this.petToEdit.images.length > 0 && this.petForm.get('image')?.value !== null) {
+                this.petService.updateImage(imageFormData, res.images[0].id).subscribe({
+                  next: (image: PetImage) => {
+                    this.emitPetImage.emit(image);
+                    this.unknowError = false;
+                    this.submitting = false;
+                    this.closeModal();
+                  },
+                  error: (error: HttpErrorResponse) => {
+                    this.btnValue = oldBtnValue;
+                    this.unknowError = true;
+                    this.submitting = false;
+                    this.errorMessage = 'Ocurrió un error al actualizar la imagen.';
+                  }
+                });
+              }
+            } else {
+              this.unknowError = false;
+              this.submitting = false;
+              this.closeModal();
             }
           },
           error: (error: HttpErrorResponse) => {
