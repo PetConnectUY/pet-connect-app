@@ -23,7 +23,7 @@
                     </div>
                     <div class="dashboard__body__container">
                         <app-loader *ngIf="petsLoader"></app-loader>
-                        <div class="dashboard__body__container__box" *ngIf="!petsLoader" id="#my-pets">
+                        <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length > 0" id="#my-pets">
                             <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
                                 <div class="dashboard__body__container__box__item--header">
                                     <button mat-icon-button [matMenuTriggerFor]="actions" aria-label="Example icon-button with a menu">
@@ -70,6 +70,13 @@
                             [pagination]="this.pets" 
                             (OnPageChange)="updatePets()"
                         ></app-pagination>
+                        <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length <= 0">
+                            <mat-card class="without__pets full-width-card">
+                                <mat-card-header>
+                                    <h2 style="font-family: var(--primary-font);"><mat-icon style="color: var(--primary-color);">help</mat-icon> ¿Quieres obtener una chapita para tu mascota?</h2>
+                                </mat-card-header>
+                            </mat-card>
+                        </div>
                     </div>
                 </div>
             </div>

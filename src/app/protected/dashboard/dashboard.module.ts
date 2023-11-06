@@ -23,7 +23,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSidenavModule,
+    MatCardModule,
   ],
   exports: [
     SidebarComponent,

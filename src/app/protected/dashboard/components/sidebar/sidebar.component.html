@@ -1,8 +1,4 @@
-<mat-sidenav-container class="sidebar">
-    <mat-sidenav position="start">Test</mat-sidenav>
-    <mat-sidenav-content>Main</mat-sidenav-content>
-</mat-sidenav-container>
-<!-- <div class="sidebar">
+<div class="sidebar">
     <div class="sidebar__logo">
         <a routerLink="/dashboard">
             <img src="/assets/images/pet-connect-logo.png" alt="pet-connect-logo">
@@ -25,10 +21,10 @@
     <div class="sidebar__footer">
         <ul>
             <li>
-                <a href="#" class="sidebar__icon">
+                <a (click)="signOut()" class="sidebar__icon">
                     <fa-icon [icon]="faSignOut"></fa-icon> <span class="d-md-inline d-sm-none">Cerrar sesión</span>
                 </a>
             </li>
         </ul>
     </div>
-</div> -->
+</div>
