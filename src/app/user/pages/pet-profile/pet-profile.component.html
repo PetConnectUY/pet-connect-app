@@ -29,35 +29,6 @@
             <app-progress-bar [currentStep]="1"></app-progress-bar>
             <form [formGroup]="petForm" (ngSubmit)="createPet()">
                 <h1 class="profile__container__items--title">Perfil de tu mascota</h1>
-                <div class="profile__container__items__item" *ngIf="this.hasToken && this.token !== null">
-                    <mat-form-field>
-                        <mat-label>Parece que ya tienes mascotas en tu cuenta (opcional)</mat-label>
-                        <mat-select 
-                            name="pet_id" 
-                            id="pet_id" 
-                            [formControl]="petCtrl"
-                            #petSelect
-                            (selectionChange)="onPetChange()"
-                            (input)="onInputChanged($event)"
-                            placeholder="Seleccione una mascota"
-                            placeholderLabel="Selecciona una mascota"
-                            noEntriesFoundLabel="'No se encontraron mascotas'"
-                            (keydown.enter)="$event.preventDefault()"
-                            >
-                            <mat-option>
-                                <ngx-mat-select-search 
-                                    [noEntriesFoundLabel]="'No se encontaron mascotas'" 
-                                    [formControl]="petFilterCtrl"
-                                    placeholderLabel="Buscar"
-                                ></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option></mat-option>
-                            <mat-option *ngFor="let pet of (filteredPets | async)" [value]="pet.id">
-                                {{pet.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
                 <div class="profile__container__items__item">
                     <mat-form-field>
                         <mat-label>Nombre</mat-label>

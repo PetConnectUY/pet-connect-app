@@ -1,0 +1,5 @@
+<div #clientMapContainer class="client-map"></div>
+<p *ngIf="unknowError">
+    <fa-icon [icon]="faExclamationCircle" style="color: red;"></fa-icon>
+    {{errorMessage}}
+</p>

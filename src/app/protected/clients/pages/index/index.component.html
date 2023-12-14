@@ -1,0 +1,11 @@
+<app-loader *ngIf="this.loader"></app-loader>
+<app-navbar *ngIf="!this.loader"></app-navbar>
+<section class="clients" *ngIf="!this.loader">
+    <div class="clients__container">
+        <h1>Lista de clientes</h1>
+        <div style="width: 100%; height: 500px;" *ngIf="this.clients">
+            <app-map [clients]="clients"></app-map>
+        </div>
+        
+    </div>
+</section>

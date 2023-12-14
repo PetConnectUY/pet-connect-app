@@ -258,22 +258,7 @@ export class PetProfileComponent implements OnDestroy {
     this.submitting = true;
     this.unknowError = false;
     const oldBtnValue = this.btnValue;
-    if(this.petSelected = true && this.hasToken && this.tokenService.getCookie() !== null) {
-      const token = this.tokenService.getCookie();
-      const tokenForm = new FormData();
-      tokenForm.append('pet_id', this.petCtrl.value);
-      this.qrActivationService.manageActivation(token, tokenForm).subscribe({
-        next: (res) => {
-          this.next.emit();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.unknowError = true;
-          this.errorMessage = 'Ocurrió un error al asignar la mascota.';
-          this.submitting = false;
-        }
-      });
-    } else {
-      const { name, birth_date, gender, pet_information, image, race_id, type } = this.petForm.value; 
+    const { name, birth_date, gender, pet_information, image, race_id, type } = this.petForm.value; 
       const formData = new FormData();
       formData.append('name', name);
       formData.append('type', type);
@@ -297,7 +282,7 @@ export class PetProfileComponent implements OnDestroy {
           imageFormData.append('pet_id', this.petId.toString());
           imageFormData.append('image', this.petForm.get('image')?.value);
           imageFormData.append('cover_image', '1');
-          
+      
           // Realiza la solicitud para crear la imagen de la mascota
           return this.petService.createImage(imageFormData).pipe(
             catchError((error: HttpErrorResponse) => {
@@ -309,7 +294,7 @@ export class PetProfileComponent implements OnDestroy {
           );
         }),
         switchMap(() => {
-          if(this.hasToken && this.tokenService.getCookie() !== null) {
+          if (this.hasToken && this.tokenService.getCookie() !== null) {
             const token = this.tokenService.getCookie();
             const tokenForm = new FormData();
             tokenForm.append('pet_id', this.petId.toString());
@@ -322,16 +307,18 @@ export class PetProfileComponent implements OnDestroy {
               }),
             );
           } else {
-            this.next.emit();
             return of(null);
           }
         }),
-        map(() => {
-          if(this.hasToken && this.tokenService.getCookie() !== null) {
-            this.next.emit();
-          }
-        })
-      ).subscribe();
-    }
+      ).subscribe(() => {
+        // Emitir el evento solo después de que la respuesta de la API se haya procesado correctamente.
+        if (this.hasToken && this.tokenService.getCookie() !== null) {
+          this.next.emit();
+        }
+      }, () => {
+        // Manejar errores aquí si es necesario
+      }, () => {
+        // Código a ejecutar cuando la suscripción está completa, si es necesario
+      });
   }
 }

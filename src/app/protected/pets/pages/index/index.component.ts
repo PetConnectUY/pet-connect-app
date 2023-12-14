@@ -51,8 +51,6 @@ export class IndexComponent implements OnInit {
       this.tokenService.setCookie(res['tokenId']);
       this.qrActivationService.manageActivation(this.tokenService.getCookie()).subscribe({
         next: (res: Pet | Message) => {
-          console.log(res);
-          
           if('pet' in res) {
             this.tokenService.deleteCookie();
             this.loadPet = true;            
