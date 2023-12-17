@@ -19,7 +19,8 @@
           "options": {
             "allowedCommonJsDependencies": [
               "leaflet",
-              "moment"
+              "moment",
+              "crypto-js"
             ],
             "outputPath": "dist/pet-connect-app",
             "index": "src/index.html",
