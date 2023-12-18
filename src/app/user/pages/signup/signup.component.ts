@@ -1,10 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { faExclamationCircle, faEye, faEyeSlash, faSpinner, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
-import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NominatimService } from 'src/app/shared/services/nominatim.service';
 import { Subject, of, throwError } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/user.interface';
@@ -34,7 +34,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
   loaderForEmailExists: boolean = false;
   emailExists: boolean = false;
   addressSuggestions: any[] = [];
-  selectingSuggestion = false;
 
   showLoader = true;
   show: boolean = false;
@@ -42,6 +41,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   unknowError: boolean = false;
   errorMessage!: string;
   btnValue: string = 'Siguiente';
+  hide!: boolean;
   private destroy$ = new Subject<void>();
 
   token!: string | null;
@@ -55,8 +55,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private formValidationService: FormValidationService,
     private nominatimService: NominatimService,
     private recaptchaV3Service: ReCaptchaV3Service,
-    private tokenService: TokenService,
-    private qrActivationService: QRActivationService,
   ) {
     this.signupForm = this.fb.group({
       firstname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16), Validators.pattern("^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$")]],
@@ -67,27 +65,21 @@ export class SignupComponent implements OnInit, AfterViewInit {
       address: ['', [Validators.required]],
       birth_date: ['', [Validators.required]],
     });
-    // this.token = this.tokenService.getToken();
   }
 
   ngOnInit(): void {
-      this.signupForm.get('address')?.valueChanges
+    this.signupForm.get('address')?.valueChanges
       .pipe(
+        startWith(''),
         debounceTime(500),
         distinctUntilChanged(),
         switchMap((value: string) => {
-          if (this.selectingSuggestion) {
-            this.selectingSuggestion = false;
-            return [];
-          } else {
-            return this.nominatimService.getAddressSuggestions(value);
-          }
+          return this.nominatimService.getAddressSuggestions(value);
         })
       )
       .subscribe((suggestions: string[]) => {
         this.addressSuggestions = suggestions;
       });
-
       this.setMinDate();
   }
 
@@ -126,11 +118,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
   selectAddressSuggestion(suggestion: string): void {
-    this.signupForm.get('address')?.setValue(suggestion);
+    this.signupForm.get('address')?.setValue(suggestion, {});
     this.addressSuggestions = [];
-    this.selectingSuggestion = true;
   }
-
+  
   setMinDate(): void {
     const currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear() - 12);
@@ -181,5 +172,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
         ).subscribe();
       }
     });
+  }
+
+  togglePasswordVisibility() {
+    this.hide = !this.hide;
   }
 }
