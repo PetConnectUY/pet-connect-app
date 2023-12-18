@@ -1,10 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { environment } from 'src/environments/environment.development';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AuthResponse } from 'src/app/shared/interfaces/auth-response.interface';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
 import { Message } from 'src/app/user/interfaces/message.interface';
 import { TokenService } from 'src/app/shared/services/token.service';
@@ -26,11 +26,9 @@ export class GoogleAuthComponent implements OnInit {
   constructor(
     private socialAuthService: SocialAuthService, 
     private authService: AuthService,
-    private tokenService: TokenService,
-    private qrActivationService: QRActivationService,
     private router: Router,
+    private route: ActivatedRoute,
     ) {
-      // this.token = this.tokenService.getToken();
     }
 
   ngOnInit() {
@@ -48,14 +46,11 @@ export class GoogleAuthComponent implements OnInit {
     this.submitting = true;
     this.authService.authWithGoogle(user).subscribe({
       next: (res: AuthResponse) => {
-        if(this.token) {
-          //
+        if(res.user.birth_date === null || res.user.phone === null || res.user.address === null) {
+          this.router.navigateByUrl('/users/signup/google');
         } else {
-          if(res.user.birth_date === null || res.user.phone === null || res.user.address === null) {
-            this.router.navigateByUrl('/users/signup/google');
-          } else {
-            this.router.navigateByUrl('/dashboard');
-          }
+          const redirectUrl = this.route.snapshot.queryParams['redirect_url'] || '/dashboard';
+          this.router.navigateByUrl(redirectUrl);
         }
       },
       error: (error: HttpErrorResponse) => {

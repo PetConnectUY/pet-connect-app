@@ -19,6 +19,5 @@ export class CarouselComponent implements OnInit {
         title: element.name,
        }); 
     });
-    
   }
 }

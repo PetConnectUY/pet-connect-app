@@ -13,7 +13,7 @@ export class MapComponent implements AfterViewInit {
   faLocationPin = faLocationPin;
   unknowError: boolean = false;
   errorMessage!: string;
-  @Input() clients!: Client[]; // Cambié el nombre para que sea más claro que es una matriz de direcciones
+  @Input() clients!: Client[];
 
   @ViewChild('clientMapContainer', { static: true }) clientMapContainer!: ElementRef;
   map!: L.Map;

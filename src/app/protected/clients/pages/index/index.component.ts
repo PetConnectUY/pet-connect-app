@@ -17,9 +17,7 @@ export class IndexComponent {
     private clientsService: ClientService,
   ) {
     this.clientsService.getClients().subscribe({
-      next: (res: Client[]) => {
-        console.log(res);
-        
+      next: (res: Client[]) => {        
         this.clients = res;
         this.loader = false;
       },

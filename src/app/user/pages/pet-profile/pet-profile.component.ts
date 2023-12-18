@@ -31,8 +31,6 @@ export class PetProfileComponent implements OnDestroy {
 
   user: User|null;
 
-  loading: boolean = true;
-
   petForm!: FormGroup;
   selectedImage: string | null = null;
   unknowError: boolean = false;
@@ -82,31 +80,6 @@ export class PetProfileComponent implements OnDestroy {
         this.hasToken = true;
       }
     });
-
-    if(this.token && this.hasToken) {
-      this.petService.getPetsIndex().subscribe({
-        next: (pets) => {
-          this.pets = pets.data;
-          
-          this.petCtrl.setValue(this.pets);
-          this.filteredPets.next(this.pets.slice());
-          this.petFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroyPet))
-            .subscribe(() => {
-              this.filterPets();
-            })
-            this.loading = false;
-            
-        },
-        error: (error: HttpErrorResponse) => {
-          this.unknowError = true;
-          this.errorMessage = 'Ocurrió un error al obtener las razas o las mascotas.';
-          this.loading = false;
-        }
-      });
-    } else {
-      this.loading = false;
-    }
 
     this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
@@ -165,22 +138,6 @@ export class PetProfileComponent implements OnDestroy {
     }
     this.filteredRaces.next(
         this.races.filter(race => race.name.toLocaleLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  protected filterPets() {
-    if (!this.pets) {
-        return;
-    }
-    let search = this.petFilterCtrl.value;
-    if (!search) {
-        this.filteredPets.next(this.pets.slice());
-        return;
-    } else {
-        search = search.toLowerCase();
-    }
-    this.filteredPets.next(
-        this.pets.filter(pet => pet.name.toLocaleLowerCase().indexOf(search) > -1)
     );
   }
 

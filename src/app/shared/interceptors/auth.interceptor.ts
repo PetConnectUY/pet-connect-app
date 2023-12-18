@@ -24,31 +24,42 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(request).pipe(
       catchError((error: any) => {
-        if (error instanceof HttpErrorResponse && error.status === 401 || error.status === 429) {
+        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 429)) {
           if (this.refreshAttempts < this.MAX_REFRESH_ATTEMPTS) {
             this.refreshAttempts++;
-            return this.authService.refreshToken().pipe(
-              switchMap(() => {
-                const newRequest = request.clone({
-                  setHeaders: {
-                    Authorization: `Bearer ${this.authService.getToken()}`
-                  }
-                });
-                return next.handle(newRequest);
-              }),
-              catchError((refreshError) => {
-                this.refreshAttempts = 0;
-                this.authService.logout();
-                this.router.navigate(['/auth/signin']);
-                return throwError(refreshError);
-              })
-            );
+            const currentUrl = this.router.url;
+    
+            // Verificar si la solicitud no proviene de la página de inicio de sesión
+            if (!this.router.url.includes('/auth/signin')) {
+              return this.authService.refreshToken().pipe(
+                switchMap(() => {
+                  const newRequest = request.clone({
+                    setHeaders: {
+                      Authorization: `Bearer ${this.authService.getToken()}`
+                    }
+                  });
+                  return next.handle(newRequest);
+                }),
+                catchError((refreshError) => {
+                  this.refreshAttempts = 0;
+                  this.authService.logout();
+                  this.router.navigate(['/auth/signin'], { queryParams: { redirect_url: currentUrl } });
+                  return throwError(refreshError);
+                })
+              );
+            } else {
+              return throwError({error: 'Solicitud desde la página de inicio de sesión.'});
+            }
           } else {
             this.authService.logout();
-            this.router.navigate(['/auth/signin']);
-            return throwError('Múltiples intentos de refresco fallidos. Redirigiendo al inicio de sesión.');
+            // Asegurar que no redireccione si ya está en la página de inicio de sesión
+            if (!this.router.url.includes('/auth/signin')) {
+              this.router.navigate(['/auth/signin'], { queryParams: { redirect_url: this.router.url } });
+            }
+            return throwError({error: 'Múltiples intentos de refresco fallidos. Redirigiendo al inicio de sesión.'});
           }
         } else {
+          // Devolver un observable de error para cualquier otro error
           return throwError(error);
         }
       })
