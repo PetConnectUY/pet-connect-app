@@ -144,9 +144,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
       formData.append('password', password);
       formData.append('phone', phone);
       formData.append('address', address);
-      formData.append('birth_date', birth_date);
+      formData.append('birth_date', new Date(birth_date).toISOString());
       formData.append('g-recaptcha-response', token);
-
+      
       if(this.signupForm.valid) {
         this.userService.register(formData).pipe(
           switchMap((res: User) => {

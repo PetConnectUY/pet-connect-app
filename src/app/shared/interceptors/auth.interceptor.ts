@@ -30,7 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
             const currentUrl = this.router.url;
     
             // Verificar si la solicitud no proviene de la página de inicio de sesión
-            if (!this.router.url.includes('/auth/signin')) {
+            if (!this.router.url.includes('/auth/signin') || !this.router.url.includes('/users/signup')) {
               return this.authService.refreshToken().pipe(
                 switchMap(() => {
                   const newRequest = request.clone({
