@@ -51,7 +51,7 @@ export class AuthService {
 
   setToken(token: string) {
     sessionStorage.setItem(this.tokenKey, token);
-    this.tokenSubject.next(token); // Emitir el nuevo valor a los suscriptores
+    this.tokenSubject.next(token);
   }
 
   getToken() {

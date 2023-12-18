@@ -9,11 +9,21 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
-import { SettingsComponent } from './pages/settings/settings.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { PaginationModule } from '../shared/modules/pagination/pagination.module';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
-import { PetFiltersComponent } from './components/pet-filters/pet-filters.component';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -21,8 +31,7 @@ import { PetFiltersComponent } from './components/pet-filters/pet-filters.compon
     SidebarComponent,
     ConfirmModalComponent,
     ModalFormComponent,
-    SettingsComponent,
-    PetFiltersComponent
+    ProfileComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +42,18 @@ import { PetFiltersComponent } from './components/pet-filters/pet-filters.compon
     ReactiveFormsModule,
     PaginationModule,
     NgbAccordionModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatProgressBarModule,
+    NgxMatSelectSearchModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCardModule,
   ],
   exports: [
     SidebarComponent,

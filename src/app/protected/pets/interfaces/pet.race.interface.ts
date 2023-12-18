@@ -1,4 +1,5 @@
 export interface PetRace {
     id: number,
-    name: string
+    name: string,
+    type: string,
 }

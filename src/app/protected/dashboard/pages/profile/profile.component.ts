@@ -8,10 +8,10 @@ import { UserService } from 'src/app/user/services/user.service';
 
 @Component({
   selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class ProfileComponent implements OnInit {
   faGears = faGears;
   faExclamationTriangle = faExclamationTriangle;
   faExclamationCircle = faExclamationCircle;
@@ -20,7 +20,7 @@ export class SettingsComponent implements OnInit {
   faSpinner = faSpinner;
   faCheckCircle = faCheckCircle;
 
-  loader: boolean = true;
+  loader: boolean = false;
   btnValue: string = 'Guardar los cambios';
   submitting: boolean = false;
   successSubmittion: boolean = false;
@@ -28,6 +28,8 @@ export class SettingsComponent implements OnInit {
   errorMessage!: string;
 
   settingsForm!: FormGroup;
+  profileSettings!: FormGroup;
+
   nameVisible!: boolean;
   locationVisible!: boolean;
   contactPhone!: boolean;
@@ -40,6 +42,9 @@ export class SettingsComponent implements OnInit {
   ){}
 
   ngOnInit(): void {    
+    this.profileSettings = this.fb.group({
+      
+    });
     this.settingsForm = this.fb.group({
       user_fullname_visible: [this.nameVisible, [Validators.required]],
       user_location_visible: [this.locationVisible, [Validators.required]],
@@ -47,27 +52,27 @@ export class SettingsComponent implements OnInit {
       user_email_visible: [this.contactMail, [Validators.required]],
     });
 
-    this.loader = true;
-    this.userService.getSettings().subscribe({
-      next: (res: UserPetProfileSetting) => {
-        this.nameVisible = res.user_fullname_visible;
-        this.locationVisible = res.user_location_visible;
-        this.contactPhone = res.user_phone_visible;
-        this.contactMail = res.user_email_visible;
-        this.loader = false;
-        this.settingsForm.patchValue({
-          user_fullname_visible: this.nameVisible,
-          user_location_visible: this.locationVisible,
-          user_phone_visible: this.contactPhone,
-          user_email_visible: this.contactMail,
-        });
-      },
-      error: (error: HttpErrorResponse) => {
-        this.loader = false;
-        this.unknowError = true;
-        this.errorMessage = 'Ocurrió un error al obtener la configuración del usuario.';
-      }
-    });
+    // this.loader = true;
+    // this.userService.getSettings().subscribe({
+    //   next: (res: UserPetProfileSetting) => {
+    //     this.nameVisible = res.user_fullname_visible;
+    //     this.locationVisible = res.user_location_visible;
+    //     this.contactPhone = res.user_phone_visible;
+    //     this.contactMail = res.user_email_visible;
+    //     this.loader = false;
+    //     this.settingsForm.patchValue({
+    //       user_fullname_visible: this.nameVisible,
+    //       user_location_visible: this.locationVisible,
+    //       user_phone_visible: this.contactPhone,
+    //       user_email_visible: this.contactMail,
+    //     });
+    //   },
+    //   error: (error: HttpErrorResponse) => {
+    //     this.loader = false;
+    //     this.unknowError = true;
+    //     this.errorMessage = 'Ocurrió un error al obtener la configuración del usuario.';
+    //   }
+    // });
   }
   
   changeSettings() {

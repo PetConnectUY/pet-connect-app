@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Output, ViewChild, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { catchError, of, switchMap, throwError, map, takeUntil, take, forkJoin } from 'rxjs';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
@@ -14,7 +14,6 @@ import { FormValidationService } from 'src/app/shared/services/form-validation.s
 import { TokenService } from 'src/app/shared/services/token.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
-import { PetPagination } from 'src/app/protected/pets/interfaces/pet.pagination.interface';
 
 @Component({
   selector: 'app-pet-profile',
@@ -31,8 +30,6 @@ export class PetProfileComponent implements OnDestroy {
   @Output() eventPetId: EventEmitter<number> = new EventEmitter<number>();
 
   user: User|null;
-
-  loading: boolean = true;
 
   petForm!: FormGroup;
   selectedImage: string | null = null;
@@ -83,31 +80,6 @@ export class PetProfileComponent implements OnDestroy {
         this.hasToken = true;
       }
     });
-
-    if(this.token && this.hasToken) {
-      this.petService.getPetsIndex().subscribe({
-        next: (pets) => {
-          this.pets = pets.data;
-          
-          this.petCtrl.setValue(this.pets);
-          this.filteredPets.next(this.pets.slice());
-          this.petFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroyPet))
-            .subscribe(() => {
-              this.filterPets();
-            })
-            this.loading = false;
-            
-        },
-        error: (error: HttpErrorResponse) => {
-          this.unknowError = true;
-          this.errorMessage = 'Ocurrió un error al obtener las razas o las mascotas.';
-          this.loading = false;
-        }
-      });
-    } else {
-      this.loading = false;
-    }
 
     this.petForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ\s]+$/u)]],
@@ -166,22 +138,6 @@ export class PetProfileComponent implements OnDestroy {
     }
     this.filteredRaces.next(
         this.races.filter(race => race.name.toLocaleLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  protected filterPets() {
-    if (!this.pets) {
-        return;
-    }
-    let search = this.petFilterCtrl.value;
-    if (!search) {
-        this.filteredPets.next(this.pets.slice());
-        return;
-    } else {
-        search = search.toLowerCase();
-    }
-    this.filteredPets.next(
-        this.pets.filter(pet => pet.name.toLocaleLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -259,22 +215,7 @@ export class PetProfileComponent implements OnDestroy {
     this.submitting = true;
     this.unknowError = false;
     const oldBtnValue = this.btnValue;
-    if(this.petSelected = true && this.hasToken && this.tokenService.getCookie() !== null) {
-      const token = this.tokenService.getCookie();
-      const tokenForm = new FormData();
-      tokenForm.append('pet_id', this.petCtrl.value);
-      this.qrActivationService.manageActivation(token, tokenForm).subscribe({
-        next: (res) => {
-          this.next.emit();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.unknowError = true;
-          this.errorMessage = 'Ocurrió un error al asignar la mascota.';
-          this.submitting = false;
-        }
-      });
-    } else {
-      const { name, birth_date, gender, pet_information, image, race_id, type } = this.petForm.value; 
+    const { name, birth_date, gender, pet_information, image, race_id, type } = this.petForm.value; 
       const formData = new FormData();
       formData.append('name', name);
       formData.append('type', type);
@@ -298,7 +239,7 @@ export class PetProfileComponent implements OnDestroy {
           imageFormData.append('pet_id', this.petId.toString());
           imageFormData.append('image', this.petForm.get('image')?.value);
           imageFormData.append('cover_image', '1');
-          
+      
           // Realiza la solicitud para crear la imagen de la mascota
           return this.petService.createImage(imageFormData).pipe(
             catchError((error: HttpErrorResponse) => {
@@ -310,7 +251,7 @@ export class PetProfileComponent implements OnDestroy {
           );
         }),
         switchMap(() => {
-          if(this.hasToken && this.tokenService.getCookie() !== null) {
+          if (this.hasToken && this.tokenService.getCookie() !== null) {
             const token = this.tokenService.getCookie();
             const tokenForm = new FormData();
             tokenForm.append('pet_id', this.petId.toString());
@@ -323,16 +264,18 @@ export class PetProfileComponent implements OnDestroy {
               }),
             );
           } else {
-            this.next.emit();
             return of(null);
           }
         }),
-        map(() => {
-          if(this.hasToken && this.tokenService.getCookie() !== null) {
-            this.next.emit();
-          }
-        })
-      ).subscribe();
-    }
+      ).subscribe(() => {
+        // Emitir el evento solo después de que la respuesta de la API se haya procesado correctamente.
+        if (this.hasToken && this.tokenService.getCookie() !== null) {
+          this.next.emit();
+        }
+      }, () => {
+        // Manejar errores aquí si es necesario
+      }, () => {
+        // Código a ejecutar cuando la suscripción está completa, si es necesario
+      });
   }
 }
