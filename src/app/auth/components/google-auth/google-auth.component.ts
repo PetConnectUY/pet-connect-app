@@ -22,6 +22,7 @@ export class GoogleAuthComponent implements OnInit {
   errorMessage!: string;
   btnValue: string = '';
   token!: string | null;
+  @Output() googleLogin = new EventEmitter<SocialUser>();
 
   constructor(
     private socialAuthService: SocialAuthService, 
@@ -34,6 +35,7 @@ export class GoogleAuthComponent implements OnInit {
   ngOnInit() {
     this.submitting = false;
     this.socialAuthService.authState.subscribe((user) => {
+      this.googleLogin.emit(this.user);
       this.user = user;
       this.loggedIn = (user != null);
       if (this.loggedIn) {

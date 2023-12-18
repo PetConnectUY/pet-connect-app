@@ -11,6 +11,7 @@ import { QRActivationService } from 'src/app/protected/pets/services/qractivatio
 import { Message } from 'src/app/user/interfaces/message.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
+import { SocialUser } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-signin',
@@ -145,6 +146,10 @@ export class SigninComponent implements OnInit, AfterViewInit {
 
   toggleShow() {
     this.show = !this.show;
+  }
+
+  handleGoogleLogin(user: SocialUser) {
+    this.showLoader = true;
   }
 
 }

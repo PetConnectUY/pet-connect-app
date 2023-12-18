@@ -53,7 +53,7 @@
             </div>
             <div class="signin__container__item--footer">
                 <a *ngIf="!this.user" routerLink="/users/signup">registrarse</a>
-                <app-google-auth></app-google-auth>
+                <app-google-auth (googleLogin)="handleGoogleLogin($event)"></app-google-auth>
             </div>
         </div>
     </form>
