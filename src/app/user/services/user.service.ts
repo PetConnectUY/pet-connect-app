@@ -29,7 +29,7 @@ export class UserService {
     const url = `${this.baseUrl}users`;
     return this.http.post<User>(url, formData).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError(error.error); // Devuelve el cuerpo del error al componente
+        return throwError(error.error);
       }),
     );
   }
