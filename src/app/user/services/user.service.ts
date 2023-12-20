@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { environment } from 'src/environments/environment.development';
 import { Statistics } from '../interfaces/statistic.interface';
@@ -27,7 +27,11 @@ export class UserService {
 
   register(formData: FormData):Observable<User> {
     const url = `${this.baseUrl}users`;
-    return this.http.post<User>(url, formData);
+    return this.http.post<User>(url, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError(error.error); // Devuelve el cuerpo del error al componente
+      }),
+    );
   }
 
   update(formData: FormData, id: number): Observable<User> {

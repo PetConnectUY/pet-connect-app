@@ -32,6 +32,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { APP_DATEFORMAT } from './shared/configs/app.dateformat';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { APP_DATEFORMAT } from './shared/configs/app.dateformat';
     MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },

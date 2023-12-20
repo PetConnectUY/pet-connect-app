@@ -11,11 +11,13 @@ import { faMars, faPaw, faUser, faVenus } from '@fortawesome/free-solid-svg-icon
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImageModalComponent } from '../../components/image-modal/image-modal.component';
 import { PetFoundModalComponent } from '../../components/pet-found-modal/pet-found-modal.component';
+import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+  styleUrls: ['./index.component.scss'],
 })
 export class IndexComponent implements OnInit {
   faPaw = faPaw;
@@ -40,7 +42,8 @@ export class IndexComponent implements OnInit {
     private qrActivationService: QRActivationService,
     private authService: AuthService,
     private tokenService: TokenService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {
     this.tokenExpired = this.authService.tokenExpired();
     this.user = this.authService.getUser();
@@ -85,19 +88,39 @@ export class IndexComponent implements OnInit {
                   break;
                 case 'Este código QR no te pertenece.':
                   this.tokenService.deleteCookie();
-                  this.unknowError = true;
-                  this.errorMessage = 'El código ya pertenece a otro usuario.';
+                  let toast = this.toastr.error('El código ya pertenece a otro usuario.', 'Error', {
+                    timeOut: 15000,
+                    progressBar: true,
+                  });
+
+                  toast.onHidden.subscribe(() => {
+                    this.router.navigate(['/app']);
+                  });
+                  
                   break;
                 case 'Hay un caso no cubierto.':
                   this.tokenService.deleteCookie();
-                  this.unknowError = true;
-                  this.errorMessage = 'Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.';
+                  toast = this.toastr.error('Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.', 'Error', {
+                    timeOut: 15000,
+                    progressBar: true,
+                  });
+
+                  toast.onHidden.subscribe(() => {
+                    this.router.navigate(['/app']);
+                  });
+                  break;
               }
               break;
             case 500:
               this.tokenService.deleteCookie();
-              this.unknowError = true;
-              this.errorMessage = 'Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.';
+              const toast = this.toastr.error('Error desconocido. Por favor ponte en contacto con nosotros para resolverlo.', 'Error', {
+                timeOut: 15000,
+                progressBar: true,
+              });
+
+              toast.onHidden.subscribe(() => {
+                this.router.navigate(['/app']);
+              });
               break;
           }
         }

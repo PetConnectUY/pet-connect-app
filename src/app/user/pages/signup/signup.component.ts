@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { faExclamationCircle, faEye, faEyeSlash, faSpinner, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
@@ -49,6 +49,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   constructor(
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private route: ActivatedRoute,
     private userService: UserService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -163,13 +164,28 @@ export class SignupComponent implements OnInit, AfterViewInit {
               })
             );
           }),
-          catchError((error: HttpErrorResponse) => {
-            this.submitting = false;
-            this.unknowError = true;
-            this.errorMessage = 'Ocurrió un error al registrar el usuario.';
-            return throwError(error.error);
+          catchError((error: any) => {
+            if (error.error) {
+              Object.keys(error.error).forEach(field => {                
+                const formControl = this.signupForm.get(field);
+                if (formControl) {
+                  formControl.setErrors({ serverError: error.error[field][0] });
+                }
+                this.submitting = false;
+              });
+            } else {
+              this.unknowError = true;
+              this.submitting = false;
+              this.errorMessage = 'Ocurrió un error al registrar el usuario.';
+            }
+            return throwError(error);
           })
-        ).subscribe();
+        ).subscribe({
+          next: (res) => {
+            const redirectUrl = this.route.snapshot.queryParams['redirect_url'] || '/dashboard';
+            this.router.navigateByUrl(redirectUrl);
+          }
+        });
       }
     });
   }

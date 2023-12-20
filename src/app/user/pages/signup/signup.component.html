@@ -21,6 +21,7 @@
                         >
                         <mat-error *ngIf="isFieldInvalid('firstname')">
                             {{getErrorMessage('firstname')}}
+                            {{ signupForm.get('firstname')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -34,6 +35,7 @@
                         >
                         <mat-error *ngIf="isFieldInvalid('lastname')">
                             {{getErrorMessage('lastname')}}
+                            {{ signupForm.get('lastname')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -49,6 +51,7 @@
                         >
                         <mat-error *ngIf="isFieldInvalid('email')">
                             {{getErrorMessage('email')}}
+                            {{ signupForm.get('email')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -66,6 +69,7 @@
                         </mat-icon>
                         <mat-error *ngIf="isFieldInvalid('password')">
                             {{getErrorMessage('password')}}
+                            {{ signupForm.get('password')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -81,6 +85,7 @@
                         >
                         <mat-error *ngIf="isFieldInvalid('phone')">
                             {{getErrorMessage('phone')}}
+                            {{ signupForm.get('phone')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -100,6 +105,7 @@
                         </mat-autocomplete>
                         <mat-error *ngIf="isFieldInvalid('address')">
                             {{getErrorMessage('address')}}
+                            {{ signupForm.get('address')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>                            
@@ -118,6 +124,7 @@
                         <fa-icon [icon]="faExclamationCircle"></fa-icon> 
                         <p *ngIf="signupForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
                         <p *ngIf="signupForm.get('birth_date')?.errors?.['minDateError']">Debe tener al menos 16 años para registrarte.</p>
+                        {{ signupForm.get('birth_date')?.errors?.['serverError'] }}
                     </mat-error>
                     <mat-datepicker-toggle matIconSuffix [for]="picker">
                       <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>

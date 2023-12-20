@@ -38,7 +38,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
   errorMessage!: string;
   invalidCredentials: boolean = false;
   token!: string | null;
-
+  redirectUrl!: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -152,4 +152,8 @@ export class SigninComponent implements OnInit, AfterViewInit {
     this.showLoader = true;
   }
 
+  navigateToSignup() {
+    const redirectUrl = this.route.snapshot.queryParams['redirect_url'] || '';
+    this.router.navigate(['/users/signup'], { queryParams: { redirect_url: redirectUrl } });
+  }
 }

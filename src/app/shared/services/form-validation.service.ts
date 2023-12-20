@@ -27,7 +27,7 @@ export class FormValidationService {
         .replace('{maxlength}', validatorValue?.requiredLength || '');
     }
 
-    return errorMessage || 'Error desconocido';
+    return errorMessage || '';
   }
 
   minDateValidator(minDate: Date): ValidatorFn {

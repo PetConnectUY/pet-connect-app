@@ -147,3 +147,6 @@ a {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import 'ngx-toastr/toastr';
+@import 'ngx-toastr/toastr-bs5-alert';

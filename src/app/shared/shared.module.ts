@@ -6,6 +6,7 @@ import { DarkModeTogglerComponent } from '../components/dark-mode-toggler/dark-m
 import { RouterModule } from '@angular/router';
 import { LoaderComponent } from '../components/loader/loader.component';
 import { HtmlToSafeHtmlPipe } from './pipes/html-to-safe-html.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [

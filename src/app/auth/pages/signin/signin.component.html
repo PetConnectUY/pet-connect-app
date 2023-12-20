@@ -52,7 +52,7 @@
                 <a *ngIf="this.user" (click)="removeAccount()">Ingresa con otra cuenta</a>
             </div>
             <div class="signin__container__item--footer">
-                <a *ngIf="!this.user" routerLink="/users/signup">registrarse</a>
+                <a *ngIf="!this.user" (click)="navigateToSignup()">registrarse</a>
                 <app-google-auth (googleLogin)="handleGoogleLogin($event)"></app-google-auth>
             </div>
         </div>

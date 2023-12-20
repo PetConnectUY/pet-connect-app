@@ -39,6 +39,7 @@
     "ng-recaptcha": "^11.0.0",
     "ngx-cookie-service": "^15.0.0",
     "ngx-mat-select-search": "^7.0.4",
+    "ngx-toastr": "^16.2.0",
     "opencage-api-client": "^1.0.2",
     "rxjs": "^7.8.1",
     "tslib": "^2.3.0",
