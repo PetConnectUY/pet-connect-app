@@ -18,7 +18,7 @@ export class QRActivationService {
 
   manageActivation(token: string | null, formData?: FormData | null): Observable<Pet | Message> {
     const url = `${this.baseUrl}qr-codes/manage-activation/${token}`;
-    return this.http.post<Pet | Message>(url, formData,{
+    return this.http.post<Pet | Message>(url, formData, {
       withCredentials: true
     });
   }
