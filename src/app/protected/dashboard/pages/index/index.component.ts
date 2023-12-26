@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { RotateProp } from '@fortawesome/fontawesome-svg-core';
-import { faCircleNotch, faDog, faEllipsisVertical, faFilter, faPaw, faPen, faQrcode, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { faCircleNotch, faDog, faEllipsisVertical, faGears, faHome, faPaw, faPen, faQrcode, faSignOut, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Pet } from 'src/app/protected/pets/interfaces/pet.interface';
 import { PetPagination } from 'src/app/protected/pets/interfaces/pet.pagination.interface';
@@ -12,14 +11,17 @@ import { PetImage } from 'src/app/protected/pets/interfaces/pet.image.interface'
 import { ConfirmModalComponent } from '../../components/confirm-modal/confirm-modal.component';
 import { finalize, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { PetRace } from 'src/app/protected/pets/interfaces/pet.race.interface';
-
+import { AuthService } from 'src/app/shared/services/auth.service';
+import {MediaMatcher} from '@angular/cdk/layout';
+import { MatSidenavContainer } from '@angular/material/sidenav';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+  styleUrls: ['./index.component.scss'],
 })
-export class IndexComponent implements OnInit{
+export class IndexComponent implements OnInit, OnDestroy{
+  mobileQuery!: MediaQueryList;
+  private _mobileQueryListener!: () => void;
 
   faPaw = faPaw;
   faDog = faDog;
@@ -28,6 +30,10 @@ export class IndexComponent implements OnInit{
   faEllipsisVertical = faEllipsisVertical;
   faPen = faPen;
   faTrash = faTrash;
+  faHome = faHome;
+  faUser = faUser;
+  faSignOut = faSignOut;
+  faGears = faGears;
 
   totalPets!: number;
   totalTokens!: number;
@@ -42,7 +48,18 @@ export class IndexComponent implements OnInit{
     private petService: PetService,
     private modalService: NgbModal,
     private route: ActivatedRoute,
-  ){}
+    private authService: AuthService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
+  ){
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
 
   ngOnInit(): void {
     this.updatePets();
@@ -155,5 +172,10 @@ export class IndexComponent implements OnInit{
           modalRef.componentInstance.loading = false;
         }
       );
+  }
+
+  signOut() {
+    this.authService.logout();
+    window.location.reload();
   }
 }

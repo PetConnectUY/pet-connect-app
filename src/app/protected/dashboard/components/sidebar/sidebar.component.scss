@@ -1,18 +1,13 @@
 .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    background-color: #e8e7e7;
+    height: 100%;
+    background-color: var(--primary-color);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 100%;
     width: 200px;
     padding: 2rem 0;
     font-size: 17px;
-    z-index: 2;
     &__logo {
         img {
             max-width: 100%;
@@ -72,7 +67,7 @@
                     font-family: var(--secondary-font);
                     text-decoration: none;
                     padding: 10px 2rem 10px 10px;
-                    background-color: var(--primary-color);
+                    background-color: var(--background-color);
                     color: #2b2b2b;
                     border-top-right-radius: 1rem;
                     border-bottom-right-radius: 1rem;
@@ -84,69 +79,65 @@
         }
     }
 
-    @media (max-width: 768px) {
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        top: auto;
-        height: 60px;
-        flex-direction: row;
-        justify-content: space-around;
-        background-color: var(--text-color);
-        color: var(--background-color);
+    // @media (max-width: 768px) {
+    //     width: 100%;
+    //     bottom: 0;
+    //     left: 0;
+    //     top: auto;
+    //     height: 60px;
+    //     flex-direction: row;
+    //     justify-content: space-around;
+    //     background-color: var(--text-color);
+    //     color: var(--background-color);
 
-        &__logo {
-            display: none;
-        }
+    //     &__logo {
+    //         display: none;
+    //     }
 
-        &__icons {
-            width: 100%;
-            ul {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-evenly;
-                li {
-                    a {
-                        padding: 1.3rem;
-                        color: #e8e7e7;
-                    }
-                }
-            }
-        }
-        &__footer {
-            width: max-content;
-            ul {
-                li {
-                    a {
-                        border-radius: 0;
-                        padding: 1.2rem;
-                        span {
-                            margin: 0;
-                        }
-                    }
-                }
-            }
-        }
-        .active {
-            border-radius: 0;
-        }
-    }
-    span {
-        @media (max-width: 768px) {
-            display: none !important;
-        }
-        @media (max-width: 576px) {
-            display: none !important;
-        } 
-    }
+    //     &__icons {
+    //         width: 100%;
+    //         ul {
+    //             flex-direction: row;
+    //             align-items: center;
+    //             justify-content: space-evenly;
+    //             li {
+    //                 a {
+    //                     padding: 1.3rem;
+    //                     color: #e8e7e7;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     &__footer {
+    //         width: max-content;
+    //         ul {
+    //             li {
+    //                 a {
+    //                     border-radius: 0;
+    //                     padding: 1.2rem;
+    //                     span {
+    //                         margin: 0;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     .active {
+    //         border-radius: 0;
+    //     }
+    // }
+    // span {
+    //     @media (max-width: 768px) {
+    //         display: none !important;
+    //     }
+    //     @media (max-width: 576px) {
+    //         display: none !important;
+    //     } 
+    // }
 }
 
 .active {
     border-top-right-radius: 2rem;
     border-bottom-right-radius: 2rem;
-    background-color: var(--primary-color);
-    transition: background-color .3s ease-in;
-    &:hover {
-        background-color: darken($color: #F9B348, $amount: 10);
-    }
+    background-color: var(--background-color);
 }

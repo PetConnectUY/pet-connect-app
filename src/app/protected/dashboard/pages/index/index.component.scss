@@ -1,14 +1,25 @@
-.page-container {
+.sidenav-container {
     display: flex;
-    min-height: 100vh;
-    background-color: var(--background-color);
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.mat-sidenav-content {
+    background-color: var(--background-color); 
+}
+.page-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    margin-top: 13px;
     @media (max-width: 768px) {
         flex-direction: column;
     }
     .content {
         flex: 1;
         padding: 20px;
-        margin-left: 200px;
         .dashboard {
             margin-bottom: 3.5rem;
             &__header {
@@ -39,11 +50,11 @@
                     flex-wrap: wrap;
                     gap: 2rem;
                     &__container {
-                        width: 500px;
+                        width: 400px;
                         background-color: var(--primary-color);
                         color: var(--background-color);
                         border-radius: 2rem;
-                        padding: 2rem;
+                        padding: 1rem;
                         cursor: pointer;
                         transition: background-color .3s ease;
                         display: flex;
@@ -199,4 +210,23 @@
 
 .without__pets {
     padding: 2rem;
+}
+
+.is-mobile .toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+}
+
+.mat-container {
+    flex: 1;
+}
+
+.is-mobile .mat-container {
+    flex: 1 0 auto;
+}
+
+.mdc-list {
+    padding: 0;
+    height: 100%;
 }
