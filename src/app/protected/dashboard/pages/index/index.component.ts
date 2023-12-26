@@ -13,7 +13,7 @@ import { finalize, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import {MediaMatcher} from '@angular/cdk/layout';
-import { MatSidenavContainer } from '@angular/material/sidenav';
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',

@@ -1,5 +1,6 @@
+import { MediaMatcher } from '@angular/cdk/layout';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faCheckCircle, faExclamationCircle, faExclamationTriangle, faGears, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
@@ -11,7 +12,10 @@ import { UserService } from 'src/app/user/services/user.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+  mobileQuery!: MediaQueryList;
+  private _mobileQueryListener!: () => void;
+
   faGears = faGears;
   faExclamationTriangle = faExclamationTriangle;
   faExclamationCircle = faExclamationCircle;
@@ -39,7 +43,17 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
     private userService: UserService,
-  ){}
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
+  ){
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
 
   ngOnInit(): void {    
     this.profileSettings = this.fb.group({

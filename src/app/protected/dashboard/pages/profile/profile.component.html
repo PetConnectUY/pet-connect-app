@@ -1,18 +1,30 @@
-<app-loader *ngIf="loader"></app-loader>
-<section class="page-container" *ngIf="!loader">
-    <app-sidebar></app-sidebar>
-    <div class="content">
-        <div class="settings">
-            <div class="settings__header">
-                <h2 class="settings__header--title">
-                    <fa-icon [icon]="faGears"></fa-icon> Mi perfil
-                </h2>
-            </div>
-            <div class="settings__body">
-                <div class="settings__body__content">
-                    <p>Cambia la información de tu perfil</p>
+<div class="sidenav-container" [class.is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="primary" class="toolbar">
+        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    </mat-toolbar>
+    <mat-sidenav-container class="mat-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened>
+            <mat-nav-list>
+                <app-sidebar></app-sidebar>
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <section class="page-container" *ngIf="!loader">
+                <div class="content">
+                    <div class="settings">
+                        <div class="settings__header">
+                            <h2 class="settings__header--title">
+                                <fa-icon [icon]="faGears"></fa-icon> Mi perfil
+                            </h2>
+                        </div>
+                        <div class="settings__body">
+                            <div class="settings__body__content">
+                                <p>Cambia la información de tu perfil</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
