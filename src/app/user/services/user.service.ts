@@ -57,4 +57,11 @@ export class UserService {
     const url = `${this.baseUrl}dashboard/change-settings`;
     return this.http.post<UserPetProfileSetting>(url, formData);
   }
+
+  changePassword(formData: FormData): Observable<User> {
+    console.log(formData);
+    
+    const url = `${this.baseUrl}dashboard/change-password`;
+    return this.http.post<User>(url, formData);
+  }
 }

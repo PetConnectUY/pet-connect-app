@@ -2,7 +2,9 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faCheckCircle, faExclamationCircle, faExclamationTriangle, faGears, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faChevronRight, faExclamationCircle, faExclamationTriangle, faGears, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
+import { User } from 'src/app/shared/interfaces/user.interface';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { UserPetProfileSetting } from 'src/app/user/interfaces/user-pet-profile-setting.interface';
 import { UserService } from 'src/app/user/services/user.service';
@@ -23,16 +25,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   faPaw = faPaw;
   faSpinner = faSpinner;
   faCheckCircle = faCheckCircle;
+  faChevronRight = faChevronRight;
 
+  user!: User|null;
   loader: boolean = false;
   btnValue: string = 'Guardar los cambios';
   submitting: boolean = false;
+  submittingChangePassword: boolean = false;
   successSubmittion: boolean = false;
   unknowError: boolean = false;
   errorMessage!: string;
 
+  changePasswordForm!: FormGroup;
   settingsForm!: FormGroup;
   profileSettings!: FormGroup;
+
+  hide: boolean = false;
+  passwordsMatch: boolean = true;
 
   nameVisible!: boolean;
   locationVisible!: boolean;
@@ -44,11 +53,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private formValidationService: FormValidationService,
     private userService: UserService,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    media: MediaMatcher,
+    private authService: AuthService,
   ){
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    this.user = this.authService.getUser();
   }
 
   ngOnDestroy(): void {
@@ -56,14 +67,31 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {    
-    this.profileSettings = this.fb.group({
-      
-    });
+    
     this.settingsForm = this.fb.group({
       user_fullname_visible: [this.nameVisible, [Validators.required]],
       user_location_visible: [this.locationVisible, [Validators.required]],
       user_phone_visible: [this.contactPhone, [Validators.required]],
       user_email_visible: [this.contactMail, [Validators.required]],
+    });
+
+    this.changePasswordForm = this.fb.group({
+      current_password: ['', [Validators.required]],
+      new_password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.pattern(/^(?=.*[A-Z])/), // Al menos una letra mayúscula
+        ],
+      ],
+      confirm_password: ['', [Validators.required]],
+    }, { validators: this.passwordsMatchValidator });
+    
+
+    this.changePasswordForm.valueChanges.subscribe(() => {
+      this.passwordsMatch = this.changePasswordForm.hasError('passwordsNotMatch') ? false : true;
+      // ... actualiza otras propiedades según tus validaciones
     });
 
     // this.loader = true;
@@ -120,4 +148,38 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  changePassword() {
+    this.submittingChangePassword = true;
+    const formData = new FormData();
+    const { current_password, new_password, confirm_password } = this.changePasswordForm.value;
+    formData.append('current_password', current_password);
+    formData.append('new_password', new_password);
+    formData.append('confirm_password', confirm_password);
+    if(this.changePasswordForm.valid) {
+      this.userService.changePassword(formData).subscribe({
+        next: (res: User) => {
+          this.submittingChangePassword = false;
+          console.log(res);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.submittingChangePassword = false;
+          console.log(error);
+          
+        }
+      });
+    }
+  }
+
+  public togglePasswordVisibility(): void {
+    this.hide = !this.hide;
+  }
+
+  passwordsMatchValidator(form: FormGroup) {
+    const newPassword = form.get('new_password')?.value;
+    const confirmPassword = form.get('confirm_password')?.value;
+  
+    return newPassword === confirmPassword ? null : { passwordsNotMatch: true };
+  }
+  
 }

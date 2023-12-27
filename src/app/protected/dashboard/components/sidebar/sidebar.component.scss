@@ -78,62 +78,6 @@
             }
         }
     }
-
-    // @media (max-width: 768px) {
-    //     width: 100%;
-    //     bottom: 0;
-    //     left: 0;
-    //     top: auto;
-    //     height: 60px;
-    //     flex-direction: row;
-    //     justify-content: space-around;
-    //     background-color: var(--text-color);
-    //     color: var(--background-color);
-
-    //     &__logo {
-    //         display: none;
-    //     }
-
-    //     &__icons {
-    //         width: 100%;
-    //         ul {
-    //             flex-direction: row;
-    //             align-items: center;
-    //             justify-content: space-evenly;
-    //             li {
-    //                 a {
-    //                     padding: 1.3rem;
-    //                     color: #e8e7e7;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     &__footer {
-    //         width: max-content;
-    //         ul {
-    //             li {
-    //                 a {
-    //                     border-radius: 0;
-    //                     padding: 1.2rem;
-    //                     span {
-    //                         margin: 0;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     .active {
-    //         border-radius: 0;
-    //     }
-    // }
-    // span {
-    //     @media (max-width: 768px) {
-    //         display: none !important;
-    //     }
-    //     @media (max-width: 576px) {
-    //         display: none !important;
-    //     } 
-    // }
 }
 
 .active {

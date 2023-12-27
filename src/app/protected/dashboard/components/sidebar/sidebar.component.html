@@ -7,13 +7,18 @@
     <div class="sidebar__icons">
         <ul>
             <li>
+                <a routerLink="/app" class="sidebar__icon" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+                    <fa-icon [icon]="faHome"></fa-icon> Inicio
+                </a>
+            </li>
+            <li>
                 <a routerLink="/dashboard/my-pets" class="sidebar__icon" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-                    <fa-icon [icon]="faPaw"></fa-icon> <span class="d-md-inline d-sm-none">Mis peludos</span>
+                    <fa-icon [icon]="faPaw"></fa-icon> Mis peludos
                 </a>
             </li>
             <li>
                 <a routerLink="/dashboard/profile" class="sidebar__icon" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                    <fa-icon [icon]="faUser"></fa-icon> <span class="d-md-inline d-sm-none">Mi perfil</span>
+                    <fa-icon [icon]="faUser"></fa-icon> Mi perfil
                 </a>
             </li>
         </ul>
@@ -22,7 +27,7 @@
         <ul>
             <li>
                 <a (click)="signOut()" class="sidebar__icon">
-                    <fa-icon [icon]="faSignOut"></fa-icon> <span class="d-md-inline d-sm-none">Cerrar sesión</span>
+                    <fa-icon [icon]="faSignOut"></fa-icon> Cerrar sesión
                 </a>
             </li>
         </ul>
