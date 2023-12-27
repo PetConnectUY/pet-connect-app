@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { faPaw, faQrcode, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faQrcode, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class NavbarComponent {
   faPaw = faPaw;
+  faUser = faUser;
   faQrcode = faQrcode;
   faRightFromBracket = faRightFromBracket;
 

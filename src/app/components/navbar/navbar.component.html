@@ -20,17 +20,12 @@
         <li class="nav-item dropdown" *ngIf="this.user && this.token">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
-            {{this.user.firstname | titlecase}}
+            <fa-icon [icon]="faUser"></fa-icon> Yo
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
               <a class="dropdown-item" routerLink="/dashboard">
                 <fa-icon [icon]="faPaw"></fa-icon> Mis mascotas
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">
-                <fa-icon [icon]="faQrcode"></fa-icon> Mis QR
               </a>
             </li>
             <li><hr class="dropdown-divider"></li>

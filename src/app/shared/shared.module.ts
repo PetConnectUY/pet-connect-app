@@ -7,6 +7,9 @@ import { RouterModule } from '@angular/router';
 import { LoaderComponent } from '../components/loader/loader.component';
 import { HtmlToSafeHtmlPipe } from './pipes/html-to-safe-html.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     FontAwesomeModule,
     RouterModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
   ],
   exports: [
     NavbarComponent,

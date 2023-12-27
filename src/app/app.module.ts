@@ -33,6 +33,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { APP_DATEFORMAT } from './shared/configs/app.dateformat';
 import { ToastrModule } from 'ngx-toastr';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { ToastrModule } from 'ngx-toastr';
     MatInputModule,
     MatProgressSpinnerModule,
     ToastrModule.forRoot(),
+    MatSidenavModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },
