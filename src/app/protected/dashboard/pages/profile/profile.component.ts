@@ -60,6 +60,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.user = this.authService.getUser();
+    console.log(this.user);
+    
   }
 
   ngOnDestroy(): void {
