@@ -3,6 +3,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faCheckCircle, faChevronRight, faExclamationCircle, faExclamationTriangle, faGears, faPaw, faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
+import { AuthResponse } from 'src/app/shared/interfaces/auth-response.interface';
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
@@ -41,7 +43,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   profileSettings!: FormGroup;
 
   hide: boolean = false;
-  passwordsMatch: boolean = true;
+  passwordsMatch: boolean = false;
 
   nameVisible!: boolean;
   locationVisible!: boolean;
@@ -55,13 +57,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private authService: AuthService,
+    private toastr: ToastrService
   ){
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.user = this.authService.getUser();
-    console.log(this.user);
-    
+    this.user = this.authService.getUser();    
   }
 
   ngOnDestroy(): void {
@@ -69,7 +70,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {    
-    
     this.settingsForm = this.fb.group({
       user_fullname_visible: [this.nameVisible, [Validators.required]],
       user_location_visible: [this.locationVisible, [Validators.required]],
@@ -88,12 +88,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
         ],
       ],
       confirm_password: ['', [Validators.required]],
-    }, { validators: this.passwordsMatchValidator });
+    });
     
-
     this.changePasswordForm.valueChanges.subscribe(() => {
-      this.passwordsMatch = this.changePasswordForm.hasError('passwordsNotMatch') ? false : true;
-      // ... actualiza otras propiedades según tus validaciones
+      const currentPassword = this.changePasswordForm.get('current_password')?.value;
+      const newPassword = this.changePasswordForm.get('new_password')?.value;
+      const confirmPassword = this.changePasswordForm.get('confirm_password')?.value;
+      if (newPassword.trim() !== '' && confirmPassword.trim() !== '') {      
+        if (newPassword === confirmPassword) {
+          // Si las contraseñas coinciden, eliminar el error en el campo de confirmación de la contraseña
+          this.changePasswordForm.get('confirm_password')?.setErrors(null);
+        } else {
+          // Si las contraseñas no coinciden, establecer un error en el campo de confirmación de la contraseña
+          this.changePasswordForm.get('confirm_password')?.setErrors({ passwordsNotMatch: true });
+        }
+      }  
+      
+      if(currentPassword.trim() !== '' && newPassword.trim() !== '') {
+        if(currentPassword === newPassword) {
+          this.changePasswordForm.get('current_password')?.setErrors({ passwordsNotMatch: true });
+        } else {
+          this.changePasswordForm.get('current_password')?.setErrors(null);
+        }
+      }
     });
 
     // this.loader = true;
@@ -158,16 +175,49 @@ export class ProfileComponent implements OnInit, OnDestroy {
     formData.append('current_password', current_password);
     formData.append('new_password', new_password);
     formData.append('confirm_password', confirm_password);
+    
     if(this.changePasswordForm.valid) {
       this.userService.changePassword(formData).subscribe({
         next: (res: User) => {
-          this.submittingChangePassword = false;
-          console.log(res);
+          this.authService.refreshToken().subscribe({
+            next: (res: AuthResponse) => {
+              this.submittingChangePassword = false;
+              this.toastr.success('Contraseña cambiada con éxito', 'Éxito!', {
+                timeOut: 5000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              });
+            },
+            error: (error: HttpErrorResponse) => {
+              this.authService.logout();
+              window.location.reload();
+            }
+          });
         },
         error: (error: HttpErrorResponse) => {
           this.submittingChangePassword = false;
-          console.log(error);
-          
+          // Manejo de errores del backend
+          if (error.status === 422 && error.error && error.error.error) {
+            // 422 Unprocessable Entity - Validación fallida
+            const backendError = error.error.error;
+            if (backendError === 'La contraseña actual no es válida') {
+              this.changePasswordForm.get('current_password')?.setErrors({ invalidCurrentPassword: true });
+            } else {
+              // Otros posibles errores del backend
+              this.toastr.error(backendError, 'Error', {
+                timeOut: 5000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              });
+            }
+          } else {
+            // Otros errores no relacionados con la validación
+            this.toastr.error('Ocurrió un error al cambiar la contraseña.', 'Error', {
+              timeOut: 5000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+            });
+          }
         }
       });
     }
@@ -176,12 +226,4 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public togglePasswordVisibility(): void {
     this.hide = !this.hide;
   }
-
-  passwordsMatchValidator(form: FormGroup) {
-    const newPassword = form.get('new_password')?.value;
-    const confirmPassword = form.get('confirm_password')?.value;
-  
-    return newPassword === confirmPassword ? null : { passwordsNotMatch: true };
-  }
-  
 }

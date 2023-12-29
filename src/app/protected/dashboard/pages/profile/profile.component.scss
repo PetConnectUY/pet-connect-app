@@ -105,3 +105,12 @@
     padding: 0;
     height: 100%;
 }
+
+/* Agrega este código a tu archivo de estilos CSS o SCSS */
+.validation-rules li.invalid {
+    color: red; /* Color de texto para reglas inválidas */
+}
+
+.validation-rules li.valid {
+    color: green; /* Color de texto para reglas válidas */
+}

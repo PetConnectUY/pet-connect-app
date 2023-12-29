@@ -43,7 +43,9 @@ export class AuthInterceptor implements HttpInterceptor {
                 catchError((refreshError) => {
                   this.refreshAttempts = 0;
                   this.authService.logout();
-                  this.router.navigate(['/auth/signin'], { queryParams: { redirect_url: currentUrl } });
+                  if (!this.router.url.includes('/auth/signin')) {
+                    this.router.navigate(['/auth/signin'], { queryParams: { redirect_url: currentUrl } });
+                  }
                   return throwError(refreshError);
                 })
               );

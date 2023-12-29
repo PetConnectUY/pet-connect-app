@@ -58,9 +58,7 @@ export class UserService {
     return this.http.post<UserPetProfileSetting>(url, formData);
   }
 
-  changePassword(formData: FormData): Observable<User> {
-    console.log(formData);
-    
+  changePassword(formData: FormData): Observable<User> {    
     const url = `${this.baseUrl}dashboard/change-password`;
     return this.http.post<User>(url, formData);
   }
