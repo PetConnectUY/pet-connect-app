@@ -1,19 +1,24 @@
-<nav class="navbar navbar-expand-lg navbar-ligth">
-  <div class="container">
+<nav class="navbar navbar-expand-lg navbar-expand-md navbar-ligth">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="'/app'">
+      <picture>
+        <img width="80" height="74" class="d-inline-block align-text-top" src="/assets/images/pet-connect-logo.png" alt="pet-connect-logo" draggable="false">
+      </picture>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse mt-3" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+          <a mat-raised-button [color]="isActive('/app') ? 'primary' : 'accent'" class="nav-link" routerLink="/app" routerLinkActive="active">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contacto</a>
+          <a mat-raised-button [color]="isActive('/contact') ? 'primary' : 'accent'" class="nav-link" routerLink="/contact" routerLinkActive="active">Contacto</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/clients" routerLinkActive="active">Clientes</a>
+          <a mat-raised-button [color]="isActive('/clients') ? 'primary' : 'accent'" class="nav-link" routerLink="/clients" routerLinkActive="active">Clientes</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">

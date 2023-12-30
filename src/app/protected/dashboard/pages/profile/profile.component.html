@@ -1,135 +1,125 @@
-<div class="sidenav-container" [class.is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="primary" class="toolbar">
-        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    </mat-toolbar>
-    <mat-sidenav-container class="mat-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened>
-            <mat-nav-list>
-                <app-sidebar></app-sidebar>
-            </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content>
-            <section class="page-container" *ngIf="!loader">
-                <div class="content">
-                    <div class="settings">
-                        <div class="settings__header">
-                            <h2 class="settings__header--title">
-                                <fa-icon [icon]="faGears"></fa-icon> Mi perfil
-                            </h2>
-                        </div>
-                        <div class="settings__body">
-                            <mat-tab-group dynamicHeight mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="100ms" >
-                                <mat-tab label="Datos personales">
-                                    <div class="settings__body__content">
-                                        <h4>Datos básicos</h4>
-                                        <form class="d-flex gap-3 w-100">
-                                            <mat-form-field>
-                                                <mat-label>Nombre completo</mat-label>
-                                                <input matInput disabled value="{{this.user?.firstname}} {{this.user?.lastname}}">
-                                            </mat-form-field>
-                                            <mat-form-field>
-                                                <mat-label>Email</mat-label>
-                                                <input matInput disabled value="{{this.user?.email}}">
-                                            </mat-form-field>
-                                            <mat-form-field>
-                                                <mat-label>Fecha de nacimiento</mat-label>
-                                                <input matInput disabled value="{{this.user?.birth_date}}">
-                                            </mat-form-field>
-                                            <mat-form-field>
-                                                <mat-label>Dirección</mat-label>
-                                                <input matInput disabled value="{{this.user?.address}}">
-                                            </mat-form-field>
-                                            <mat-form-field>
-                                                <mat-label>Número de contacto</mat-label>
-                                                <input matInput disabled value="{{this.user?.phone}}">
-                                            </mat-form-field>
-                                        </form>
-                                    </div>
-                                </mat-tab>
-                                <mat-tab label="Cambiar la contraseña">
-                                    <div class="settings__body__content">
-                                        <h4>Cambiar la contraseña</h4>
-                                        <form class="d-flex gap-3 w-100" [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
-                                            <mat-form-field>
-                                                <mat-label>Contraseña actual</mat-label>
-                                                <input formControlName="current_password" matInput [type]="hide ? 'text' : 'password'" name="current_password">
-                                                <mat-icon matSuffix (click)="togglePasswordVisibility()">
-                                                    {{hide?'visibility_off':'visibility'}}
-                                                </mat-icon>
-                                                <mat-error *ngIf="changePasswordForm.get('current_password')?.hasError('invalidCurrentPassword')">
-                                                    {{ 'La contraseña actual no es válida' }}
-                                                </mat-error>                                                
-                                            </mat-form-field>
-                                            <mat-form-field [color]="passwordsMatch ? 'primary' : 'warn'">
-                                                <mat-label>Nueva contraseña</mat-label>
-                                                <input formControlName="new_password" matInput [type]="hide ? 'text' : 'password'" name="new_password">
-                                                <mat-icon matSuffix (click)="togglePasswordVisibility()">
-                                                    {{hide ? 'visibility_off' : 'visibility'}}
-                                                </mat-icon>
-                                            </mat-form-field>                                                                        
-                                            <mat-form-field>
-                                                <mat-label>Confirmar contraseña</mat-label>
-                                                <input formControlName="confirm_password" matInput [type]="hide ? 'text' : 'password'" name="confirm_password">
-                                                <mat-icon matSuffix (click)="togglePasswordVisibility()">
-                                                    {{hide?'visibility_off':'visibility'}}
-                                                </mat-icon>
-                                            </mat-form-field>
-                                            <button  mat-raised-button color="primary" [disabled]="submittingChangePassword || changePasswordForm.invalid" #formBtn>
-                                                {{btnValue}}
-                                                <fa-icon *ngIf="submittingChangePassword" [icon]="faSpinner" [spin]="true"></fa-icon>
-                                                <fa-icon *ngIf="!submittingChangePassword" [icon]="faChevronRight"></fa-icon>
-                                            </button>
-                                        </form>
-                                        <ul class="validation-rules">
-                                            <li 
-                                                [class.invalid]="changePasswordForm.get('current_password')?.hasError('required') && changePasswordForm.get('current_password')?.touched"
-                                                [class.valid]="changePasswordForm.get('current_password')?.valid">
-                                                La contraseña actual es obligatoria
-                                            </li>
-                                            <li 
-                                                [class.invalid]="changePasswordForm.get('new_password')?.hasError('required') && changePasswordForm.get('new_password')?.touched"
-                                                [class.valid]="changePasswordForm.get('new_password')?.valid">
-                                                La nueva contraseña es obligatoria
-                                            </li>
-                                            <li 
-                                                [class.invalid]="changePasswordForm.get('new_password')?.hasError('minlength') && changePasswordForm.get('new_password')?.touched"
-                                                [class.valid]="changePasswordForm.get('new_password')?.valid">
-                                                La contraseña debe tener al menos 6 caracteres
-                                            </li>
-                                            <li 
-                                                [class.invalid]="changePasswordForm.get('new_password')?.hasError('pattern') && changePasswordForm.get('new_password')?.touched"
-                                                [class.valid]="changePasswordForm.get('new_password')?.valid">
-                                                La contraseña debe contener al menos una letra mayúscula
-                                            </li>
-                                            <li 
-                                                [class.invalid]="changePasswordForm.get('confirm_password')?.hasError('required') && changePasswordForm.get('confirm_password')?.touched"
-                                                [class.valid]="changePasswordForm.get('confirm_password')?.valid">
-                                                Confirmar contraseña es obligatorio
-                                            </li>
-                                            <li 
-                                                [class.invalid]="changePasswordForm.get('confirm_password')?.hasError('passwordsNotMatch') && changePasswordForm.get('confirm_password')?.touched"
-                                                [class.valid]="changePasswordForm.get('confirm_password')?.valid">
-                                                Las contraseñas no coinciden
-                                            </li>
-                                            <li 
-                                                *ngIf="changePasswordForm.get('current_password')?.hasError('passwordsNotMatch')"
-                                                [class.invalid]="changePasswordForm.get('current_password')?.hasError('passwordsNotMatch') && changePasswordForm.get('current_password')?.touched"
-                                                [class.valid]="changePasswordForm.get('current_password')?.valid">
-                                                Las contraseña nueva no puede ser igual que la contraseña anterior
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </mat-tab>
-                                <mat-tab label="Cambiar el email">
-                                    <div class="settings__body__content">
-                                        <h4>Cambiar el email</h4>
-                                    </div>
-                                </mat-tab>
-                            </mat-tab-group>
-                        </div>
+<app-template>
+    <ng-container>
+        <section class="page-container" *ngIf="!loader">
+            <div class="content">
+                <div class="settings">
+                    <div class="settings__header">
+                        <h2 class="settings__header--title">
+                            <fa-icon [icon]="faGears"></fa-icon> Mi perfil
+                        </h2>
+                    </div>
+                    <div class="settings__body">
+                        <mat-tab-group dynamicHeight mat-stretch-tabs="true" mat-align-tabs="start" animationDuration="100ms" >
+                            <mat-tab label="Datos personales" bodyClass="tab-color">
+                                <div class="settings__body__content">
+                                    <h4>Datos básicos</h4>
+                                    <form class="d-flex gap-3 w-100">
+                                        <mat-form-field>
+                                            <mat-label>Nombre completo</mat-label>
+                                            <input matInput disabled value="{{this.user?.firstname}} {{this.user?.lastname}}">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Email</mat-label>
+                                            <input matInput disabled value="{{this.user?.email}}">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Fecha de nacimiento</mat-label>
+                                            <input matInput disabled value="{{this.user?.birth_date}}">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Dirección</mat-label>
+                                            <input matInput disabled value="{{this.user?.address}}">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Número de contacto</mat-label>
+                                            <input matInput disabled value="{{this.user?.phone}}">
+                                        </mat-form-field>
+                                    </form>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Cambiar la contraseña">
+                                <div class="settings__body__content">
+                                    <h4>Cambiar la contraseña</h4>
+                                    <form class="d-flex gap-3 w-100" [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
+                                        <mat-form-field>
+                                            <mat-label>Contraseña actual</mat-label>
+                                            <input formControlName="current_password" matInput [type]="hide ? 'text' : 'password'" name="current_password">
+                                            <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                                                {{hide?'visibility_off':'visibility'}}
+                                            </mat-icon>
+                                            <mat-error *ngIf="changePasswordForm.get('current_password')?.hasError('invalidCurrentPassword')">
+                                                {{ 'La contraseña actual no es válida' }}
+                                            </mat-error>                                                
+                                        </mat-form-field>
+                                        <mat-form-field [color]="passwordsMatch ? 'primary' : 'warn'">
+                                            <mat-label>Nueva contraseña</mat-label>
+                                            <input formControlName="new_password" matInput [type]="hide ? 'text' : 'password'" name="new_password">
+                                            <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                                                {{hide ? 'visibility_off' : 'visibility'}}
+                                            </mat-icon>
+                                        </mat-form-field>                                                                        
+                                        <mat-form-field>
+                                            <mat-label>Confirmar contraseña</mat-label>
+                                            <input formControlName="confirm_password" matInput [type]="hide ? 'text' : 'password'" name="confirm_password">
+                                            <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                                                {{hide?'visibility_off':'visibility'}}
+                                            </mat-icon>
+                                        </mat-form-field>
+                                        <button  mat-raised-button color="primary" [disabled]="submittingChangePassword || changePasswordForm.invalid" #formBtn>
+                                            {{btnValue}}
+                                            <fa-icon *ngIf="submittingChangePassword" [icon]="faSpinner" [spin]="true"></fa-icon>
+                                            <fa-icon *ngIf="!submittingChangePassword" [icon]="faChevronRight"></fa-icon>
+                                        </button>
+                                    </form>
+                                    <ul class="validation-rules">
+                                        <li 
+                                            [class.invalid]="changePasswordForm.get('current_password')?.hasError('required') && changePasswordForm.get('current_password')?.touched"
+                                            [class.valid]="changePasswordForm.get('current_password')?.valid">
+                                            La contraseña actual es obligatoria
+                                        </li>
+                                        <li 
+                                            [class.invalid]="changePasswordForm.get('new_password')?.hasError('required') && changePasswordForm.get('new_password')?.touched"
+                                            [class.valid]="changePasswordForm.get('new_password')?.valid">
+                                            La nueva contraseña es obligatoria
+                                        </li>
+                                        <li 
+                                            [class.invalid]="changePasswordForm.get('new_password')?.hasError('minlength') && changePasswordForm.get('new_password')?.touched"
+                                            [class.valid]="changePasswordForm.get('new_password')?.valid">
+                                            La contraseña debe tener al menos 6 caracteres
+                                        </li>
+                                        <li 
+                                            [class.invalid]="changePasswordForm.get('new_password')?.hasError('pattern') && changePasswordForm.get('new_password')?.touched"
+                                            [class.valid]="changePasswordForm.get('new_password')?.valid">
+                                            La contraseña debe contener al menos una letra mayúscula
+                                        </li>
+                                        <li 
+                                            [class.invalid]="changePasswordForm.get('confirm_password')?.hasError('required') && changePasswordForm.get('confirm_password')?.touched"
+                                            [class.valid]="changePasswordForm.get('confirm_password')?.valid">
+                                            Confirmar contraseña es obligatorio
+                                        </li>
+                                        <li 
+                                            [class.invalid]="changePasswordForm.get('confirm_password')?.hasError('passwordsNotMatch') && changePasswordForm.get('confirm_password')?.touched"
+                                            [class.valid]="changePasswordForm.get('confirm_password')?.valid">
+                                            Las contraseñas no coinciden
+                                        </li>
+                                        <li 
+                                            *ngIf="changePasswordForm.get('current_password')?.hasError('passwordsNotMatch')"
+                                            [class.invalid]="changePasswordForm.get('current_password')?.hasError('passwordsNotMatch') && changePasswordForm.get('current_password')?.touched"
+                                            [class.valid]="changePasswordForm.get('current_password')?.valid">
+                                            Las contraseña nueva no puede ser igual que la contraseña anterior
+                                        </li>
+                                    </ul>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Cambiar el email">
+                                <div class="settings__body__content">
+                                    <h4>Cambiar el email</h4>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
                     </div>
                 </div>
-            </section>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-</div>
+            </div>
+        </section>
+    </ng-container>
+</app-template>

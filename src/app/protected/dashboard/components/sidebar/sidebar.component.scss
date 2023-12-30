@@ -33,7 +33,7 @@
             li {
                 width: 100%;
                 a {
-                    color: #2b2b2b;
+                    color: var(--text-color);
                     font-family: var(--primary-font);
                     margin: 10px 0;
                     text-decoration: none;
@@ -68,7 +68,7 @@
                     text-decoration: none;
                     padding: 10px 2rem 10px 10px;
                     background-color: var(--background-color);
-                    color: #2b2b2b;
+                    color: var(--text-color);
                     border-top-right-radius: 1rem;
                     border-bottom-right-radius: 1rem;
                     span {

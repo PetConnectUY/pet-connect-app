@@ -15,7 +15,6 @@ import { AboutComponent } from './components/about/about.component';
 import { SharedModule } from './shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
-import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaFormsModule } from "ng-recaptcha";
@@ -43,7 +42,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     HeaderComponent,
     AboutComponent,
     FrequentQuestionsComponent,
-    PurchaseComponent,
     ErrorComponent,
   ],
   imports: [

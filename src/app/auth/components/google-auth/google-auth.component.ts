@@ -1,14 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { environment } from 'src/environments/environment.development';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AuthResponse } from 'src/app/shared/interfaces/auth-response.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
-import { Message } from 'src/app/user/interfaces/message.interface';
-import { TokenService } from 'src/app/shared/services/token.service';
-
 @Component({
   selector: 'app-google-auth',
   templateUrl: './google-auth.component.html',
@@ -29,8 +24,7 @@ export class GoogleAuthComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    ) {
-    }
+    ) {}
 
   ngOnInit() {
     this.submitting = false;

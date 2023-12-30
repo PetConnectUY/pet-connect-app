@@ -1,4 +1,5 @@
-<button class="dark-mode-toggle-btn" (click)="toggleDarkMode()">
-    <fa-icon [icon]="faCircleHalfStroke"></fa-icon>
-</button>
-  
+<div [class]="isActive('/dashboard') ? 'sidebar' : 'nav'">
+    <button mat-mini-fab color="primary" (click)="toggleDarkMode()">
+        <fa-icon [icon]="faCircleHalfStroke"></fa-icon>
+    </button>
+</div>

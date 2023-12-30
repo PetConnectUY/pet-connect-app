@@ -1,98 +1,88 @@
-<div class="sidenav-container" [class.is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="primary" class="toolbar">
-        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    </mat-toolbar>
-    <mat-sidenav-container class="mat-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened>
-            <mat-nav-list>
-                <app-sidebar></app-sidebar>
-            </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content>
-            <section class="page-container">
-                <div class="content">
-                    <div class="dashboard">
-                        <div class="dashboard__header">
-                            <h2 class="dashboard__header--title"><fa-icon [icon]="faPaw"></fa-icon> Zona de peludos</h2>
-                            <div class="dashboard__body">
-                                <div class="dashboard__body__header">
-                                    <div class="dashboard__body__header__container" href="#my-pets">
-                                        <div class="dashboard__body__header__container--box">
-                                            <h3><fa-icon [icon]="faDog" style="color: var(--text-color)"></fa-icon> Mis peludos</h3>
-                                            <span *ngIf="!this.counterLoader">{{this.totalPets}}</span>
-                                            <mat-spinner *ngIf="this.counterLoader" style="--mdc-circular-progress-active-indicator-color: #fff;" diameter="50"></mat-spinner>
-                                        </div>
+<app-template>
+    <ng-container>
+        <section class="page-container">
+            <div class="content">
+                <div class="dashboard">
+                    <div class="dashboard__header">
+                        <h2 class="dashboard__header--title"><fa-icon [icon]="faPaw"></fa-icon> Zona de peludos</h2>
+                        <div class="dashboard__body">
+                            <div class="dashboard__body__header">
+                                <div class="dashboard__body__header__container" href="#my-pets">
+                                    <div class="dashboard__body__header__container--box">
+                                        <h3><fa-icon [icon]="faDog" style="color: var(--text-color)"></fa-icon> Mis peludos</h3>
+                                        <span *ngIf="!this.counterLoader">{{this.totalPets}}</span>
+                                        <mat-spinner *ngIf="this.counterLoader" style="--mdc-circular-progress-active-indicator-color: #fff;" diameter="50"></mat-spinner>
                                     </div>
-                                    <div class="dashboard__body__header__container">
-                                        <div class="dashboard__body__header__container--box">
-                                            <h3><fa-icon [icon]="faQrcode" style="color: var(--text-color)"></fa-icon> Mis códigos</h3>
-                                            <span *ngIf="!this.counterLoader">{{this.totalTokens}}</span>
-                                            <mat-spinner *ngIf="this.counterLoader" style="--mdc-circular-progress-active-indicator-color: #fff;" diameter="50"></mat-spinner>
+                                </div>
+                                <div class="dashboard__body__header__container">
+                                    <div class="dashboard__body__header__container--box">
+                                        <h3><fa-icon [icon]="faQrcode" style="color: var(--text-color)"></fa-icon> Mis códigos</h3>
+                                        <span *ngIf="!this.counterLoader">{{this.totalTokens}}</span>
+                                        <mat-spinner *ngIf="this.counterLoader" style="--mdc-circular-progress-active-indicator-color: #fff;" diameter="50"></mat-spinner>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard__body__container">
+                                <app-loader *ngIf="petsLoader"></app-loader>
+                                <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length > 0" id="#my-pets">
+                                    <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
+                                        <div class="dashboard__body__container__box__item--header">
+                                            <button mat-icon-button [matMenuTriggerFor]="actions" aria-label="Example icon-button with a menu">
+                                                <mat-icon>more_vert</mat-icon>
+                                            </button>
+                                            <mat-menu #actions="matMenu">
+                                                <button mat-menu-item color="primary" (click)="editPet(pet)">
+                                                        <mat-icon class="icon">edit</mat-icon> Editar
+                                                </button>
+                                                <button mat-menu-item (click)="deletePet(pet)">
+                                                    <mat-icon class="icon">delete</mat-icon> Eliminar
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                        <div class="dashboard__body__container__box__item--body">
+                                            <div class="dashboard__body__container__box__item--body--image">
+                                                <ng-container *ngIf="pet.images.length <= 0">
+                                                    <picture>
+                                                        <img src="assets/images/pet-avatar.webp" alt="pet-avatar">
+                                                    </picture>
+                                                </ng-container>
+                                                <ng-container *ngIf="pet.images.length > 0">
+                                                    <picture *ngFor="let image of pet.images">
+                                                        <img src="{{image.url}}" alt="pet-image">
+                                                    </picture>
+                                                </ng-container>
+                                                <h3>{{pet.name}}</h3>
+                                            </div>
+                                            <div class="dashboard__body__container__box__item--body--button">
+                                                <button 
+                                                    mat-raised-button 
+                                                    color="primary"
+                                                    *ngIf="pet.pet_token.token" [routerLink]="['/pets/', pet.pet_token.token]">Ver perfil</button>
+                                                <button 
+                                                    mat-stroked-button 
+                                                    color="basic"
+                                                    *ngIf="!pet.pet_token.token" [routerLink]="['/get-qr-code/', pet.id]">Obtener chapita</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="dashboard__body__container">
-                                    <app-loader *ngIf="petsLoader"></app-loader>
-                                    <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length > 0" id="#my-pets">
-                                        <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
-                                            <div class="dashboard__body__container__box__item--header">
-                                                <button mat-icon-button [matMenuTriggerFor]="actions" aria-label="Example icon-button with a menu">
-                                                    <mat-icon>more_vert</mat-icon>
-                                                </button>
-                                                <mat-menu #actions="matMenu">
-                                                    <button mat-menu-item color="primary" (click)="editPet(pet)">
-                                                            <mat-icon class="icon">edit</mat-icon> Editar
-                                                    </button>
-                                                    <button mat-menu-item (click)="deletePet(pet)">
-                                                        <mat-icon class="icon">delete</mat-icon> Eliminar
-                                                    </button>
-                                                </mat-menu>
-                                            </div>
-                                            <div class="dashboard__body__container__box__item--body">
-                                                <div class="dashboard__body__container__box__item--body--image">
-                                                    <ng-container *ngIf="pet.images.length <= 0">
-                                                        <picture>
-                                                            <img src="assets/images/pet-avatar.webp" alt="pet-avatar">
-                                                        </picture>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="pet.images.length > 0">
-                                                        <picture *ngFor="let image of pet.images">
-                                                            <img src="{{image.url}}" alt="pet-image">
-                                                        </picture>
-                                                    </ng-container>
-                                                    <h3>{{pet.name}}</h3>
-                                                </div>
-                                                <div class="dashboard__body__container__box__item--body--button">
-                                                    <button 
-                                                        mat-raised-button 
-                                                        color="primary"
-                                                        *ngIf="pet.pet_token.token" [routerLink]="['/pets/', pet.pet_token.token]">Ver perfil</button>
-                                                    <button 
-                                                        mat-stroked-button 
-                                                        color="basic"
-                                                        *ngIf="!pet.pet_token.token" [routerLink]="['/get-qr-code/', pet.id]">Obtener chapita</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <app-pagination 
-                                        *ngIf="this.pets && this.pets.data.length > 0" 
-                                        [pagination]="this.pets" 
-                                        (OnPageChange)="updatePets()"
-                                    ></app-pagination>
-                                    <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length <= 0">
-                                        <mat-card class="without__pets full-width-card">
-                                            <mat-card-header>
-                                                <h2 style="font-family: var(--primary-font);"><mat-icon style="color: var(--primary-color);">help</mat-icon> ¿Quieres obtener una chapita para tu mascota?</h2>
-                                            </mat-card-header>
-                                        </mat-card>
-                                    </div>
+                                <app-pagination 
+                                    *ngIf="this.pets && this.pets.data.length > 0" 
+                                    [pagination]="this.pets" 
+                                    (OnPageChange)="updatePets()"
+                                ></app-pagination>
+                                <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length <= 0">
+                                    <mat-card class="without__pets full-width-card">
+                                        <mat-card-header>
+                                            <h2 style="font-family: var(--primary-font);"><mat-icon style="color: var(--primary-color);">help</mat-icon> ¿Quieres obtener una chapita para tu mascota?</h2>
+                                        </mat-card-header>
+                                    </mat-card>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-</div>
+            </div>
+        </section>
+    </ng-container>
+</app-template>

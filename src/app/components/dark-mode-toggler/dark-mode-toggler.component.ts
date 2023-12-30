@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { Router } from '@angular/router';
 import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -11,7 +12,9 @@ export class DarkModeTogglerComponent implements OnInit {
 
   faCircleHalfStroke = faCircleHalfStroke;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     const darkModePreference = localStorage.getItem('darkMode');
@@ -31,5 +34,9 @@ export class DarkModeTogglerComponent implements OnInit {
     } else {
       document.body.classList.remove('dark-mode');
     }
+  }
+
+  isActive(route: string): boolean {
+    return this.router.isActive(route, false);
   }
 }

@@ -1,14 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faExclamationCircle, faSpinner, faEye, faEyeSlash, faQrcode, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faSpinner, faEye, faEyeSlash, faQrcode, faTriangleExclamation, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { User } from 'src/app/shared/interfaces/user.interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { TokenService } from 'src/app/shared/services/token.service';
-import { QRActivationService } from 'src/app/protected/pets/services/qractivation.service';
-import { Message } from 'src/app/user/interfaces/message.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { SocialUser } from '@abacritt/angularx-social-login';
@@ -25,6 +22,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
   faEyeSlash = faEyeSlash;
   faQrCode = faQrcode;
   faTriangleExclamation = faTriangleExclamation;
+  faChevronRight = faChevronRight;
 
   showLoader = true;
   hide: boolean = false;

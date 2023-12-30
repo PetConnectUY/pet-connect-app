@@ -28,6 +28,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
+import { TemplateComponent } from './template/template/template.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     ConfirmModalComponent,
     ModalFormComponent,
     ProfileComponent,
+    TemplateComponent,
   ],
   imports: [
     CommonModule,

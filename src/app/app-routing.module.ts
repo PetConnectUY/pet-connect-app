@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { ValidateTokenGuard } from './protected/shared/guards/ValidateToken.guard';
 import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
-import { PurchaseComponent } from './pages/purchase/purchase.component';
 import { ErrorComponent } from './errors/components/error/error.component';
 import { errors } from './errors/constants/errors.constant';
 
@@ -16,10 +15,6 @@ const routes: Routes = [
   {
     path: 'frequent-questions',
     component: FrequentQuestionsComponent
-  },
-  {
-    path: 'purchase',
-    component: PurchaseComponent,
   },
   {
     path: 'app',
