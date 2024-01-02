@@ -1,13 +1,18 @@
 <section class="signup">
     <picture>
-        <img src="/assets/images/register-image.webp" alt="register-image">
+        <img src="/assets/images/pet-connect-icon-black.png" alt="pet-connect-icon">
     </picture>
     <form [formGroup]="signupForm" (ngSubmit)="register()">
         <div class="signup__container container-fluid">
             <div class="signup__container__header">
+                <div class="signup__container__header--button">
+                    <div class="d-flex flex-column align-items-center justify-content-start">
+                        <a mat-fab extended color="primary" style="text-decoration: none;" [routerLink]="['/auth/signin']" [queryParams]="{token: this.token}">
+                            Ya tienes una cuenta? <fa-icon [icon]="faChevronRight" animation="fade"></fa-icon>
+                        </a>
+                    </div>
+                </div>
                 <h1 class="signup__container__header--title">Registrarse</h1>
-                <a *ngIf="!this.token" [routerLink]="['/auth/signin']">Ya tienes una cuenta?</a>
-                <a *ngIf="this.token" [routerLink]="['/auth/signin']" [queryParams]="{token: this.token}">Ya tienes una cuenta?</a>
             </div>
             <div class="row w-100">
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">

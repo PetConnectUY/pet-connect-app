@@ -3,13 +3,20 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     background-color: var(--primary-color);
     gap: 1rem;
     padding: 0rem 2rem;
-    
+    @media (max-width: 768px) {
+        display: inline-block;
+        text-align: center;
+    }
     & picture {
+        @media (max-width: 768px) {
+            flex: 1 100%;
+            text-align: center;
+        }
         img {
             width: 100%;
             max-width: 500px;
@@ -31,9 +38,10 @@
         justify-content: center;
         position: relative;
         @media (max-width: 768px) {
-            width: 100vw;
+            width: 100%;
             border-radius: unset;
-            padding: 5rem;
+            padding: 3rem;
+            margin: 0 auto;
         }
 
         &__header {
@@ -140,4 +148,8 @@
     font-size: 11px;
     opacity: 1;
     color: var(--text-color);
+}
+
+.mat-mdc-extended-fab {
+    height: 30px;
 }

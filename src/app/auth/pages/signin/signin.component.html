@@ -52,13 +52,13 @@
                 <p>{{errorMessage}}</p>
             </div>
             <div class="signin__container__item">
-                <button mat-raised-button color="primary" [disabled]="submitting">
+                <button mat-raised-button [disabled]="submitting">
                     <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
                     {{btnValue}}
                 </button>
             </div>
             <div class="signin__container__item--footer">
-                <button type="button" mat-flat-button color="accent" style="width: 100%; height: 30px; text-decoration: none; position: relative;" *ngIf="!this.user" (click)="navigateToSignup()">
+                <button type="button" mat-raised-button style="width: 100%; height: 30px; text-decoration: none; position: relative;" *ngIf="!this.user" (click)="navigateToSignup()">
                         <mat-icon class="mat-icon position-absolute" style="left: 10px;">person_add</mat-icon>
                         <span>Registrarme</span>
                 </button>

@@ -11,18 +11,37 @@
     </button>
     <div class="collapse navbar-collapse mt-3" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a mat-raised-button [color]="isActive('/app') ? 'primary' : 'accent'" class="nav-link" routerLink="/app" routerLinkActive="active">Inicio</a>
+        <li class="nav-item m-1">
+          <div class="d-md-none mt-1">
+            <div class="d-flex gap-1 align-items-center justify-content-between">
+              <li class="nav-item m-1" *ngIf="this.user && this.token">
+                <a mat-raised-button [color]="isActive('/dashboard') ? 'primary' : 'button'" class="nav-link w-100" routerLink="/dashboard" routerLinkActive="active">Yo</a>
+              </li>
+              <li class="nav-item m-1" *ngIf="!this.user || !this.token">
+                <a class="nav-link w-100 m-1" mat-raised-button routerLink="/auth/signin" routerLinkActive="active" *ngIf="!isSignupRoute()">Iniciar sesión</a>
+              </li>
+              <li class="nav-item m-1" *ngIf="!this.user || !this.token">
+                <a class="nav-link w-100 m-1" mat-raised-button routerLink="/users/signup" routerLinkActive="active" *ngIf="isSignupRoute()">Registrarse</a>
+              </li>
+              <app-dark-mode-toggler></app-dark-mode-toggler>
+            </div>
+          </div>
         </li>
-        <li class="nav-item">
-          <a mat-raised-button [color]="isActive('/contact') ? 'primary' : 'accent'" class="nav-link" routerLink="/contact" routerLinkActive="active">Contacto</a>
+        <li class="nav-item m-1">
+          <a mat-raised-button [color]="isActive('/app') ? 'primary' : 'button'" class="nav-link w-100" routerLink="/app" routerLinkActive="active">Inicio</a>
         </li>
-        <li class="nav-item">
-          <a mat-raised-button [color]="isActive('/clients') ? 'primary' : 'accent'" class="nav-link" routerLink="/clients" routerLinkActive="active">Clientes</a>
+        <li class="nav-item m-1">
+          <a mat-raised-button [color]="isActive('/contact') ? 'primary' : 'button'" class="nav-link w-100" routerLink="/contact" routerLinkActive="active">Contacto</a>
+        </li>
+        <li class="nav-item m-1">
+          <a mat-raised-button [color]="isActive('/clients') ? 'primary' : 'button'" class="nav-link w-100" routerLink="/clients" routerLinkActive="active">Clientes</a>
+        </li>
+        <li class="nav-item m-1 d-md-none" *ngIf="this.user && this.token">
+          <a mat-raised-button class="nav-link w-100" (click)="signOut()">Cerrar sesión</a>
         </li>
       </ul>
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item dropdown" *ngIf="this.user && this.token">
+      <ul class="navbar-nav ms-auto d-none d-md-flex">
+        <li class="nav-item mt-1 dropdown" *ngIf="this.user && this.token">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             <fa-icon [icon]="faUser"></fa-icon> Yo
@@ -41,12 +60,12 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item" *ngIf="!this.user || !this.token">
-          <a class="nav-link" routerLink="/auth/signin" routerLinkActive="active" *ngIf="!isSignupRoute()">Iniciar sesión</a>
-          <a class="nav-link" routerLink="/users/signup" routerLinkActive="active" *ngIf="isSignupRoute()">Registrarse</a>
+        <li class="nav-item d-none d-md-flex" *ngIf="!this.user || !this.token">
+          <a class="nav-link w-100 m-1" mat-raised-button routerLink="/auth/signin" routerLinkActive="active" *ngIf="!isSignupRoute()">Iniciar sesión</a>
+          <a class="nav-link w-100 m-1" mat-raised-button routerLink="/users/signup" routerLinkActive="active" *ngIf="isSignupRoute()">Registrarse</a>
         </li>
-        <li class="nav-item">
-          <app-dark-mode-toggler></app-dark-mode-toggler>
+        <li class="nav-item d-none d-md-inline">
+          <app-dark-mode-toggler></app-dark-mode-toggler>   
         </li>
       </ul>
     </div>
