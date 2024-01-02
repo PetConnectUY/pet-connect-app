@@ -29,6 +29,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
 import { TemplateComponent } from './template/template/template.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ChangeEmailComponent } from './components/change-email/change-email.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { TemplateComponent } from './template/template/template.component';
     ModalFormComponent,
     ProfileComponent,
     TemplateComponent,
+    ChangePasswordComponent,
+    ChangeEmailComponent,
   ],
   imports: [
     CommonModule,

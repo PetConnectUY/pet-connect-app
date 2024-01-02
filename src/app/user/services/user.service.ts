@@ -5,6 +5,7 @@ import { User } from 'src/app/shared/interfaces/user.interface';
 import { environment } from 'src/environments/environment.development';
 import { Statistics } from '../interfaces/statistic.interface';
 import { UserPetProfileSetting } from '../interfaces/user-pet-profile-setting.interface';
+import { Message } from '../interfaces/message.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +62,10 @@ export class UserService {
   changePassword(formData: FormData): Observable<User> {    
     const url = `${this.baseUrl}dashboard/change-password`;
     return this.http.post<User>(url, formData);
+  }
+
+  validateExistentEmail(formData: FormData): Observable<Message> {
+    const url = `${this.baseUrl}dashboard/validate-existent-email`;
+    return this.http.post<Message>(url, formData);
   }
 }

@@ -1,0 +1,33 @@
+<div class="settings__body__content">
+    <h4>Cambiar el email</h4>
+    <form class="d-flex gap-3 w-100" [formGroup]="validateEmailFrom" (ngSubmit)="validateEmail()" *ngIf="!this.validEmail">
+        <mat-form-field>
+            <mat-label>Email actual</mat-label>
+            <input formControlName="current_email" matInput type="email">
+            <mat-error *ngIf="isFieldInvalid('current_email') && !validateEmailFrom.get('current_email')?.hasError('invalidEmail')">
+                {{getErrorMessage('current_email')}}
+            </mat-error>
+            <mat-error *ngIf="validateEmailFrom.get('current_email')?.hasError('invalidEmail')">
+                {{ 'El email actual no es válido' }}
+            </mat-error>  
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nuevo email</mat-label>
+            <input formControlName="new_email" matInput type="email">
+            <mat-error *ngIf="isFieldInvalid('new_email') && !validateEmailFrom.get('new_email')?.hasError('invalidNewEmail')">
+                {{getErrorMessage('new_email')}}
+            </mat-error>
+            <mat-error *ngIf="validateEmailFrom.get('new_email')?.hasError('invalidNewEmail')">
+                {{ 'El email nuevo ya está registrado' }}
+            </mat-error> 
+        </mat-form-field>
+        <button  mat-raised-button color="primary" [disabled]="sumbitting || validateEmailFrom.invalid" #formBtn>
+            {{btnValue}}
+            <fa-icon *ngIf="sumbitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+            <fa-icon *ngIf="!sumbitting" [icon]="faChevronRight"></fa-icon>
+        </button>
+    </form>
+    <form class="d-flex gap-3 w-100" [formGroup]="changeEmailForm" (ngSubmit)="validateEmail()" *ngIf="!this.validEmail">
+        
+    </form>
+</div>
