@@ -126,4 +126,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  handleUserData(user: User | null) {
+    this.user = user;
+  }
 }

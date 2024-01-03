@@ -1,8 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faChevronRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faExclamationCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/shared/interfaces/user.interface';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { FormValidationService } from 'src/app/shared/services/form-validation.service';
 import { Message } from 'src/app/user/interfaces/message.interface';
 import { UserService } from 'src/app/user/services/user.service';
@@ -13,19 +15,26 @@ import { UserService } from 'src/app/user/services/user.service';
   styleUrls: ['./change-email.component.scss']
 })
 export class ChangeEmailComponent implements OnInit {
+  faSpinner = faSpinner;
+  faChevronRight = faChevronRight;
+  faExclamationCircle = faExclamationCircle;
+
+  @Output() emitUser = new EventEmitter<User | null>;
+
+  unknowError: boolean = false;
+  errorMessage!: string;
   validateEmailFrom!: FormGroup;
-  changeEmailForm!: FormGroup;
+  validateTokenForm!: FormGroup;
   validEmail: boolean = false;
   sumbitting: boolean = false;
   btnValue: string = 'Enviar código';
-  faSpinner = faSpinner;
-  faChevronRight = faChevronRight;
 
   constructor(
     private fb: FormBuilder,
     private formValidationService: FormValidationService,
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService,
   ) {
     this.validateEmailFrom = this.fb.group({
       current_email: ['', [Validators.required, Validators.email]],
@@ -34,7 +43,7 @@ export class ChangeEmailComponent implements OnInit {
 
     this.validateEmailFrom.get('current_email')?.setErrors({ invalidEmail: false });
 
-    this.changeEmailForm = this.fb.group({
+    this.validateTokenForm = this.fb.group({
       token: ['', [Validators.required]],
     });
   }
@@ -75,6 +84,8 @@ export class ChangeEmailComponent implements OnInit {
           this.sumbitting = false;
           this.validEmail = true;
           this.btnValue = 'Validar código';
+          this.unknowError = false;
+          this.errorMessage = "";
         },
         error: (error: HttpErrorResponse) => {
           this.sumbitting = false;
@@ -101,13 +112,71 @@ export class ChangeEmailComponent implements OnInit {
                 progressAnimation: 'increasing',
               });
             }
+          } else {
+            this.validEmail = false;
+            this.unknowError = true;
+            this.errorMessage = 'Error inesperado, intente nuevamente';
+            this.validateEmailFrom.reset();
+            this.validateTokenForm.reset();
           }
         }
       });
     }
   }
 
-  changeEmail() {
-    
+  validateToken() {
+    this.sumbitting = true;
+    if(this.validateTokenForm.valid) {
+      const { token } = this.validateTokenForm.value;
+      const formData = new FormData();
+      formData.append('token', token);
+      this.userService.validateToken(formData).subscribe({
+        next: (res: Message) => {
+          this.unknowError = false;
+          this.errorMessage = "";
+          this.sumbitting = false;
+          this.validEmail = false;
+          this.btnValue = 'Enviar código';
+          this.toastr.success('Email actualizado con éxito', 'Cambio de email', {
+            timeOut: 15000,
+            progressBar: true, 
+          });
+          const refresh = this.authService.refreshToken();
+          
+          const newUserData = this.authService.updateDomEmail(this.validateEmailFrom.get('new_email')?.value);
+          this.validateEmailFrom.reset();
+          this.validateTokenForm.reset();
+          this.emitUser.emit(newUserData);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.sumbitting = false;
+          if (error.status === 422 && error.error && error.error.error) {
+            const noExists = error.error.error.token;
+            if(noExists != undefined && noExists[0] === 'El código de confirmación no existe') {
+              this.validateTokenForm.get('token')?.setErrors({ invalidToken: true });
+            } else {
+              // Otros posibles errores del backend
+              this.toastr.error(noExists, 'Error', {
+                timeOut: 5000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              });
+            }
+            const expired = error.error.error;
+            if(expired === 'El código de confirmación ya expiro, debes generar otro') {
+              this.validEmail = false;
+              this.unknowError = true;
+              this.errorMessage = 'El código de confirmación ya expiro, debes generar otro';
+            }
+          } else {
+            this.validEmail = false;
+            this.unknowError = true;
+            this.errorMessage = 'Error inesperado, intente nuevamente';
+            this.validateEmailFrom.reset();
+            this.validateTokenForm.reset();
+          }
+        }
+      });
+    }
   }
 }

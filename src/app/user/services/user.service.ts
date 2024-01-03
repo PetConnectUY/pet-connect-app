@@ -68,4 +68,9 @@ export class UserService {
     const url = `${this.baseUrl}dashboard/validate-existent-email`;
     return this.http.post<Message>(url, formData);
   }
+
+  validateToken(formData: FormData): Observable<Message> {
+    const url = `${this.baseUrl}dashboard/confirm-change-email`;
+    return this.http.post<Message>(url, formData);
+  }
 }

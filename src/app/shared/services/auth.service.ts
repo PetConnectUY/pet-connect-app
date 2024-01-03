@@ -123,4 +123,14 @@ export class AuthService {
   logout() {
     this.removeToken();
   }
+
+  updateDomEmail(email: string) {
+    const user = this.getUser();
+
+    if(user?.email) {
+      user.email = email;
+    }
+
+    return user;
+  }
 }
