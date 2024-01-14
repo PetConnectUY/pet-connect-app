@@ -1,0 +1,76 @@
+<article class="associated" id="associated">
+    <div class="associated--title">
+        <h2>Consigue tu chapita ahora</h2>
+    </div>
+    <div class="associated__content">
+        <!-- <div class="associated__content__images">
+            <ng-image-slider
+                [images]="images" 
+                [autoSlide]="1"
+                [infinite]="false"
+                slideImage="1"
+                [showArrow]="true"
+                [imageSize]="{width: '15%', height: 150}"
+            ></ng-image-slider>
+        </div> -->
+        <div class="associated__content__instructions">
+            <div class="associated__content__instructions--item">
+                <div class="associated__content__instructions--item-icon">
+                    <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
+                </div>
+                <div class="associated__content__instructions--item-text">
+                    <h3>Punto de venta</h3>
+                    <p>Los puntos de venta están indicados en el mapa, simplemente deberías acercarte a uno de ellos y obtener tu chapita</p>
+                </div>
+            </div>
+            <div class="associated__content__instructions--item">
+                <div class="associated__content__instructions--item-icon">
+                    <fa-icon [icon]="faMobileScreen"></fa-icon>
+                </div>
+                <div class="associated__content__instructions--item-text">
+                    <h3>Escaneo</h3>
+                    <p>Luego de obtener tu chapita, deberás escanearla para poder activarla</p>
+                </div>
+            </div>
+            <div class="associated__content__instructions--item">
+                <div class="associated__content__instructions--item-icon">
+                    <fa-icon [icon]="faPersonCircleCheck"></fa-icon>
+                </div>
+                <div class="associated__content__instructions--item-text">
+                    <h3>Registro</h3>
+                    <p>Registra tu usuario nuevo usuario y activalo. Este paso es importante para mantener tu información actualizada.</p>
+                </div>
+            </div>
+            <div class="associated__content__instructions--item">
+                <div class="associated__content__instructions--item-icon">
+                    <fa-icon [icon]="faShieldCat"></fa-icon>
+                </div>
+                <div class="associated__content__instructions--item-text">
+                    <h3>Perfil</h3>
+                    <p>Registra el perfil de tu mascota para que cuando escaneen su chapita puedan saber su nombre y más sobre la misma</p>
+                </div>
+            </div>
+            <div class="associated__content__instructions--item">
+                <div class="associated__content__instructions--item-icon">
+                    <fa-icon [icon]="faCheckCircle"></fa-icon>
+                </div>
+                <div class="associated__content__instructions--item-text">
+                    <h3>Listo!</h3>
+                    <p>En 4 simples pasos tu mascota estará más segura que nunca!</p>
+                </div>
+            </div>
+        </div>
+        <div class="associated__map">
+            <h2>
+                <!-- <fa-icon></fa-icon> -->
+                Puntos de venta</h2>
+            <div #clientMapContainer class="client-map"></div>
+            <p *ngIf="unknowError">
+                <fa-icon [icon]="faExclamationCircle" style="color: red;"></fa-icon>
+                {{errorMessage}}
+            </p>
+        </div>
+    </div>
+
+</article>
+<!-- // Fix  responsive -->

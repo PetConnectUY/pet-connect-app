@@ -1,45 +1,20 @@
 <header class="header">
-    <div class="header--logo">
-        <picture>
-            <img src="/assets/images/pet-connect-logo.png" alt="pet-connect-logo" draggable="false">
-        </picture>
-    </div>
-    <div class="header__items">
-        <div *ngIf="!this.user" #headerItem class="header__items--item">
-            <p><fa-icon [icon]="faUser"></fa-icon></p>
-            <h3>
-                <a routerLink="/users/signup">CREA TU PERFIL</a>
-            </h3>
+    <div class="header__content">
+        <div class="header__content__items">
+            <div class="header__content__items__container">
+                <h1>Pet Connect <span>siempre conectados</span></h1>
+                <p>❣️ Lo que amamos en un lugar más seguro</p>
+                <div class="d-flex align-items-center justify-content-end w-100">
+                    <button mat-flat-button style="background-color: var(--background-color);">
+                        <fa-icon [icon]="faQrcode"></fa-icon> Obtener chapita QR
+                    </button>
+                </div>
+            </div>
         </div>
-        <div *ngIf="this.user && !this.token" #headerItem class="header__items--item">
-            <p><fa-icon [icon]="faUser"></fa-icon></p>
-            <h3>
-                <a routerLink="/auth/signin">INICIÁ SESIÓN</a>
-            </h3>
-        </div>
-        <div #headerItem class="header__items--item">
-            <p><fa-icon [icon]="faPaw"></fa-icon></p>
-            <h3>
-                <a href="#">PUBLICA TU MASCOTA</a>
-            </h3>
-        </div>
-        <div #headerItem class="header__items--item">
-            <p><fa-icon [icon]="faQrcode"></fa-icon></p>
-            <h3>
-                <a href="#">CREA TU CÓDIGO QR</a>
-            </h3>
-        </div>
-        <div #headerItem class="header__items--item">
-            <p><fa-icon [icon]="faPrint"></fa-icon></p>
-            <h3>
-                <a href="#">IMPRÍMELO</a>
-            </h3>
-        </div>
-        <div #headerItem class="header__items--item">
-            <p><fa-icon [icon]="faMagnifyingGlassLocation"></fa-icon></p>
-            <h3>
-                <a href="#">EVITA LO PEOR</a>
-            </h3>
+        <div class="header__content--image">
+            <picture>
+                <img src="/assets/images/headerimage.webp" alt="header-image" draggable="false" class="img-fluid">
+            </picture>
         </div>
     </div>
 </header>

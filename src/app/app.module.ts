@@ -33,6 +33,9 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { APP_DATEFORMAT } from './shared/configs/app.dateformat';
 import { ToastrModule } from 'ngx-toastr';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButton, MatButtonModule } from '@angular/material/button';
+import { AssociatedClientsComponent } from './components/associated-clients/associated-clients.component';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 
 @NgModule({
@@ -43,6 +46,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     AboutComponent,
     FrequentQuestionsComponent,
     ErrorComponent,
+    AssociatedClientsComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatInputModule,
     MatProgressSpinnerModule,
     ToastrModule.forRoot(),
-    MatSidenavModule
+    MatSidenavModule,
+    MatButtonModule,
+    NgImageSliderModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },
