@@ -60,15 +60,29 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: space-evenly;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
                 @media (max-width: 850px) {
                     width: 100%;
                     border-radius: 0;
                 }
                 gap: 1.4rem;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 2rem;
+                    z-index: -1;
+                }
                 &:hover {
                     box-shadow: 5px 4px 3px rgba($color: #000000, $alpha: .3);
-                    background-color: var(--primary-color);
+                    background-position-x: right;
                 }
+
                 &-icon {
                     width: 100%;
                     position: relative;

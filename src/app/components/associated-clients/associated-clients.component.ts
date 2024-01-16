@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { faCheckCircle, faExclamationCircle, faLocationCrosshairs, faLocationDot, faLocationPin, faMobileScreen, faPersonCircleCheck, faShieldCat } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faExclamationCircle, faLocationCrosshairs, faLocationDot, faLocationPin, faMagnifyingGlassLocation, faMobileScreen, faPersonCircleCheck, faShieldCat } from '@fortawesome/free-solid-svg-icons';
 import * as L from 'leaflet';
 import { Client } from 'src/app/protected/clients/interfaces/client.interface';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -18,17 +18,18 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
   faPersonCircleCheck = faPersonCircleCheck;
   faShieldCat = faShieldCat;
   faCheckCircle = faCheckCircle;
+  faMagnifyingGlassLocation = faMagnifyingGlassLocation;
   unknowError: boolean = false;
   errorMessage!: string;
   @Input() clients!: Client[];
   images: any[] = [];
 
+  isDesktop: boolean = true;
+
   @ViewChild('clientMapContainer', { static: true, }) clientMapContainer!: ElementRef;
   map!: L.Map;
 
   constructor(config: NgbCarouselConfig) {
-    config.showNavigationArrows = false;
-    config.showNavigationIndicators = true;
     config.animation = true;
     config.keyboard = true;
     config.pauseOnHover = true;
@@ -43,7 +44,11 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
         name: element.name,
         title: element.name,
        }); 
-       
+    });
+    const mediaQueryList = window.matchMedia('(max-width: 768px)');
+    this.handleScreenSizeChange(mediaQueryList);
+    mediaQueryList.addListener(() => {
+      this.handleScreenSizeChange(mediaQueryList);
     });
   }
 
@@ -68,6 +73,10 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
         }
       });
     }
+  }
+
+  handleScreenSizeChange(mediaQueryList: MediaQueryList) {
+    this.isDesktop = !mediaQueryList.matches;
   }
 
   private addMarker(address: string, title: string, type: string): void {

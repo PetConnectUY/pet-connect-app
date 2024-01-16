@@ -16,10 +16,11 @@
         <div class="associated__content__instructions">
             
         </div>
-        <ngb-carousel [showNavigationArrows]="false" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
+        <ngb-carousel *ngIf="isDesktop" [showNavigationArrows]="false" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
             <ng-template ngbSlide>
                 <div class="associated__content__instructions">
-                    <div class="associated__content__instructions--item">
+                    <div class="associated__content__instructions--item" 
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/location-illustration.webp');">
                         <div class="associated__content__instructions--item-icon">
                             <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
                         </div>
@@ -28,7 +29,8 @@
                             <p>Los puntos de venta están indicados en el mapa, simplemente deberías acercarte a uno de ellos y obtener tu chapita</p>
                         </div>
                     </div>
-                    <div class="associated__content__instructions--item">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/paw-with-qr.webp');">
                         <div class="associated__content__instructions--item-icon">
                             <fa-icon [icon]="faMobileScreen"></fa-icon>
                         </div>
@@ -41,7 +43,8 @@
             </ng-template>
             <ng-template ngbSlide>
                 <div class="associated__content__instructions">
-                    <div class="associated__content__instructions--item">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/registration-illustration.webp');">
                         <div class="associated__content__instructions--item-icon">
                             <fa-icon [icon]="faPersonCircleCheck"></fa-icon>
                         </div>
@@ -50,7 +53,8 @@
                             <p>Registra tu usuario nuevo usuario y activalo. Este paso es importante para mantener tu información actualizada.</p>
                         </div>
                     </div>
-                    <div class="associated__content__instructions--item">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/pet-profile.webp');">
                         <div class="associated__content__instructions--item-icon">
                             <fa-icon [icon]="faShieldCat"></fa-icon>
                         </div>
@@ -63,7 +67,80 @@
             </ng-template>
             <ng-template ngbSlide>
                 <div class="associated__content__instructions">
-                    <div class="associated__content__instructions--item">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/pet-with-qr.webp');">
+                        <div class="associated__content__instructions--item-icon">
+                            <fa-icon [icon]="faCheckCircle"></fa-icon>
+                        </div>
+                        <div class="associated__content__instructions--item-text">
+                            <h3>Listo!</h3>
+                            <p>En 4 simples pasos tu mascota estará más segura que nunca!</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-carousel>
+        <ngb-carousel *ngIf="!isDesktop" [showNavigationArrows]="true" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
+            <ng-template ngbSlide>
+                <div class="associated__content__instructions">
+                    <div class="associated__content__instructions--item" 
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/location-illustration.webp');">
+                        <div class="associated__content__instructions--item-icon">
+                            <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
+                        </div>
+                        <div class="associated__content__instructions--item-text">
+                            <h3>Punto de venta</h3>
+                            <p>Los puntos de venta están indicados en el mapa, simplemente deberías acercarte a uno de ellos y obtener tu chapita</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <div class="associated__content__instructions">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/paw-with-qr.webp');">
+                        <div class="associated__content__instructions--item-icon">
+                            <fa-icon [icon]="faMobileScreen"></fa-icon>
+                        </div>
+                        <div class="associated__content__instructions--item-text">
+                            <h3>Escaneo</h3>
+                            <p>Luego de obtener tu chapita, deberás escanearla para poder activarla</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <div class="associated__content__instructions">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/registration-illustration.webp');">
+                        <div class="associated__content__instructions--item-icon">
+                            <fa-icon [icon]="faPersonCircleCheck"></fa-icon>
+                        </div>
+                        <div class="associated__content__instructions--item-text">
+                            <h3>Registro</h3>
+                            <p>Registra tu usuario nuevo usuario y activalo. Este paso es importante para mantener tu información actualizada.</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <div class="associated__content__instructions">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/pet-profile.webp');">
+                        <div class="associated__content__instructions--item-icon">
+                            <fa-icon [icon]="faShieldCat"></fa-icon>
+                        </div>
+                        <div class="associated__content__instructions--item-text">
+                            <h3>Perfil</h3>
+                            <p>Registra el perfil de tu mascota para que cuando escaneen su chapita puedan saber su nombre y más sobre la misma</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <div class="associated__content__instructions">
+                    <div class="associated__content__instructions--item"
+                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/pet-with-qr.webp');">
                         <div class="associated__content__instructions--item-icon">
                             <fa-icon [icon]="faCheckCircle"></fa-icon>
                         </div>
@@ -77,7 +154,7 @@
         </ngb-carousel>
         <div class="associated__map">
             <h2>
-                <!-- <fa-icon></fa-icon> -->
+                <fa-icon [icon]="faMagnifyingGlassLocation" style="color: var(--primary-color);"></fa-icon>
                 Puntos de venta</h2>
             <div #clientMapContainer class="client-map"></div>
             <p *ngIf="unknowError">
@@ -88,4 +165,3 @@
     </div>
 
 </article>
-<!-- // Fix  responsive -->
