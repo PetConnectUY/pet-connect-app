@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import { faCheckCircle, faExclamationCircle, faLocationCrosshairs, faLocationDot, faLocationPin, faMobileScreen, faPersonCircleCheck, faShieldCat } from '@fortawesome/free-solid-svg-icons';
 import * as L from 'leaflet';
 import { Client } from 'src/app/protected/clients/interfaces/client.interface';
-
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-associated-clients',
@@ -25,6 +25,15 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
 
   @ViewChild('clientMapContainer', { static: true, }) clientMapContainer!: ElementRef;
   map!: L.Map;
+
+  constructor(config: NgbCarouselConfig) {
+    config.showNavigationArrows = false;
+    config.showNavigationIndicators = true;
+    config.animation = true;
+    config.keyboard = true;
+    config.pauseOnHover = true;
+    config.interval = 0;
+  }
 
   ngOnInit(): void {
     this.clients.forEach(element => {

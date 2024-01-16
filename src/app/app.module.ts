@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -73,6 +73,7 @@ import { NgImageSliderModule } from 'ng-image-slider';
     MatSidenavModule,
     MatButtonModule,
     NgImageSliderModule,
+    NgbCarouselModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },

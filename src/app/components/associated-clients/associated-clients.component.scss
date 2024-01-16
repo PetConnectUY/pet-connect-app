@@ -33,12 +33,14 @@
         }
         &__instructions {
             width: 100%;
-            padding: 1rem 0;
+            padding: 4rem 0;
             background-color: var(--background-color);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
             gap: 2rem;
+            flex-wrap: wrap;
             @media (max-width: 1280px) {
                 grid-template-columns: repeat(2, 1fr);
                 @media (max-width: 850px) {
@@ -50,8 +52,8 @@
             &--item {
                 padding: 2.4rem;
                 border-radius: 2rem;
-                width: 400px;
-                max-width: 400px;
+                width: 500px;
+                max-width: 500px;
                 height: 250px;
                 transition: all .2s ease-in;
                 display: flex;
@@ -77,6 +79,7 @@
                         bottom: 0;
                         right: 0;
                         font-size: 2.4rem;
+
                     }
                 }
                 &-text {
@@ -140,3 +143,4 @@
     left: 3px;
     border-radius: 40px
 }
+

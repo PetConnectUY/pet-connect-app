@@ -203,3 +203,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import 'ngx-toastr/toastr';
 @import 'ngx-toastr/toastr-bs5-alert';
 
+
+.carousel-indicators {
+    background-color: var(--primary-color) !important;
+    border-radius: 1rem !important;
+}
+
