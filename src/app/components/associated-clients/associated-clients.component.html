@@ -1,4 +1,4 @@
-<article class="associated" id="associated">
+<article class="associated" #howToGet>
     <div class="associated--title">
         <h2>Consigue tu chapita ahora</h2>
     </div>
@@ -13,22 +13,21 @@
                 [imageSize]="{width: '15%', height: 150}"
             ></ng-image-slider>
         </div> -->
-        <div class="associated__content__instructions">
-            
-        </div>
         <ngb-carousel *ngIf="isDesktop" [showNavigationArrows]="false" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
             <ng-template ngbSlide>
                 <div class="associated__content__instructions">
-                    <div class="associated__content__instructions--item" 
-                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/location-illustration.webp');">
-                        <div class="associated__content__instructions--item-icon">
-                            <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
+                    <a style="text-decoration: none;" routerLink="." (click)="toSection($event)">
+                        <div class="associated__content__instructions--item" 
+                            style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/location-illustration.webp');">
+                            <div class="associated__content__instructions--item-icon">
+                                <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
+                            </div>
+                            <div class="associated__content__instructions--item-text">
+                                <h3>Punto de venta</h3>
+                                <p>Los puntos de venta están indicados en el mapa, simplemente deberías acercarte a uno de ellos y obtener tu chapita</p>
+                            </div>
                         </div>
-                        <div class="associated__content__instructions--item-text">
-                            <h3>Punto de venta</h3>
-                            <p>Los puntos de venta están indicados en el mapa, simplemente deberías acercarte a uno de ellos y obtener tu chapita</p>
-                        </div>
-                    </div>
+                    </a>
                     <div class="associated__content__instructions--item"
                         style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/paw-with-qr.webp');">
                         <div class="associated__content__instructions--item-icon">
@@ -83,16 +82,18 @@
         <ngb-carousel *ngIf="!isDesktop" [showNavigationArrows]="true" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
             <ng-template ngbSlide>
                 <div class="associated__content__instructions">
-                    <div class="associated__content__instructions--item" 
-                        style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/location-illustration.webp');">
-                        <div class="associated__content__instructions--item-icon">
-                            <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
+                    <a style="text-decoration: none;" routerLink="." (click)="toSection($event)">
+                        <div class="associated__content__instructions--item" 
+                            style="background-image: linear-gradient(rgba(var(--rgb-background), .9), rgba(var(--rgb-background), .9)), url('./../../../assets/images/location-illustration.webp');">
+                            <div class="associated__content__instructions--item-icon">
+                                <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
+                            </div>
+                            <div class="associated__content__instructions--item-text">
+                                <h3>Punto de venta</h3>
+                                <p>Los puntos de venta están indicados en el mapa, simplemente deberías acercarte a uno de ellos y obtener tu chapita</p>
+                            </div>
                         </div>
-                        <div class="associated__content__instructions--item-text">
-                            <h3>Punto de venta</h3>
-                            <p>Los puntos de venta están indicados en el mapa, simplemente deberías acercarte a uno de ellos y obtener tu chapita</p>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </ng-template>
             <ng-template ngbSlide>
@@ -152,10 +153,11 @@
                 </div>
             </ng-template>
         </ngb-carousel>
-        <div class="associated__map">
+        <div class="associated__map" #sellPointsElement>
             <h2>
                 <fa-icon [icon]="faMagnifyingGlassLocation" style="color: var(--primary-color);"></fa-icon>
-                Puntos de venta</h2>
+                Puntos de venta
+            </h2>
             <div #clientMapContainer class="client-map"></div>
             <p *ngIf="unknowError">
                 <fa-icon [icon]="faExclamationCircle" style="color: red;"></fa-icon>
@@ -163,5 +165,4 @@
             </p>
         </div>
     </div>
-
 </article>

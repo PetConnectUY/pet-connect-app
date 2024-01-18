@@ -3,6 +3,7 @@ import { faCheckCircle, faExclamationCircle, faLocationCrosshairs, faLocationDot
 import * as L from 'leaflet';
 import { Client } from 'src/app/protected/clients/interfaces/client.interface';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ScrollService } from 'src/app/shared/services/scroll.service';
 
 @Component({
   selector: 'app-associated-clients',
@@ -27,14 +28,19 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
   isDesktop: boolean = true;
 
   @ViewChild('clientMapContainer', { static: true, }) clientMapContainer!: ElementRef;
+  @ViewChild('sellPointsElement', { static: true }) sellPointsElement!: ElementRef;
+  @ViewChild('howToGet', { static: true }) howToGet!: ElementRef;
   map!: L.Map;
 
-  constructor(config: NgbCarouselConfig) {
-    config.animation = true;
-    config.keyboard = true;
-    config.pauseOnHover = true;
-    config.interval = 0;
-  }
+  constructor(
+    config: NgbCarouselConfig, 
+    private scrollService: ScrollService) 
+    {
+      config.animation = true;
+      config.keyboard = true;
+      config.pauseOnHover = true;
+      config.interval = 0;
+    }
 
   ngOnInit(): void {
     this.clients.forEach(element => {
@@ -53,6 +59,15 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
+    this.scrollService.scroll$.subscribe((sectionId: string) => {
+      if (sectionId === 'howToGet') {
+        const howToGetPosition = this.howToGet.nativeElement.offsetTop;
+        window.scrollTo({
+          top: howToGetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
     const mapElement = this.clientMapContainer.nativeElement;
     this.map = L.map(mapElement, { zoomControl: true, scrollWheelZoom: false }).setView([-34.7011, -56.1915], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -146,5 +161,15 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
       .catch(error => {
         console.error('Ocurrió un error al obtener el mapa.', error);
       });
+  }
+
+  toSection(e: MouseEvent): void {
+    e.preventDefault();
+    const sellPointsPosition = this.sellPointsElement.nativeElement.offsetTop;
+    // Desplazamiento suave
+    window.scrollTo({
+      top: sellPointsPosition,
+      behavior: 'smooth'
+    });
   }
 }

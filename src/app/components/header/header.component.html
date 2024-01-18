@@ -5,7 +5,7 @@
                 <h1>Pet Connect <span>siempre conectados</span></h1>
                 <p>❣️ Lo que amamos en un lugar más seguro</p>
                 <div class="d-flex align-items-center justify-content-end w-100">
-                    <button mat-flat-button style="background-color: var(--background-color);">
+                    <button mat-flat-button style="background-color: var(--background-color);" (click)="toSection($event, 'howToGet')">
                         <fa-icon [icon]="faQrcode"></fa-icon> Obtener chapita QR
                     </button>
                 </div>
