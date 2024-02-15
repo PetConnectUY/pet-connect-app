@@ -21,10 +21,6 @@ const routes: Routes = [
     component: WelcomeComponent,
   },
   {
-    path: 'clients',
-    loadChildren: () => import('./protected/clients/clients.module').then(m => m.ClientsModule)
-  },
-  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },

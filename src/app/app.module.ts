@@ -36,6 +36,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { AssociatedClientsComponent } from './components/associated-clients/associated-clients.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { NgImageSliderModule } from 'ng-image-slider';
     FrequentQuestionsComponent,
     ErrorComponent,
     AssociatedClientsComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

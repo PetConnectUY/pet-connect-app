@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { faCheckCircle, faExclamationCircle, faLocationCrosshairs, faLocationDot, faLocationPin, faMagnifyingGlassLocation, faMobileScreen, faPersonCircleCheck, faShieldCat } from '@fortawesome/free-solid-svg-icons';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { faCheckCircle, faExclamationCircle, faLocationCrosshairs, faLocationDot, faLocationPin, faMagnifyingGlassLocation, faMobileScreen, faPersonCircleCheck, faShieldCat, faTimes } from '@fortawesome/free-solid-svg-icons';
 import * as L from 'leaflet';
 import { Client } from 'src/app/protected/clients/interfaces/client.interface';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -20,6 +20,7 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
   faShieldCat = faShieldCat;
   faCheckCircle = faCheckCircle;
   faMagnifyingGlassLocation = faMagnifyingGlassLocation;
+  faTimes = faTimes;
   unknowError: boolean = false;
   errorMessage!: string;
   @Input() clients!: Client[];
@@ -30,17 +31,22 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
   @ViewChild('clientMapContainer', { static: true, }) clientMapContainer!: ElementRef;
   @ViewChild('sellPointsElement', { static: true }) sellPointsElement!: ElementRef;
   @ViewChild('howToGet', { static: true }) howToGet!: ElementRef;
+  
   map!: L.Map;
-
+  mapActivated: boolean = false;
+  initialClick: boolean = false;
+  showCloseButton: boolean = false;
+  
   constructor(
     config: NgbCarouselConfig, 
-    private scrollService: ScrollService) 
-    {
-      config.animation = true;
-      config.keyboard = true;
-      config.pauseOnHover = true;
-      config.interval = 0;
-    }
+    private scrollService: ScrollService
+  ) 
+  {
+    config.animation = true;
+    config.keyboard = true;
+    config.pauseOnHover = true;
+    config.interval = 0;
+  }
 
   ngOnInit(): void {
     this.clients.forEach(element => {
@@ -69,7 +75,7 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
       }
     });
     const mapElement = this.clientMapContainer.nativeElement;
-    this.map = L.map(mapElement, { zoomControl: true, scrollWheelZoom: false }).setView([-34.7011, -56.1915], 10);
+    this.map = L.map(mapElement, { dragging: false, zoomControl: true, scrollWheelZoom: false }).setView([-34.7011, -56.1915], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
@@ -89,6 +95,7 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
       });
     }
   }
+  
 
   handleScreenSizeChange(mediaQueryList: MediaQueryList) {
     this.isDesktop = !mediaQueryList.matches;
@@ -172,4 +179,53 @@ export class AssociatedClientsComponent implements AfterViewInit, OnInit {
       behavior: 'smooth'
     });
   }
+
+  toggleMapActivation(event: MouseEvent) {
+    if (this.initialClick) {
+        // Primer clic, no desactivar el mapa pero establecer que no es el primer clic
+        this.initialClick = false;
+    } else {
+        // Segundo clic en adelante, activar/desactivar el mapa normalmente
+        this.mapActivated = true;
+        this.showCloseButton = this.mapActivated;
+
+        if (this.mapActivated) {
+            // Aquí puedes realizar acciones adicionales cuando el mapa se activa
+            this.map.dragging.enable(); // Habilitar el deslizamiento del mapa
+        } else {
+            // Aquí puedes realizar acciones adicionales cuando el mapa se desactiva
+            this.map.dragging.disable(); // Deshabilitar el deslizamiento del mapa
+        }
+    }
+
+    // Verificar si el clic ocurrió dentro del mapa
+    const mapRect = this.clientMapContainer.nativeElement.getBoundingClientRect();
+    const clickInsideMap = event.clientX >= mapRect.left &&
+                           event.clientX <= mapRect.right &&
+                           event.clientY >= mapRect.top &&
+                           event.clientY <= mapRect.bottom;
+
+    // Si el clic ocurrió dentro del mapa, evita que se propague al manejador de clics del documento
+    if (clickInsideMap) {
+        event.stopPropagation();
+    }
+}
+
+@HostListener('document:click', ['$event'])
+handleDocumentClick(event: MouseEvent) {
+    if (!this.clientMapContainer.nativeElement.contains(event.target)) {
+        // El clic fue fuera del contenedor del mapa, desactivar el mapa y permitir el primer clic nuevamente
+        this.mapActivated = false;
+        // También deshabilitar el deslizamiento del mapa al ocultar el fondo
+        this.map.dragging.disable();
+        this.showCloseButton = this.mapActivated;
+    }
+}
+
+closeMap(event: MouseEvent) {
+  event.stopPropagation(); // Evitar que el clic se propague al contenedor del mapa
+  this.mapActivated = false;
+  this.showCloseButton = false;
+  this.map.dragging.disable();
+}
 }

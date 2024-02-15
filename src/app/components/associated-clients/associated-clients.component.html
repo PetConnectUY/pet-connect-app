@@ -3,16 +3,6 @@
         <h2>Consigue tu chapita ahora</h2>
     </div>
     <div class="associated__content">
-        <!-- <div class="associated__content__images">
-            <ng-image-slider
-                [images]="images" 
-                [autoSlide]="1"
-                [infinite]="false"
-                slideImage="1"
-                [showArrow]="true"
-                [imageSize]="{width: '15%', height: 150}"
-            ></ng-image-slider>
-        </div> -->
         <ngb-carousel *ngIf="isDesktop" [showNavigationArrows]="false" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
             <ng-template ngbSlide>
                 <div class="associated__content__instructions">
@@ -79,7 +69,7 @@
                 </div>
             </ng-template>
         </ngb-carousel>
-        <ngb-carousel *ngIf="!isDesktop" [showNavigationArrows]="true" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
+        <ngb-carousel *ngIf="!isDesktop" [showNavigationArrows]="false" [showNavigationIndicators]="true" [animation]="true" [keyboard]="true" [pauseOnHover]="true">
             <ng-template ngbSlide>
                 <div class="associated__content__instructions">
                     <a style="text-decoration: none;" routerLink="." (click)="toSection($event)">
@@ -158,7 +148,12 @@
                 <fa-icon [icon]="faMagnifyingGlassLocation" style="color: var(--primary-color);"></fa-icon>
                 Puntos de venta
             </h2>
-            <div #clientMapContainer class="client-map"></div>
+            <div #clientMapContainer class="client-map" (click)="toggleMapActivation($event)">
+                <button mat-mini-fab color="primary" *ngIf="showCloseButton" class="close-button" (click)="closeMap($event)">
+                    <fa-icon [icon]="faTimes"></fa-icon>
+                </button>
+                <div class="map-overlay" *ngIf="!mapActivated"></div>
+            </div>                           
             <p *ngIf="unknowError">
                 <fa-icon [icon]="faExclamationCircle" style="color: red;"></fa-icon>
                 {{errorMessage}}
