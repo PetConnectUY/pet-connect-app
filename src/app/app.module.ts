@@ -33,10 +33,12 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { APP_DATEFORMAT } from './shared/configs/app.dateformat';
 import { ToastrModule } from 'ngx-toastr';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AssociatedClientsComponent } from './components/associated-clients/associated-clients.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { FooterComponent } from './components/footer/footer.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 
 @NgModule({
@@ -49,6 +51,7 @@ import { FooterComponent } from './components/footer/footer.component';
     ErrorComponent,
     AssociatedClientsComponent,
     FooterComponent,
+    CarouselComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +79,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatButtonModule,
     NgImageSliderModule,
     NgbCarouselModule,
+    MatSnackBarModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },

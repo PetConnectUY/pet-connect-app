@@ -12,6 +12,7 @@ import { PetFoundModalComponent } from './components/pet-found-modal/pet-found-m
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbToast, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecaptchaFormsModule, RecaptchaV3Module } from "ng-recaptcha";
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { RecaptchaFormsModule, RecaptchaV3Module } from "ng-recaptcha";
     RecaptchaV3Module,
     RecaptchaFormsModule,
     NgbToastModule,
+    MatMenuModule,
   ],
   providers: [],
 })

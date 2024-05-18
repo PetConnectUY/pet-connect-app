@@ -14,12 +14,22 @@
             background-color: var(--primary-color);
             border-radius: .6rem;
         }
+
+        .dropdown-item {
+            &:focus {
+                background-color: var(--primary-color);
+            }
+        }
     }
     a {
         cursor: pointer;
     }
     fa-icon {
         color: var(--primary-color);
+    }
+
+    fa-icon .dropdown-item:focus{
+        color: red !important;
     }
 }
   

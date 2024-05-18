@@ -1,71 +1,72 @@
 .footer {
-    width: 100%;
-    padding: 3rem;
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .footer__container {
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
-    gap: 3rem;
-    background-color: var(--background-color);
-  
-    &__social {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      flex-wrap: wrap;
-  
-      div {
-        picture {
-          width: 100%;
-  
-          img {
-            max-width: 30px;
-            width: 100%;
-            transition: all 0.2s;
-  
-            &:hover {
-              transform: scale(1.1);
-            }
-          }
-        }
-      }
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .footer__container__item {
+    flex: 1 1 200px;
+    margin: 1rem;
+
+    h6 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: var(--footer-text-color);
     }
-  
-    &__container {
-      width: 100%;
+
+    &--links {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-evenly;
-      flex-wrap: wrap;
-      flex: 1 auto;
-      gap: 1rem;
-  
-      &__item {
-        &--links {
-          display: flex;
-          flex-direction: column;
-  
-          a {
-            text-decoration: none;
-            transform: translateX(0.25em);
-            transition: transform 200ms;
-            border: none;
-            &::after{
-                content: '';
-                display: inline;
-                width: 0.75em;
-                opacity: 0;
-                transition: opacity 200ms;
-            }
-            &:hover{
-                transform: none;
-            }
-            &:hover::after{
-                opacity: 1;
-            }
-          }
+      flex-direction: column;
+
+      a {
+        color: var(--footer-link-color);
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s;
+
+        &:hover {
+          color: var(--footer-link-hover-color);
         }
       }
     }
   }
-  
+
+  .subscribe {
+    display: flex;
+    flex-direction: column;
+
+    mat-form-field {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    mat-label {
+      color: var(--footer-text-color);
+    }
+  }
+
+  .footer__social {
+    display: flex;
+    gap: 1rem;
+
+    a {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

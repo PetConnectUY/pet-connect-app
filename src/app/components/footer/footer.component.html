@@ -1,44 +1,56 @@
 <footer class="footer">
-    <div class="footer__social">
-        <div>
-            <a href="https://www.facebook.com/pet.connect.uy" target="_blank">
-                <picture>
-                    <img src="/assets/images/facebook-icon.webp" alt="facebook-logo">
-                </picture>
-            </a>
-        </div>
-        <div>
-            <a href="https://www.instagram.com/petconnect.uy" target="_blank">
-                <picture>
-                    <img src="/assets/images/instagram-icon.webp" alt="facebook-logo">
-                </picture>
-            </a>
-        </div>
-        <div>
-            <a href="" target="_blank">
-                <picture>
-                    <img src="/assets/images/email-icon.webp" alt="facebook-logo">
-                </picture>
-            </a>
-        </div>
-    </div>
     <div class="footer__container">
-        <div class="footer__container__item">
-            <h6>Comunidad</h6>
-            <div class="footer__container__item--links">
-                <a routerLink="/stories">Historias</a>
-            </div>
+      <div class="footer__container__item">
+        <h6>Comunidad</h6>
+        <div class="footer__container__item--links">
+          <a routerLink="/stories">Historias</a>
         </div>
-        <div class="footer__container_item">
-            <h6>Preguntas frecuentes</h6>
-            <div class="footer__container__item--links">
-                <a routerLink="/frequent-questions">Dónde compro mi chapita?</a>
-                <a routerLink="/frequent-questions">Cómo activo el código qr?</a>
-                <a routerLink="/frequent-questions">Qué pasa si mi mascota se pierde?</a>
-            </div>
+      </div>
+      <div class="footer__container__item">
+        <h6>Preguntas frecuentes</h6>
+        <div class="footer__container__item--links">
+          <a routerLink="/frequent-questions">Dónde compro mi chapita?</a>
+          <a routerLink="/frequent-questions">Cómo activo el código QR?</a>
+          <a routerLink="/frequent-questions">Qué pasa si mi mascota se pierde?</a>
         </div>
-        <div class="footer__container_item">
-            <h6>Subscribirse</h6>
+      </div>
+      <div class="footer__container__item">
+        <h6>Subscribirse</h6>
+        <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+          <div class="subscribe">
+            <mat-form-field appearance="fill">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" placeholder="Tu email">
+              <mat-error *ngIf="subscribeForm.get('email')?.invalid">
+                Por favor, ingresa un email válido.
+              </mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" [disabled]="loading || subscribeForm.invalid" #formBtn>
+                SUBSCRIBE
+                <fa-icon *ngIf="loading" [icon]="faSpinner" [spin]="true"></fa-icon>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="footer__container__item">
+        <h6>Social</h6>
+        <div class="footer__social">
+          <a href="https://www.facebook.com/pet.connect.uy" target="_blank">
+            <picture>
+              <img src="/assets/images/facebook-icon.webp" alt="Facebook">
+            </picture>
+          </a>
+          <a href="https://www.instagram.com/petconnect.uy" target="_blank">
+            <picture>
+              <img src="/assets/images/instagram-icon.webp" alt="Instagram">
+            </picture>
+          </a>
+          <a href="#" target="_blank">
+            <picture>
+              <img src="/assets/images/x-logo.webp" alt="Twitter">
+            </picture>
+          </a>
         </div>
+      </div>
     </div>
-</footer>
+  </footer>  

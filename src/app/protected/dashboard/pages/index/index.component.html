@@ -23,7 +23,6 @@
                                 </div>
                             </div>
                             <div class="dashboard__body__container">
-                                <app-loader *ngIf="petsLoader"></app-loader>
                                 <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length > 0" id="#my-pets">
                                     <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
                                         <div class="dashboard__body__container__box__item--header">

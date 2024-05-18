@@ -48,7 +48,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
-    MatButtonModule
+    MatButtonModule,
   ],
 })
 export class UserModule { }

@@ -1,5 +1,6 @@
 <app-loader *ngIf="showLoader || loader"></app-loader>
 <app-navbar *ngIf="!showLoader || loader"></app-navbar>
+<app-carousel></app-carousel>
 <app-header *ngIf="!showLoader || loader"></app-header>
 <div *ngIf="clients && clients.length > 0">
     <app-associated-clients *ngIf="!showLoader|| loader" [clients]="this.clients"></app-associated-clients>

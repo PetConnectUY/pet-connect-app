@@ -1,0 +1,11 @@
+<ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="false" [interval]="4000" [wrap]="true">
+    <ng-template ngbSlide *ngFor="let image of images; let i = index">
+      <div class="carousel__slide" [class.active]="i === currentIndex">
+        <img [src]="image.src" [alt]="image.title" />
+        <div class="carousel__content">
+          <h3>{{ image.title }}</h3>
+          <p>{{ image.description }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-carousel>
