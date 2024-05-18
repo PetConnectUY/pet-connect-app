@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+<app-loader *ngIf="loader"></app-loader>
+<div class="purchase-points-container">
+    <div class="map-container">
+      <h2>
+        <fa-icon [icon]="faMagnifyingGlassLocation" style="color: var(--primary-color);"></fa-icon>
+        Puntos de venta
+      </h2>
+      <div class="map-wrapper" #mapContainer (click)="toggleMapActivation($event)">
+        <button mat-mini-fab color="primary" *ngIf="showCloseButton" class="close-button" (click)="closeMap($event)">
+          <fa-icon [icon]="faTimes"></fa-icon>
+        </button>
+        <div class="map-overlay" *ngIf="!mapActivated"></div>
+      </div>
+      <p *ngIf="unknowError">
+        <fa-icon [icon]="faExclamationCircle" style="color: red;"></fa-icon>
+        {{ errorMessage }}
+      </p>
+    </div>
+</div>

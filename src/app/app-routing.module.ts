@@ -5,6 +5,7 @@ import { ValidateTokenGuard } from './protected/shared/guards/ValidateToken.guar
 import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
 import { ErrorComponent } from './errors/components/error/error.component';
 import { errors } from './errors/constants/errors.constant';
+import { PurchasePointsComponent } from './components/purchase-points/purchase-points.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: 'error/:code',
     component: ErrorComponent,
+  },
+  {
+    path: 'get-qr-code',
+    component: PurchasePointsComponent,
   }
 ];
 

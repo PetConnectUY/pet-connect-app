@@ -39,7 +39,8 @@ import { AssociatedClientsComponent } from './components/associated-clients/asso
 import { NgImageSliderModule } from 'ng-image-slider';
 import { FooterComponent } from './components/footer/footer.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
-
+import { PurchasePointsComponent } from './components/purchase-points/purchase-points.component';
+import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { CarouselComponent } from './components/carousel/carousel.component';
     AssociatedClientsComponent,
     FooterComponent,
     CarouselComponent,
+    PurchasePointsComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +82,7 @@ import { CarouselComponent } from './components/carousel/carousel.component';
     NgImageSliderModule,
     NgbCarouselModule,
     MatSnackBarModule,
+    MatTreeModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-ES' },

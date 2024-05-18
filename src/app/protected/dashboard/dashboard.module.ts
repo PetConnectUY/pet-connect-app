@@ -31,6 +31,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { TemplateComponent } from './template/template/template.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ChangeEmailComponent } from './components/change-email/change-email.component';
+import { EmptyPetsComponent } from './components/empty-pets/empty-pets.component';
+import { SkeletonLoaderComponent } from './components/skeleton-loader/skeleton-loader.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { ChangeEmailComponent } from './components/change-email/change-email.com
     TemplateComponent,
     ChangePasswordComponent,
     ChangeEmailComponent,
+    EmptyPetsComponent,
+    SkeletonLoaderComponent,
   ],
   imports: [
     CommonModule,

@@ -23,6 +23,7 @@
                                 </div>
                             </div>
                             <div class="dashboard__body__container">
+                                <app-skeleton-loader *ngIf="petsLoader"></app-skeleton-loader>
                                 <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length > 0" id="#my-pets">
                                     <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
                                         <div class="dashboard__body__container__box__item--header">
@@ -31,7 +32,7 @@
                                             </button>
                                             <mat-menu #actions="matMenu">
                                                 <button mat-menu-item color="primary" (click)="editPet(pet)">
-                                                        <mat-icon class="icon">edit</mat-icon> Editar
+                                                    <mat-icon class="icon">edit</mat-icon> Editar
                                                 </button>
                                                 <button mat-menu-item (click)="deletePet(pet)">
                                                     <mat-icon class="icon">delete</mat-icon> Eliminar
@@ -47,7 +48,7 @@
                                                 </ng-container>
                                                 <ng-container *ngIf="pet.images.length > 0">
                                                     <picture *ngFor="let image of pet.images">
-                                                        <img src="{{image.url}}" alt="pet-image">
+                                                        <img [src]="image.url" alt="pet-image">
                                                     </picture>
                                                 </ng-container>
                                                 <h3>{{pet.name}}</h3>
@@ -57,10 +58,6 @@
                                                     mat-raised-button 
                                                     color="primary"
                                                     *ngIf="pet.pet_token.token" [routerLink]="['/pets/', pet.pet_token.token]">Ver perfil</button>
-                                                <button 
-                                                    mat-stroked-button 
-                                                    color="basic"
-                                                    *ngIf="!pet.pet_token.token" [routerLink]="['/get-qr-code/', pet.id]">Obtener chapita</button>
                                             </div>
                                         </div>
                                     </div>
@@ -70,13 +67,7 @@
                                     [pagination]="this.pets" 
                                     (OnPageChange)="updatePets()"
                                 ></app-pagination>
-                                <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length <= 0">
-                                    <mat-card class="without__pets full-width-card">
-                                        <mat-card-header>
-                                            <h2 style="font-family: var(--primary-font);"><mat-icon style="color: var(--primary-color);">help</mat-icon> ¿Quieres obtener una chapita para tu mascota?</h2>
-                                        </mat-card-header>
-                                    </mat-card>
-                                </div>
+                                <app-empty-pets *ngIf="!petsLoader && this.pets.data.length === 0"></app-empty-pets>
                             </div>
                         </div>
                     </div>
