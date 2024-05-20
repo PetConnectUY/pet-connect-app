@@ -41,6 +41,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
 import { PurchasePointsComponent } from './components/purchase-points/purchase-points.component';
 import { MatTreeModule } from '@angular/material/tree';
+import { DiscoverMoreComponent } from './components/discover-more/discover-more.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { MatTreeModule } from '@angular/material/tree';
     FooterComponent,
     CarouselComponent,
     PurchasePointsComponent,
+    DiscoverMoreComponent,
   ],
   imports: [
     BrowserModule,

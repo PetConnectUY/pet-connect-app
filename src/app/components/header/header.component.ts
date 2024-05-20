@@ -41,7 +41,6 @@ export class HeaderComponent implements AfterViewInit {
 
   toSection(e: MouseEvent, to: string): void {
     e.preventDefault();
-    console.log(this.scrollService.scrollToSection(to));
     
     this.scrollService.scrollToSection(to);
   }

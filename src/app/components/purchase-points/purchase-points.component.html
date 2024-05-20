@@ -1,20 +1,35 @@
 <app-navbar></app-navbar>
 <app-loader *ngIf="loader"></app-loader>
 <div class="purchase-points-container">
-    <div class="map-container">
+  <div class="sidebar">
+    <h2>Clientes</h2>
+    <div *ngFor="let client of clients" class="client-item">
+      <img [src]="client.url" alt="{{client.name}} Logo">
+      <p (click)="focusOnClient(client.central_address)">{{client.name}}</p>
+      <div *ngIf="client.branches.length > 0">
+        <ul>
+          <li (click)="focusOnClient(branch.address)" *ngFor="let branch of client.branches">- {{branch.address}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="map-container">
+    <div class="map-container-title">
       <h2>
         <fa-icon [icon]="faMagnifyingGlassLocation" style="color: var(--primary-color);"></fa-icon>
         Puntos de venta
       </h2>
-      <div class="map-wrapper" #mapContainer (click)="toggleMapActivation($event)">
-        <button mat-mini-fab color="primary" *ngIf="showCloseButton" class="close-button" (click)="closeMap($event)">
-          <fa-icon [icon]="faTimes"></fa-icon>
-        </button>
-        <div class="map-overlay" *ngIf="!mapActivated"></div>
-      </div>
-      <p *ngIf="unknowError">
-        <fa-icon [icon]="faExclamationCircle" style="color: red;"></fa-icon>
-        {{ errorMessage }}
-      </p>
     </div>
+    <div class="map-wrapper" #mapContainer (click)="toggleMapActivation($event)">
+      <button mat-mini-fab color="primary" *ngIf="showCloseButton" class="close-button" (click)="closeMap($event)">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+      <div class="map-overlay" *ngIf="!mapActivated"></div>
+    </div>
+    <p *ngIf="unknowError">
+      <fa-icon [icon]="faExclamationCircle" style="color: red;"></fa-icon>
+      {{ errorMessage }}
+    </p>
+  </div>
 </div>
+<app-footer></app-footer>

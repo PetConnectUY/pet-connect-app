@@ -1,70 +1,70 @@
 <app-loader *ngIf="showLoader"></app-loader>
 <app-navbar *ngIf="!showLoader"></app-navbar>
 <section class="signin" *ngIf="!showLoader">
-    <picture>
-        <img src="/assets/images/pet-connect-icon-black.png" alt="pet-connect-icon">
-    </picture>
-    <form [formGroup]="signinForm" (ngSubmit)="login()">
-        <div class="signin__container">
-            <div *ngIf="this.user" class="signin__container__header">
-                <div class="d-flex flex-column align-items-center justify-content-start">
-                    <a mat-fab extended color="primary" style="text-decoration: none;" *ngIf="this.user" (click)="removeAccount()">
-                        No eres {{this.user.firstname | titlecase}}? <fa-icon [icon]="faChevronRight" animation="fade"></fa-icon>
-                    </a>
+    <div class="signin__background"></div>
+    <div class="signin__content">
+        <picture>
+            <img src="/assets/images/pet-connect-icon-black.png" alt="pet-connect-icon">
+        </picture>
+        <form [formGroup]="signinForm" (ngSubmit)="login()">
+            <div class="signin__container">
+                <div *ngIf="this.user" class="signin__container__header">
+                    <div class="d-flex flex-column align-items-center justify-content-start">
+                        <a mat-fab extended color="primary" style="text-decoration: none;" *ngIf="this.user" (click)="removeAccount()">
+                            No eres {{this.user.firstname | titlecase}}? <fa-icon [icon]="faChevronRight" animation="fade"></fa-icon>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <h1 *ngIf="!this.user" class="signin__container--title">Iniciar sesión</h1>
-            <div *ngIf="!this.user" class="signin__container__item">
-                <mat-form-field>
-                    <mat-label>Email</mat-label>
-                    <input
-                        type="text"
-                        matInput
-                        formControlName="email">
-                    <mat-error *ngIf="isFieldInvalid('email')">
-                        {{getErrorMessage('email')}}
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div *ngIf="this.user" class="signin__container__item">
-                
-                <h2 class="signin__container__item--sub-title">¡Hola {{this.user.firstname | titlecase}}!</h2>
-                <p class="signin__container__item--sub-title-description">Escribe tu contraseña para ingresar</p>
-            </div>
-            <div class="signin__container__item">
-                <mat-form-field>
-                    <mat-label>Contraseña</mat-label>
-                    <input formControlName="password" matInput [type]="hide ? 'text' : 'password'" name="password">
-                    <mat-icon matSuffix (click)="togglePasswordVisibility()">
-                        {{hide?'visibility_off':'visibility'}}
-                    </mat-icon>
-                    <mat-error *ngIf="isFieldInvalid('password')">
-                        {{getErrorMessage('password')}}
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div *ngIf="invalidCredentials" class="signin__container__item--bad-credentials">
-                <fa-icon [icon]="faExclamationCircle"></fa-icon>
-                <p>Usuario y/o contraseña incorrectos.</p>
-            </div>
-            <div *ngIf="unknowError" class="signin__container__item--bad-credentials">
-                <fa-icon [icon]="faExclamationCircle"></fa-icon>
-                <p>{{errorMessage}}</p>
-            </div>
-            <div class="signin__container__item">
-                <button mat-raised-button [disabled]="submitting">
-                    <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
-                    {{btnValue}}
-                </button>
-            </div>
-            <div class="signin__container__item--footer">
-                <button type="button" mat-raised-button style="width: 100%; height: 30px; text-decoration: none; position: relative;" *ngIf="!this.user" (click)="navigateToSignup()">
+                <h1 *ngIf="!this.user" class="signin__container--title">Iniciar sesión</h1>
+                <div *ngIf="!this.user" class="signin__container__item">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input type="text" matInput formControlName="email">
+                        <mat-icon matSuffix>email</mat-icon>
+                        <mat-error *ngIf="isFieldInvalid('email')">
+                            {{getErrorMessage('email')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="this.user" class="signin__container__item">
+                    <h2 class="signin__container__item--sub-title">¡Hola {{this.user.firstname | titlecase}}!</h2>
+                    <p class="signin__container__item--sub-title-description">Escribe tu contraseña para ingresar</p>
+                </div>
+                <div class="signin__container__item">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input formControlName="password" matInput [type]="hide ? 'text' : 'password'" name="password">
+                        <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                            {{hide ? 'visibility_off' : 'visibility'}}
+                        </mat-icon>
+                        <mat-error *ngIf="isFieldInvalid('password')">
+                            {{getErrorMessage('password')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="invalidCredentials" class="signin__container__item--bad-credentials">
+                    <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                    <p>Usuario y/o contraseña incorrectos.</p>
+                </div>
+                <div *ngIf="unknowError" class="signin__container__item--bad-credentials">
+                    <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                    <p>{{errorMessage}}</p>
+                </div>
+                <div class="signin__container__item">
+                    <button mat-raised-button color="primary" [disabled]="submitting">
+                        <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+                        {{btnValue}}
+                    </button>
+                </div>
+                <div class="signin__container__item--footer">
+                    <button type="button" mat-raised-button color="accent" style="width: 100%; height: 30px; text-decoration: none; position: relative;" *ngIf="!this.user" (click)="navigateToSignup()">
                         <mat-icon class="mat-icon position-absolute" style="left: 10px;">person_add</mat-icon>
                         <span>Registrarme</span>
-                </button>
-                
-                <app-google-auth (googleLogin)="handleGoogleLogin($event)"></app-google-auth>
+                    </button>
+                    
+                    <app-google-auth (googleLogin)="handleGoogleLogin($event)"></app-google-auth>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </section>

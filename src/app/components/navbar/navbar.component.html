@@ -58,7 +58,9 @@
           </ul>
         </li>
         <li class="nav-item d-none d-md-flex" *ngIf="!this.user || !this.token">
-          <a class="nav-link w-100 m-1" mat-raised-button routerLink="/auth/signin" routerLinkActive="active" *ngIf="!isSignupRoute()">Iniciar sesión</a>
+          <a class="nav-link w-100 m-1 btn-login" mat-raised-button routerLink="/auth/signin" routerLinkActive="active" *ngIf="!isSignupRoute()">
+            <fa-icon [icon]="faRightFromBracket" style="color: #fff;"></fa-icon> Iniciar sesión
+          </a>
           <a class="nav-link w-100 m-1" mat-raised-button routerLink="/users/signup" routerLinkActive="active" *ngIf="isSignupRoute()">Registrarse</a>
         </li>
         <li class="nav-item d-none d-md-inline">

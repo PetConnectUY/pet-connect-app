@@ -189,13 +189,7 @@ export class PurchasePointsComponent implements AfterViewInit, OnInit {
       });
   }
 
-  toggleNode(node: TreeNode): void {
-    this.treeControl.toggle(node);
-    this.focusOnClient(node);
-  }
-
-  focusOnClient(node: TreeNode) {
-    const address = node.central_address || node.address;
+  focusOnClient(address: string) {
     if (address) {
       fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
         .then(response => response.json())

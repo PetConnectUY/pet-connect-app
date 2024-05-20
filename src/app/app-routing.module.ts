@@ -6,6 +6,7 @@ import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-
 import { ErrorComponent } from './errors/components/error/error.component';
 import { errors } from './errors/constants/errors.constant';
 import { PurchasePointsComponent } from './components/purchase-points/purchase-points.component';
+import { DiscoverMoreComponent } from './components/discover-more/discover-more.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
   {
     path: 'get-qr-code',
     component: PurchasePointsComponent,
+  },
+  {
+    path: 'discover-more',
+    component: DiscoverMoreComponent,
   }
 ];
 
