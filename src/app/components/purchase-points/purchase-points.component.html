@@ -21,7 +21,7 @@
       </h2>
     </div>
     <div class="map-wrapper" #mapContainer (click)="toggleMapActivation($event)">
-      <button mat-mini-fab color="primary" *ngIf="showCloseButton" class="close-button" (click)="closeMap($event)">
+      <button aria-label="Cerrar mapa" mat-mini-fab color="primary" *ngIf="showCloseButton" class="close-button" (click)="closeMap($event)">
         <fa-icon [icon]="faTimes"></fa-icon>
       </button>
       <div class="map-overlay" *ngIf="!mapActivated"></div>

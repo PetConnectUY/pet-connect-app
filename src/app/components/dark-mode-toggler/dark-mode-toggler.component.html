@@ -1,5 +1,5 @@
 <div [class]="isActive('/dashboard') ? 'sidebar' : 'nav'">
-    <button mat-mini-fab color="primary" (click)="toggleDarkMode()">
+    <button aria-label="Activar / desactivar modo oscuro" mat-mini-fab color="primary" (click)="toggleDarkMode()">
         <fa-icon [icon]="faCircleHalfStroke"></fa-icon>
     </button>
 </div>

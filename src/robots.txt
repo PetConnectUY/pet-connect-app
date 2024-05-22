@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /dashboard/my-pets
+Disallow: /dashboard/profile
+Sitemap: https://petconnect.com/sitemap.xml

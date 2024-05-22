@@ -27,14 +27,14 @@
                                 <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length > 0" id="#my-pets">
                                     <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
                                         <div class="dashboard__body__container__box__item--header">
-                                            <button mat-icon-button [matMenuTriggerFor]="actions" aria-label="Example icon-button with a menu">
+                                            <button mat-icon-button [matMenuTriggerFor]="actions" aria-label="Expandir">
                                                 <mat-icon>more_vert</mat-icon>
                                             </button>
                                             <mat-menu #actions="matMenu">
-                                                <button mat-menu-item color="primary" (click)="editPet(pet)">
+                                                <button aria-label="Editar datos de mascota" mat-menu-item color="primary" (click)="editPet(pet)">
                                                     <mat-icon class="icon">edit</mat-icon> Editar
                                                 </button>
-                                                <button mat-menu-item (click)="deletePet(pet)">
+                                                <button aria-label="Eliminar mascota" mat-menu-item (click)="deletePet(pet)">
                                                     <mat-icon class="icon">delete</mat-icon> Eliminar
                                                 </button>
                                             </mat-menu>

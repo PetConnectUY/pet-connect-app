@@ -5,7 +5,7 @@
         <div class="carousel__content">
           <h3>{{ image.title }}</h3>
           <p>{{ image.description }}</p>
-          <button class="cta-button" *ngIf="image.cta" (click)="handleCTAClick(image.cta.link)">
+          <button aria-label="Descubre más" class="cta-button" *ngIf="image.cta" (click)="handleCTAClick(image.cta.link)">
             {{ image.cta.text }}
           </button>
         </div>

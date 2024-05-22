@@ -21,7 +21,7 @@
                 {{ 'El email nuevo ya está registrado' }}
             </mat-error> 
         </mat-form-field>
-        <button  mat-raised-button color="primary" [disabled]="sumbitting || validateEmailFrom.invalid" #formBtn>
+        <button aria-label="Enviar código" mat-raised-button color="primary" [disabled]="sumbitting || validateEmailFrom.invalid" #formBtn>
             {{btnValue}}
             <fa-icon *ngIf="sumbitting" [icon]="faSpinner" [spin]="true"></fa-icon>
             <fa-icon *ngIf="!sumbitting" [icon]="faChevronRight"></fa-icon>
@@ -38,7 +38,7 @@
                 {{ 'El código de verificación es incorrecto o expiró' }}
             </mat-error> 
         </mat-form-field>
-        <button  mat-raised-button color="primary" [disabled]="sumbitting || validateEmailFrom.invalid" #formBtn>
+        <button aria-label="Validar código" mat-raised-button color="primary" [disabled]="sumbitting || validateEmailFrom.invalid" #formBtn>
             {{btnValue}}
             <fa-icon *ngIf="sumbitting" [icon]="faSpinner" [spin]="true"></fa-icon>
             <fa-icon *ngIf="!sumbitting" [icon]="faChevronRight"></fa-icon>
