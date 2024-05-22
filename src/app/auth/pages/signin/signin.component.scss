@@ -7,24 +7,11 @@
     position: relative;
     background-color: var(--primary-color);
 
-    &__background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('/assets/images/login-background-image.webp');
-        background-size: cover;
-        background-position: center;
-        filter: blur(8px);
-        z-index: -1;
-    }
-
     &__content {
         z-index: 1;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-evenly;
         width: 100%;
         max-width: 1200px;
         padding: 2rem;
@@ -53,7 +40,7 @@
     &__container {
         width: 100%;
         max-width: 400px;
-        background-color: #fff;
+        background-color: var(--background-color);
         padding: 2rem;
         border-radius: 1rem;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -106,4 +93,19 @@
             }
         }
     }
+}
+
+app-google-auth {
+    width: 100%;
+    height: 40px; /* Ajusta esto al valor adecuado */
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-button, .register-button { /* .register-button debería ser la clase del botón "Registrarme" */
+    font-size: 16px; /* Ajusta al tamaño adecuado */
+    padding: 10px 20px; /* Ajusta al valor adecuado */
 }

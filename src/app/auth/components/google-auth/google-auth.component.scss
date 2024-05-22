@@ -1,5 +1,9 @@
 .google-button {
     width: 100%;
+    height: 40px; /* Ajusta esto al valor adecuado para igualar la altura del botón de "Registrarme" */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @media (max-width: 768px) {
         width: 100% !important;
     }

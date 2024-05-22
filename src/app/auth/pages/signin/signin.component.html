@@ -1,7 +1,6 @@
 <app-loader *ngIf="showLoader"></app-loader>
 <app-navbar *ngIf="!showLoader"></app-navbar>
 <section class="signin" *ngIf="!showLoader">
-    <div class="signin__background"></div>
     <div class="signin__content">
         <picture>
             <img src="/assets/images/pet-connect-icon-black.png" alt="pet-connect-icon">
@@ -51,7 +50,7 @@
                     <p>{{errorMessage}}</p>
                 </div>
                 <div class="signin__container__item">
-                    <button aria-label="Iniciar sesión" mat-raised-button color="primary" [disabled]="submitting">
+                    <button aria-label="Iniciar sesión" mat-raised-button color="primary" [disabled]="submitting" style="width: 100%; height: 30px;">
                         <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
                         {{btnValue}}
                     </button>
@@ -61,7 +60,6 @@
                         <mat-icon class="mat-icon position-absolute" style="left: 10px;">person_add</mat-icon>
                         <span>Registrarme</span>
                     </button>
-                    
                     <app-google-auth (googleLogin)="handleGoogleLogin($event)"></app-google-auth>
                 </div>
             </div>
