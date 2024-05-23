@@ -31,6 +31,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
 
   signupForm!: FormGroup;
+  startDate = new Date(2005, 0, 1);
   loaderForEmailExists: boolean = false;
   emailExists: boolean = false;
   addressSuggestions: any[] = [];
@@ -80,8 +81,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       )
       .subscribe((suggestions: string[]) => {
         this.addressSuggestions = suggestions;
-      });
-      this.setMinDate();
+      });;
   }
 
   ngAfterViewInit(): void {
@@ -122,14 +122,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.signupForm.get('address')?.setValue(suggestion, {});
     this.addressSuggestions = [];
   }
-  
-  setMinDate(): void {
-    const currentDate = new Date();
-    currentDate.setFullYear(currentDate.getFullYear() - 12);
-  
-    this.signupForm.get('birth_date')?.setValidators([this.formValidationService.minDateValidator(currentDate)]);
-    this.signupForm.get('birth_date')?.updateValueAndValidity();
-  }
 
   register() {
     this.submitting = true;
@@ -137,6 +129,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     const oldBtnValue = this.btnValue;
 
     const { firstname, lastname, email, password, phone, address, birth_date } = this.signupForm.value;
+    
     const formData = new FormData();
     this.recaptchaV3Service.execute('save').subscribe((token) => {
       formData.append('firstname', firstname);
@@ -145,7 +138,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       formData.append('password', password);
       formData.append('phone', phone);
       formData.append('address', address);
-      formData.append('birth_date', new Date(birth_date).toISOString());
+      formData.append('birth_date', new Date(birth_date).toISOString().split('T')[0]);
       formData.append('g-recaptcha-response', token);
       
       if(this.signupForm.valid) {
@@ -153,7 +146,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
           switchMap((res: User) => {
             return this.authService.login(email, password).pipe(
               switchMap((loginResult: AuthResponse) => {
-                this.next.emit();
+                if (this.route.snapshot.queryParams['redirect_url'] !== '') {
+                  this.next.emit();
+                }
                 return of(null);
               }),
               catchError((error: HttpErrorResponse) => {
@@ -166,7 +161,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
           }),
           catchError((error: any) => {
             if (error.error) {
-              Object.keys(error.error).forEach(field => {                
+              Object.keys(error.error).forEach(field => {
                 const formControl = this.signupForm.get(field);
                 if (formControl) {
                   formControl.setErrors({ serverError: error.error[field][0] });

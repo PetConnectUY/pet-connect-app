@@ -1,7 +1,7 @@
 <app-loader *ngIf="this.loader"></app-loader>
 <app-navbar *ngIf="!this.loader"></app-navbar>
 <section class="pets" *ngIf="!this.loader">
-    <div class="pets__container" *ngIf="this.loadPet">
+    <!-- <div class="pets__container" *ngIf="this.loadPet">
         <div class="pets__container--image">
             <picture *ngFor="let image of pet.images" (click)="openModal(image.url)">
                 <img src="{{image.url}}" alt="pet-profile-image">
@@ -9,6 +9,61 @@
             <h2>Me llamo <span>{{pet.name | titlecase}}</span></h2>
         </div>
         <div class="pets__container__body">
+            <h3>
+                <fa-icon [icon]="faPaw"></fa-icon>
+                Algunas cosas sobre mi
+            </h3>
+            <div class="pets__container__body--item">
+                <p>🎉Mi cumpleaños es el <span>{{pet.birth_date | date:'d MMMM y'}}</span></p>
+            </div>
+            <div class="pets__container__body--item" *ngIf="pet.race">
+                <p>ℹ️ Mi raza es <span>{{pet.race.name | titlecase}}</span></p>
+            </div>
+            <div class="pets__container__body--item">
+                <p>📃 Algunas características sobre mi: <span>{{pet.pet_information}}</span></p>
+            </div>
+            <div class="pets__container__body--item">
+                <p *ngIf="pet.gender === 'male'">Soy un <span>
+                    <fa-icon [icon]="faMars"></fa-icon> Macho</span>
+                </p>
+                <p *ngIf="pet.gender === 'female'">Soy una <span>
+                    <fa-icon [icon]="faVenus"></fa-icon> Hembra</span>
+                </p>
+            </div>
+            <div class="pets__container__body__info" *ngIf="pet.user.firstname || pet.user.lastname || pet.user.address || pet.user.phone || pet.user.email">
+                <h2>
+                    <fa-icon [icon]="faUser"></fa-icon>
+                    Algunas cosas sobre mi dueño
+                </h2>
+                <div class="pets__container__body__info--item" *ngIf="pet.user.firstname || pet.user.lastname">
+                    <p><span>*</span> Nombre y apellido: <span>{{pet.user.firstname | titlecase}} {{pet.user.lastname | titlecase}}</span></p>
+                </div>
+                <div class="pets__container__body__info--item" *ngIf="pet.user.phone">
+                    <p><span>*</span> Teléfono de contacto: <span>{{pet.user.phone | phone}}</span></p>
+                </div>
+                <div class="pets__container__body__info--item" *ngIf="pet.user.email">
+                    <p><span>*</span> Correo de contacto: <span>{{pet.user.email}}</span></p>
+                </div>
+                <div class="pets__container__body__info--item" *ngIf="pet.user.address">
+                    <p><span>*</span> Localización aproximada</p>
+                    <app-map [address]="pet.user.address"></app-map>
+                </div>
+            </div>
+            <div class="pets__container__footer">
+                <button (click)="petFound(pet.pet_token.token)">
+                    Encontré a {{pet.name | titlecase}}
+                </button>
+            </div>
+        </div>
+    </div> -->
+    <div class="pets__container">
+        <div class="pets__container__image">
+            <picture *ngFor="let image of pet.images" (click)="openModal(image.url)">
+                <img src="{{image.url}}" alt="pet-profile-image">
+            </picture>
+        </div>
+        <div class="pets__container__info">
+            <h1>Mi nombre es <span>{{pet.name}}</span></h1>
             <h3>
                 <fa-icon [icon]="faPaw"></fa-icon>
                 Algunas cosas sobre mi

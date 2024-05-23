@@ -30,12 +30,14 @@ export class GoogleSignupComponent {
   @Output() next: EventEmitter<void> = new EventEmitter<void>();
 
   signupForm!: FormGroup;
+  startDate = new Date(2005, 0, 1);
   loaderForEmailExists: boolean = false;
   emailExists: boolean = false;
   addressSuggestions: any[] = [];
   selectingSuggestion = false;
   user: User | null;
-
+  
+  hide!: boolean;
   showLoader = true;
   show: boolean = false;
   submitting: boolean = false;
@@ -177,7 +179,7 @@ export class GoogleSignupComponent {
       formData.append('email', email);
       formData.append('phone', phone);
       formData.append('address', address);
-      formData.append('birth_date', birth_date);
+      formData.append('birth_date', new Date(birth_date).toISOString().split('T')[0]);
       formData.append('g-recaptcha-response', token);
       
       if(this.signupForm.valid) {
@@ -207,5 +209,9 @@ export class GoogleSignupComponent {
         ).subscribe();
       }
     });
+  }
+
+  togglePasswordVisibility() {
+    this.hide = !this.hide;
   }
 }

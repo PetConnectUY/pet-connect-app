@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbToast, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecaptchaFormsModule, RecaptchaV3Module } from "ng-recaptcha";
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatMenuModule } from '@angular/material/menu';
     RecaptchaFormsModule,
     NgbToastModule,
     MatMenuModule,
+    MatCardModule,
   ],
   providers: [],
 })

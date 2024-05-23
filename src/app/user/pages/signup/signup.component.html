@@ -7,8 +7,8 @@
             <div class="signup__container__header">
                 <div class="signup__container__header--button">
                     <div class="d-flex flex-column align-items-center justify-content-start">
-                        <a mat-fab extended color="primary" style="text-decoration: none;" [routerLink]="['/auth/signin']" [queryParams]="{token: this.token}">
-                            Ya tienes una cuenta? <fa-icon [icon]="faChevronRight" animation="fade"></fa-icon>
+                        <a mat-stroked-button color="primary" style="text-decoration: none;" [routerLink]="['/auth/signin']" [queryParams]="{token: this.token}">
+                            Ya tienes una cuenta? <mat-icon>arrow_forward</mat-icon>
                         </a>
                     </div>
                 </div>
@@ -16,135 +16,103 @@
             </div>
             <div class="row w-100">
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                         <mat-label>Nombre(s)</mat-label>
-                        <input
-                            type="text"
-                            formControlName="firstname"
-                            matInput
-                        >
+                        <input type="text" formControlName="firstname" matInput>
                         <mat-error *ngIf="isFieldInvalid('firstname')">
                             {{getErrorMessage('firstname')}}
-                            {{ signupForm.get('firstname')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                         <mat-label>Apellido(s)</mat-label>
-                        <input
-                            type="text"
-                            formControlName="lastname"
-                            matInput
-                        >
+                        <input type="text" formControlName="lastname" matInput>
                         <mat-error *ngIf="isFieldInvalid('lastname')">
                             {{getErrorMessage('lastname')}}
-                            {{ signupForm.get('lastname')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
             </div>
             <div class="row w-100">
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input
-                            type="email"
-                            formControlName="email"
-                            matInput
-                        >
+                        <input type="email" formControlName="email" matInput>
                         <mat-error *ngIf="isFieldInvalid('email')">
-                            {{getErrorMessage('email')}}
-                            {{ signupForm.get('email')?.errors?.['serverError'] }}
+                            {{getErrorMessage('email')}} {{ signupForm.get('email')?.getError('serverError') }}
                         </mat-error>
                     </mat-form-field>
                 </div>
     
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                         <mat-label>Contraseña</mat-label>
-                        <input 
-                            formControlName="password" 
-                            matInput 
-                            [type]="hide ? 'text' : 'password'"
-                        >
-                        <mat-icon matSuffix (click)="togglePasswordVisibility()">
-                            {{hide?'visibility_off':'visibility'}}
-                        </mat-icon>
+                        <input formControlName="password" matInput [type]="hide ? 'text' : 'password'">
+                        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
                         <mat-error *ngIf="isFieldInvalid('password')">
                             {{getErrorMessage('password')}}
-                            {{ signupForm.get('password')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
             </div>
             <div class="row w-100">
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                         <mat-label>Celular de contacto</mat-label>
-                        <input
-                            type="tel"
-                            formControlName="phone"
-                            matInput
-                        >
+                        <input type="tel" formControlName="phone" matInput>
                         <mat-error *ngIf="isFieldInvalid('phone')">
                             {{getErrorMessage('phone')}}
-                            {{ signupForm.get('phone')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6 signup__container__item">
-                    <mat-form-field>
+                    <mat-form-field appearance="outline">
                         <mat-label>Dirección</mat-label>
                         <input formControlName="address" matInput [matAutocomplete]="auto">
                         <mat-autocomplete #auto="matAutocomplete">
-                            <div *ngIf="addressSuggestions.length > 0">
-                                <mat-option *ngFor="let suggestion of addressSuggestions" [value]="suggestion" (onSelectionChange)="selectAddressSuggestion(suggestion)">
-                                    {{ suggestion }}
-                                </mat-option>
-                            </div>
-                            <div *ngIf="addressSuggestions.length === 0 && signupForm.get('address')?.value">
-                                No se encontraron resultados para la dirección ingresada.
-                            </div>
+                            <mat-option *ngFor="let suggestion of addressSuggestions" [value]="suggestion" (onSelectionChange)="selectAddressSuggestion(suggestion)">
+                                {{ suggestion }}
+                            </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="isFieldInvalid('address')">
                             {{getErrorMessage('address')}}
-                            {{ signupForm.get('address')?.errors?.['serverError'] }}
                         </mat-error>
                     </mat-form-field>
                 </div>                            
             </div>
 
             <div class="signup__container__item w-100">
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                     <mat-label>Fecha de nacimiento (opcional)</mat-label>
-                    <input 
-                        (focus)="picker.open()"
-                        formControlName="birth_date" 
-                        matInput 
-                        [matDatepicker]="picker">
+                    <input
+                      (focus)="picker.open()"
+                      formControlName="birth_date"
+                      matInput
+                      [matDatepicker]="picker">
                     <mat-hint>DD/MM/AAAA</mat-hint>
                     <mat-error *ngIf="isFieldInvalid('birth_date')">
-                        <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-                        <p *ngIf="signupForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
-                        <p *ngIf="signupForm.get('birth_date')?.errors?.['minDateError']">Debe tener al menos 16 años para registrarte.</p>
-                        {{ signupForm.get('birth_date')?.errors?.['serverError'] }}
+                      <fa-icon [icon]="faExclamationCircle"></fa-icon>
+                      <p *ngIf="signupForm.get('birth_date')?.errors?.['required']">La fecha de nacimiento es requerida.</p>
+                      {{ signupForm.get('birth_date')?.getError('serverError') }}
                     </mat-error>
                     <mat-datepicker-toggle matIconSuffix [for]="picker">
                       <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                     </mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>                 
+                    <mat-datepicker #picker [startAt]="startDate"></mat-datepicker>
+                </mat-form-field>                             
             </div>
             <div *ngIf="unknowError" class="signup__container__item--error">
                 <fa-icon [icon]="faExclamationCircle"></fa-icon>
                 <p>{{errorMessage}}</p>
             </div>
             <div class="signup__container__item--button">
-                <button [disabled]="submitting || signupForm.invalid">
+                <button mat-raised-button color="primary" [disabled]="submitting || signupForm.invalid">
                     {{btnValue}}
-                    <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
-                    <fa-icon [icon]="faChevronRight" *ngIf="!submitting"></fa-icon>
+                    <mat-icon *ngIf="submitting">sync</mat-icon>
+                    <mat-icon *ngIf="!submitting">arrow_forward</mat-icon>
                 </button>
             </div>
         </div>
