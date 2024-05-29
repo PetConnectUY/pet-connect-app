@@ -14,6 +14,9 @@ import { NgbToast, NgbToastModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-b
 import { RecaptchaFormsModule, RecaptchaV3Module } from "ng-recaptcha";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,9 @@ import { MatCardModule } from '@angular/material/card';
     NgbToastModule,
     MatMenuModule,
     MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
 })

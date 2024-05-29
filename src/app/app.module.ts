@@ -37,7 +37,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AssociatedClientsComponent } from './components/associated-clients/associated-clients.component';
 import { NgImageSliderModule } from 'ng-image-slider';
-import { FooterComponent } from './components/footer/footer.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
 import { PurchasePointsComponent } from './components/purchase-points/purchase-points.component';
 import { MatTreeModule } from '@angular/material/tree';
@@ -52,7 +51,6 @@ import { DiscoverMoreComponent } from './components/discover-more/discover-more.
     FrequentQuestionsComponent,
     ErrorComponent,
     AssociatedClientsComponent,
-    FooterComponent,
     CarouselComponent,
     PurchasePointsComponent,
     DiscoverMoreComponent,

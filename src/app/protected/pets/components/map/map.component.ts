@@ -18,19 +18,32 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     const mapElement = this.mapContainer.nativeElement;
-
-    // Inicializa el mapa en el contenedor especificado
-    this.map = L.map(mapElement, {zoomControl: false}).setView([51.505, -0.09], 50);
+    this.map = L.map(mapElement, { zoomControl: false }).setView([-34.9011, -56.1645], 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
 
-    // Utiliza el servicio de geocodificación para obtener las coordenadas y agregar un marcador
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.address)}`)
+    this.geocodeAddress(this.address).then(result => {
+      if (!result) {
+        const addressParts = this.extractKeyComponents(this.address);
+        const keyAddress = addressParts.join(', ');
+        this.geocodeAddress(keyAddress).then(result => {
+          if (!result) {
+            this.showDefaultLocation();
+          }
+        });
+      }
+    }).catch(() => {
+      this.unknowError = true;
+      this.errorMessage = 'Ocurrió un error al obtener el mapa.';
+    });
+  }
+
+  geocodeAddress(address: string): Promise<boolean> {
+    return fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
       .then(response => response.json())
       .then(data => {
-        this.unknowError = false;
         if (data.length > 0) {
           const lat = parseFloat(data[0].lat);
           const lon = parseFloat(data[0].lon);
@@ -44,11 +57,32 @@ export class MapComponent implements OnInit {
           }).addTo(this.map);
 
           this.map.setView(location, 12);
+          return true;
+        } else {
+          return false;
         }
       })
-      .catch(error => {
-        this.unknowError = true;
-        this.errorMessage = 'Ocurró un error al obtener el mapa.';
+      .catch(() => {
+        return false;
       });
+  }
+
+  extractKeyComponents(address: string): string[] {
+    const addressParts = address.split(',');
+    const keyComponents = addressParts.filter(part => {
+      return part.trim().match(/^\d+/) === null;
+    });
+    return keyComponents;
+  }
+
+  showDefaultLocation(): void {
+    const defaultLocation = L.latLng(-34.9011, -56.1645);
+    L.circle(defaultLocation, {
+      color: 'blue',
+      fillColor: 'blue',
+      fillOpacity: 0.3,
+      radius: 2000
+    }).addTo(this.map);
+    this.map.setView(defaultLocation, 12);
   }
 }

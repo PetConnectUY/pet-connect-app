@@ -35,6 +35,8 @@ export class IndexComponent implements OnInit {
   token!: string | null;
   loadPet: boolean = false;
   pet!: Pet;
+  showImageModal: boolean = false;
+  modalImageUrl: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -139,11 +141,12 @@ export class IndexComponent implements OnInit {
     modalRef.componentInstance.pet = this.pet;
   }
 
-  openModal(imageUrl: string) {
-    const modalRef = this.modalService.open(ImageModalComponent, {
-      size: 'md',
-      centered: true,
-    });
-    modalRef.componentInstance.imageUrl = imageUrl;
+  closeModal() {
+    this.showImageModal = false;
+  }
+
+  openImage(url: string) {
+    this.modalImageUrl = url;
+    this.showImageModal = true;
   }
 }

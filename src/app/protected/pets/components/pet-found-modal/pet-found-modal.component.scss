@@ -108,6 +108,7 @@
         justify-content: center;
         align-items: center;
         gap: 1rem;
+        padding: 2rem;
         fa-icon {
             color: green;
         }
@@ -178,4 +179,10 @@
     }
   }
 
-  
+  .modal-header {
+    background-color: var(--background-color);
+  }
+
+  .modal-body {
+    background-color: var(--background-color);
+  }

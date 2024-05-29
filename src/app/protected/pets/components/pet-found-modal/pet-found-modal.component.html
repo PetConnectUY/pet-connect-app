@@ -1,79 +1,60 @@
+<!-- pet-found-modal.component.html -->
 <div class="modal-header" *ngIf="!showSuccessMessage && !submitting">
   <h5 class="modal-title">Contacta con el dueño de {{this.pet.name}}</h5>
-    <button type="button" class="btn-close" (click)="closeModal()"></button>
+  <button type="button" class="btn-close" (click)="closeModal()"></button>
 </div>
 <div class="modal-body">
-      <div *ngIf="submitting && !showSuccessMessage" class="d-flex align-items-center justify-content-center">
-        <fa-icon [icon]="faPaw" size="4x" [animation]="'beat'" style="color: var(--primary-color)"></fa-icon>
-    </div>
-    <p class="form--info" *ngIf="!showSuccessMessage && !submitting">
-      <fa-icon [icon]="faExclamationTriangle" style="color: var(--primary-color);"></fa-icon>
-      Ten en cuenta que este formulario es para ponerte en contacto con el dueño de {{this.pet.name}}, establecer una comunicación es el primer paso para que {{this.pet.name}} pueda regresar con su familia</p>
-    <form [formGroup]="petFoundForm" (submit)="save()" *ngIf="!showSuccessMessage && !submitting">
-      <div class="form">
-        <div class="form__item">
-          <input 
-            type="text"
-            id="phone"
-            name="phone"
-            formControlName="phone"
-            class="form__item--input"
-            [ngClass]="{ 'is-valid': isFieldValid('phone'), 'is-invalid': isFieldInvalid('phone'), 'has-content': hasContent('phone') }"
-            required
-          />
-          <label for="phone" class="form__item--label">Telefono / celular:</label>
-          <div class="form__item--validation" *ngIf="isFieldInvalid('phone')">
-            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-            <p>{{getErrorMessage('phone')}}</p>
-          </div>
-        </div>
-        <div class="form__item">
-          <input 
-            type="text"
-            id="firstname"
-            name="firstname"
-            formControlName="firstname"
-            class="form__item--input"
-            [ngClass]="{ 'is-valid': isFieldValid('firstname'), 'is-invalid': isFieldInvalid('firstname'), 'has-content': hasContent('firstname') }"
-          />
-          <label for="firstname" class="form__item--label">Nombre <span>(opcional)</span></label>
-          <div class="form__item--validation" *ngIf="isFieldInvalid('firstname')">
-            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-            <p>{{getErrorMessage('firstname')}}</p>
-          </div>
-        </div>
-        <div class="form__item">
-          <input 
-            type="text"
-            id="email"
-            name="email"
-            formControlName="email"
-            class="form__item--input"
-            [ngClass]="{ 'is-valid': isFieldValid('email'), 'is-invalid': isFieldInvalid('email'), 'has-content': hasContent('email') }"
-          />
-          <label for="email" class="form__item--label">Correo electrónico <span>(opcional)</span></label>
-          <div class="form__item--validation" *ngIf="isFieldInvalid('email')">
-            <fa-icon [icon]="faExclamationCircle"></fa-icon> 
-            <p>{{getErrorMessage('email')}}</p>
-          </div>
-        </div>
-        <div class="form__item" *ngIf="unknowError">
-          <div class="form__item--error">
-            <fa-icon [icon]="faExclamationCircle"></fa-icon>
-            <p>{{this.errorMessage}}</p>
-          </div>
-        </div>
-        <div class="form__item--button">
-          <button [disabled]="submitting || petFoundForm.invalid" *ngIf="!showSuccessMessage && !submitting">
-            <fa-icon *ngIf="!submitting" [icon]="faIdBadge"></fa-icon>
-            {{btnValue}}
-            <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
-          </button>
+  <div *ngIf="submitting && !showSuccessMessage" class="d-flex align-items-center justify-content-center">
+    <fa-icon [icon]="faPaw" size="4x" [animation]="'beat'" style="color: var(--primary-color)"></fa-icon>
+  </div>
+  <p class="form--info" *ngIf="!showSuccessMessage && !submitting">
+    <fa-icon [icon]="faExclamationTriangle" style="color: var(--primary-color);"></fa-icon>
+    Ten en cuenta que este formulario es para ponerte en contacto con el dueño de {{this.pet.name}}, establecer una comunicación es el primer paso para que {{this.pet.name}} pueda regresar con su familia.
+  </p>
+  <form [formGroup]="petFoundForm" (ngSubmit)="save()" *ngIf="!showSuccessMessage && !submitting">
+    <div class="form">
+      <div class="form__item">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Teléfono / celular</mat-label>
+          <input matInput type="text" id="phone" formControlName="phone" [ngClass]="{ 'is-valid': isFieldValid('phone'), 'is-invalid': isFieldInvalid('phone'), 'has-content': hasContent('phone') }" required>
+          <mat-error *ngIf="isFieldInvalid('phone')">
+            <fa-icon [icon]="faExclamationCircle"></fa-icon> {{getErrorMessage('phone')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form__item">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Nombre <span>(opcional)</span></mat-label>
+          <input matInput type="text" id="firstname" formControlName="firstname" [ngClass]="{ 'is-valid': isFieldValid('firstname'), 'is-invalid': isFieldInvalid('firstname'), 'has-content': hasContent('firstname') }">
+          <mat-error *ngIf="isFieldInvalid('firstname')">
+            <fa-icon [icon]="faExclamationCircle"></fa-icon> {{getErrorMessage('firstname')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form__item">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Correo electrónico <span>(opcional)</span></mat-label>
+          <input matInput type="email" id="email" formControlName="email" [ngClass]="{ 'is-valid': isFieldValid('email'), 'is-invalid': isFieldInvalid('email'), 'has-content': hasContent('email') }">
+          <mat-error *ngIf="isFieldInvalid('email')">
+            <fa-icon [icon]="faExclamationCircle"></fa-icon> {{getErrorMessage('email')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form__item" *ngIf="unknowError">
+        <div class="form__item--error">
+          <fa-icon [icon]="faExclamationCircle"></fa-icon> <p>{{this.errorMessage}}</p>
         </div>
       </div>
-    </form>
-    <div class="form__success" *ngIf="showSuccessMessage && !submitting">
-      <fa-icon [icon]="faCheckCircle" size="6x" animation="beat" style="--fa-animation-iteration-count: 3"></fa-icon>
-      <p>Se notifico al dueño de {{pet.name}}, muchas gracias!.</p>
-    </div>    
+      <div class="form__item--button">
+        <button mat-raised-button color="primary" [disabled]="submitting || petFoundForm.invalid" *ngIf="!showSuccessMessage && !submitting">
+          <fa-icon *ngIf="!submitting" [icon]="faIdBadge"></fa-icon> {{btnValue}}
+          <fa-icon *ngIf="submitting" [icon]="faSpinner" [spin]="true"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="form__success" *ngIf="showSuccessMessage && !submitting">
+    <fa-icon [icon]="faCheckCircle" size="6x" [animation]="'beat'" style="--fa-animation-iteration-count: 3"></fa-icon>
+    <p>Se notificó al dueño de {{pet.name}}, muchas gracias!</p>
+  </div>
 </div>

@@ -6,12 +6,15 @@ import { DarkModeTogglerComponent } from '../components/dark-mode-toggler/dark-m
 import { RouterModule } from '@angular/router';
 import { LoaderComponent } from '../components/loader/loader.component';
 import { HtmlToSafeHtmlPipe } from './pipes/html-to-safe-html.pipe';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { FooterComponent } from '../components/footer/footer.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
     DarkModeTogglerComponent,
     LoaderComponent,
     HtmlToSafeHtmlPipe,
+    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -29,12 +33,17 @@ import { MatButtonModule } from '@angular/material/button';
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   exports: [
     NavbarComponent,
     DarkModeTogglerComponent,
     LoaderComponent,
     HtmlToSafeHtmlPipe,
+    FooterComponent,
   ],
 })
 export class SharedModule { }
