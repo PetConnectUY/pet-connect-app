@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faGears, faHome, faPaw, faSignOut, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faGears, faHome, faPaw, faSignOut, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class SidebarComponent {
   faUser = faUser;
   faSignOut = faSignOut;
   faGears = faGears;
+  faUsers = faUsers;
 
   constructor(
     private authService: AuthService,

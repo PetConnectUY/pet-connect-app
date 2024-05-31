@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                             <div class="dashboard__body__container">
-                                <app-skeleton-loader *ngIf="petsLoader"></app-skeleton-loader>
+                                <app-skeleton-loader [quantity]="6" *ngIf="petsLoader"></app-skeleton-loader>
                                 <div class="dashboard__body__container__box" *ngIf="!petsLoader && this.pets.data.length > 0" id="#my-pets">
                                     <div class="dashboard__body__container__box__item" *ngFor="let pet of this.pets.data">
                                         <div class="dashboard__body__container__box__item--header">

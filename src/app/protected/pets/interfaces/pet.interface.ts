@@ -14,4 +14,5 @@ export interface Pet {
     images: PetImage[];
     user: User;
     pet_token: PetToken;
+    created_at: Date | null;
 }

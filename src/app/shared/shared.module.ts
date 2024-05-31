@@ -15,6 +15,7 @@ import { FooterComponent } from '../components/footer/footer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { SkeletonLoaderComponent } from '../protected/dashboard/components/skeleton-loader/skeleton-loader.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
     LoaderComponent,
     HtmlToSafeHtmlPipe,
     FooterComponent,
+    SkeletonLoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import { MatInputModule } from '@angular/material/input';
     LoaderComponent,
     HtmlToSafeHtmlPipe,
     FooterComponent,
+    SkeletonLoaderComponent
   ],
 })
 export class SharedModule { }

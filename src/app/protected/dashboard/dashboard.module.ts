@@ -45,7 +45,6 @@ import { SkeletonLoaderComponent } from './components/skeleton-loader/skeleton-l
     ChangePasswordComponent,
     ChangeEmailComponent,
     EmptyPetsComponent,
-    SkeletonLoaderComponent,
   ],
   imports: [
     CommonModule,

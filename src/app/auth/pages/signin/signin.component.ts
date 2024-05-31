@@ -37,6 +37,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
   invalidCredentials: boolean = false;
   token!: string | null;
   redirectUrl!: string;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -52,7 +53,9 @@ export class SigninComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.redirectUrl = this.route.snapshot.queryParams['redirect_url'] || '/dashboard';
+  }
 
   ngAfterViewInit(): void {
     this.showLoader = false;
@@ -107,8 +110,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
               this.invalidCredentials = true;
               this.endSubmittingForm(oldBtnValue);
             } else {
-              const redirectUrl = this.route.snapshot.queryParams['redirect_url'] || '/dashboard';
-              this.router.navigateByUrl(redirectUrl);
+              this.router.navigateByUrl(this.redirectUrl);
             }
           },
           error: (error: HttpErrorResponse) => {

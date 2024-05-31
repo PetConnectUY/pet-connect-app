@@ -1,0 +1,49 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1001;
+    position: fixed; // Asegurarse de que el navbar esté fijo
+    top: 0;
+    width: 100%; // Asegurar que el navbar ocupe todo el ancho
+  
+    .logo {
+      height: 40px;
+    }
+  
+    .spacer {
+      flex: 1;
+    }
+  
+    .notification-wrapper {
+      position: relative;
+  
+      button {
+        .mat-badge-content {
+          top: -10px;
+          right: -10px;
+        }
+      }
+    }
+  
+    .dropdown {
+      position: absolute;
+      top: 64px;
+      right: 16px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 10px;
+      z-index: 1000;
+  
+      p {
+        margin: 0;
+        padding: 10px;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+  }

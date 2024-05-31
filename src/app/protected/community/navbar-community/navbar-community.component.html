@@ -1,0 +1,24 @@
+<mat-toolbar color="primary" class="navbar">
+    <a [routerLink]="'/app'">
+      <img src="assets/images/pet-connect-logo.png" alt="PetConnect Logo" class="logo">
+    </a>
+    <span class="spacer"></span>
+    <div class="notification-wrapper">
+        <button mat-mini-fab color="primary"
+            matBadge="8" matBadgePosition="after" matBadgeColor="accent" (click)="toggleNotifications()">
+            <mat-icon>notifications</mat-icon>
+        </button>
+    </div>
+    <div *ngIf="notificationsOpen" class="dropdown">
+      <p>Notificación 1</p>
+      <p>Notificación 2</p>
+      <!-- Añadir más notificaciones aquí -->
+    </div>
+    <button mat-mini-fab color="primary" (click)="toggleUserMenu()">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <div *ngIf="userMenuOpen" class="dropdown">
+      <p (click)="openSettings()">Configuración</p>
+      <p (click)="logout()">Cerrar Sesión</p>
+    </div>
+</mat-toolbar>  

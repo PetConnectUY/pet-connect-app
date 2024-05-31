@@ -1,0 +1,81 @@
+<app-navbar-community></app-navbar-community>
+<div class="home">
+  <aside class="sidebar">
+    <nav>
+      <ul>
+        <li>
+            <a [routerLink]="'/community/home'" [class.active]="currentRoute === '/community/home'">
+            <mat-icon>home</mat-icon> Home
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>label</mat-icon> Topics
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>trending_up</mat-icon> Trending
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>people</mat-icon> Community
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>school</mat-icon> Start Here
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>event</mat-icon> Weekly Events
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>announcement</mat-icon> Announcements
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>help</mat-icon> FAQs
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="resources">
+      <h3>RESOURCES</h3>
+      <ul>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>video_library</mat-icon> Video Library
+          </a>
+        </li>
+        <li>
+            <a [routerLink]="'/home'" [class.active]="currentRoute === '/home'">
+            <mat-icon>book</mat-icon> Knowledge Base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content">
+    <section class="feed">
+      <app-feed></app-feed>
+    </section>
+  </main>
+  <aside class="sidebar-right">
+    <section class="new-updates">
+      <h2>New Updates</h2>
+      <!-- Example content -->
+      <p>No new updates</p>
+    </section>
+    <section class="top-contributors">
+      <h2>Top Contributors</h2>
+      <!-- Example content -->
+      <p>No top contributors</p>
+    </section>
+  </aside>
+</div>

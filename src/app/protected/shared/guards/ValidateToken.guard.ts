@@ -9,24 +9,19 @@ import { TokenService } from 'src/app/shared/services/token.service';
 })
 export class ValidateTokenGuard implements CanActivate {
   token!: string | null;
+
   constructor(
     private authService: AuthService, 
     private router: Router,
     private tokenService: TokenService,
-  ) {
-    // this.token = this.tokenService.getToken();
-  }
-
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
       if (!this.authService.isAuthenticated()) {
-        if(this.token) {
-          this.router.navigate(['/auth/signin'], {queryParams: {token: this.token}});
-        } else {
-          this.router.navigate(['/auth/signin']);
-        }
+        const redirectUrl = state.url;
+        this.router.navigate(['/auth/signin'], { queryParams: { redirect_url: redirectUrl } });
         return false;
       }
       return true;

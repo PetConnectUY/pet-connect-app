@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
-import { ValidateTokenGuard } from './protected/shared/guards/ValidateToken.guard';
 import { FrequentQuestionsComponent } from './pages/frequent-questions/frequent-questions.component';
 import { ErrorComponent } from './errors/components/error/error.component';
 import { errors } from './errors/constants/errors.constant';
@@ -39,6 +38,10 @@ const routes: Routes = [
     loadChildren: () => import('./protected/pets/pets.module').then(m => m.PetsModule),
   },
   {
+    path: 'community',
+    loadChildren: () => import('./protected/community/community.module').then(m => m.CommunityModule),
+  },
+  {
     path: 'error/:code',
     component: ErrorComponent,
   },
@@ -49,7 +52,7 @@ const routes: Routes = [
   {
     path: 'discover-more',
     component: DiscoverMoreComponent,
-  }
+  },
 ];
 
 @NgModule({

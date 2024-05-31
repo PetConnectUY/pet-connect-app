@@ -1,0 +1,12 @@
+<app-skeleton-loader *ngIf="isLoading" [quantity]="12"></app-skeleton-loader>
+<div *ngIf="!isLoading">
+  <div class="container d-flex flex-column align-items-center justify-content-center" *ngFor="let pet of recentPets.data">
+    <div class="pet-card">
+      <img [src]="pet.images[0].url" alt="Pet Image">
+      <div class="pet-info">
+        <h3>{{ pet.name }}</h3>
+        <small>Registrado {{ pet.created_at | date }}</small>
+      </div>
+    </div>
+  </div>
+</div>

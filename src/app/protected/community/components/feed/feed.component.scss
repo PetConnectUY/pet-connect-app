@@ -1,0 +1,35 @@
+.pet-card {
+    width: 100%;
+    max-width: 600px;
+    height: 100px;
+    border-radius: 8px;
+    background: var(--background-color);
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+  
+    img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+    }
+  
+    .pet-info {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      h3 {
+        margin: 0 0 10px;
+      }
+
+      small {
+        color: #969696;
+        font-size: 11px;
+        text-align: end;
+      }
+    }
+  }
+  
